@@ -1,0 +1,33 @@
+---
+#############################################################
+# Trajectory settings                                       #
+#############################################################
+
+initial_time: 0.0
+final_time: 10000.0
+
+initial_V1: -0.62654
+initial_V2: 1.0
+initial_V3: 0.0
+
+initial_X1: 5.0
+initial_X2: 0.0
+initial_X3: 0.0
+
+initial_EN: 1.0
+
+# How many times to output between initial and final time
+output_times: 10000
+
+output_file: "trajectory.ascii"
+metadata_file: "trajectory_metadata.ascii"
+
+background_metric: "Isotropic Schwarzschild"
+
+background_radius: 10.0
+energy_threshold: 1.0
+
+particle_type: 0 # Zero for photons, anything else for massive.
+
+Isotropic_Schwarzschild_Settings:
+  M: 1.0

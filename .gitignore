@@ -1,0 +1,5 @@
+build/**
+external/**
+.vscode/**
+compile_commands.json
+**.ascii
