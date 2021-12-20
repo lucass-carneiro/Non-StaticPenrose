@@ -1,6 +1,7 @@
-.cache/**
-build/**
-external/**
 .vscode/**
+.cache/**
+Debug/**
+Release/**
+external/**
 compile_commands.json
 **.ascii
