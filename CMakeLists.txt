@@ -28,32 +28,26 @@ endif()
 # 3) External dependencies
 # -----------------------------------------
 
-# The CMake package manager
-include(cmake/CPM.cmake)
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
 
-# Point to the external folder for packages
-list(APPEND CMAKE_MODULE_PATH 
-  "${CMAKE_CURRENT_LIST_DIR}/external/lib/cmake/"
-  "${CMAKE_CURRENT_LIST_DIR}/external/share/"
-)
-
-set(docopt_DIR "${CMAKE_CURRENT_LIST_DIR}/external/lib/cmake/docopt")
-set(SUNDIALS_DIR "${CMAKE_CURRENT_LIST_DIR}/external/lib/cmake/sundials")
+# Include conan installed packages
+#include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 # Message passing for distributed parallelism
 find_package(MPI REQUIRED)
 
 # Command line arguemnt parsing
-find_package(docopt REQUIRED)
+#find_package(docopt REQUIRED)
 
 # YAML parser
-find_package(yaml-cpp REQUIRED)
+#find_package(yaml-cpp REQUIRED)
 
 # Printf like formating
-find_package(fmt REQUIRED)
+#find_package(fmt REQUIRED)
 
 # SUNDIALS ODE integrators
-find_package(SUNDIALS REQUIRED)
+#find_package(sundials REQUIRED)
 
 # -----------------------------------------
 # 4) Source files
@@ -132,11 +126,11 @@ endif()
 # -----------------------------------------
 
 target_link_libraries(GRLensing PRIVATE 
-  MPI::MPI_CXX 
-  ${GRLensing_SOURCE_DIR}/external/lib/libfmt.a #For some reason, CMake can't find fmt
-  docopt 
-  yaml-cpp 
-  SUNDIALS::arkode 
+  MPI::MPI_CXX
+  CONAN_PKG::fmt
+  CONAN_PKG::docopt.cpp
+  CONAN_PKG::yaml-cpp
+  CONAN_PKG::sundials
   ${GRLENSING_DLL_LIBRARY}
 )
 

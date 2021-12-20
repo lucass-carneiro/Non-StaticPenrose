@@ -5,7 +5,7 @@
 #include "time_integration.hpp"
 
 #include <cstddef>
-#include <docopt.h>
+#include <docopt/docopt.h>
 #include <filesystem>
 #include <map>
 #include <stdexcept>

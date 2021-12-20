@@ -1,0 +1,17 @@
+[requires]
+fmt/8.0.1
+docopt.cpp/0.6.3
+sundials/5.4.0
+yaml-cpp/0.7.0
+
+[options]
+sundials:build_arkode=True
+sundials:build_cvode=True
+sundials:build_cvodes=True
+sundials:build_ida=True
+sundials:build_idas=True
+sundials:build_kinsol=True
+sundials:shared=True
+
+[generators]
+cmake
