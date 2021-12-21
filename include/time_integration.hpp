@@ -25,7 +25,7 @@ namespace grlensing {
 using writer_ptr = std::unique_ptr<grlensing::storage_server::trajectory_writer>;
 
 /**
- * TODO: Document
+ * Holds the necessary data to plot a single trajectory in a given spacetime.
  */
 struct trajectory_config {
   realtype initial_time;
@@ -48,6 +48,12 @@ struct trajectory_config {
 
   int particle_type;
 
+  /**
+   * Parses a trajectory configuration from a yaml file.
+   *
+   * @param trajectory_file The yaml file contain data for the trajectory.
+   * @return A new trajectory_config object.
+   */
   trajectory_config(const YAML::Node &trajectory_file)
       : initial_time(trajectory_file["initial_time"].as<realtype>()),
         final_time(trajectory_file["final_time"].as<realtype>()),
@@ -71,7 +77,7 @@ using user_data_t
     = std::tuple<const metric_server::metric_ptr &, const grlensing::trajectory_config &>;
 
 /**
- * TODO: Document
+ * Contains general settings of the integrator
  */
 struct integrator_config {
   realtype absolute_tolerance;
@@ -83,6 +89,12 @@ struct integrator_config {
   int max_steps;
   int predictor_method_order;
 
+  /**
+   * Construct integrator settings from configuration file.
+   *
+   * @param config_file The yaml config file with the integrator configuration.
+   * @return A new integrator config object.
+   */
   integrator_config(const YAML::Node &config_file)
       : absolute_tolerance(config_file["absolute_tolerance"].as<realtype>()),
         relative_tolerance(config_file["relative_tolerance"].as<realtype>()),
@@ -146,7 +158,11 @@ auto adm_geodesic_jacobian(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, voi
                            N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) noexcept -> int;
 /**
  * Detects if a particle has colided with the background during the integration
- * of the system.
+ * of the system or if it was swalloed by a black hole.
+ *
+ * Background collision occurs when a particle trajectory intersects with a sphere of user supplied
+ * radius. Swallowing by the astrophysical object occures when the energy becomes greater then a
+ * user supplied threshold.
  *
  * @param t The time parameter of the ODE system. In this case, the coordinate time.
  * @param y The left hand side (state vector) of the system.
@@ -155,12 +171,15 @@ auto adm_geodesic_jacobian(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, voi
  * @param user_data Pointer to user data necessary to be used in the integration.
  * @return A status code resulting from the process of writing the Jacobian.
  */
-auto background_colision(realtype t, N_Vector y, realtype *cs, void *user_data) noexcept -> int;
+auto detect_collisions(realtype t, N_Vector y, realtype *cs, void *user_data) noexcept -> int;
 
 /**
  * Integrates the geodesic equation.
  *
- * TODO: Document
+ * @param int_conf The integrator configuration data.
+ * @param writer A file writer that will be used for outputting the data.
+ * @param metric A spacetime background metric.
+ * @param traj_conf The trajectory configuration data.
  */
 void integrate(const integrator_config &int_conf, const writer_ptr &writer,
                const metric_server::metric_ptr &metric,
@@ -191,7 +210,14 @@ template <typename T> void check_flag(const T &flagvalue, const char *funcname) 
 
 /**
  * Normalizes velocities.
- * TODO: doc.
+ *
+ * When the user chooses the initial velocitis for a particle, these might not be physicall, that
+ * is, their norm might be greater than one. If the user chooses to compute the trajectory of
+ * photons, however, the velocity norm must be exaclty one. This function normalizes the user
+ * supplied velocities in this case to ensure that the propper normalization is achieved.
+ *
+ * @param config A trajectory configuration data.
+ * @param metric A spacetime metric objject.
  */
 void normalize(trajectory_config &config, const metric_server::metric_ptr &metric);
 

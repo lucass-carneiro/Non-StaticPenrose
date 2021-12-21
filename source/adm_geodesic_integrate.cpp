@@ -99,7 +99,7 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
   check_flag(flag, "ARKStepSStolerances");
 
   // Specify the root-finding function, having 2 equations
-  flag = ARKStepRootInit(arkode_mem.get(), callback_size, background_colision);
+  flag = ARKStepRootInit(arkode_mem.get(), callback_size, detect_collisions);
   check_flag(flag, "ARKStepRootInit");
 
   // Initialize dense matrix data structure and solver

@@ -13,8 +13,7 @@ template <typename T> constexpr auto Power(T x, int n) -> double {
   return (n < 0) ? T(1) / Power(x, unsigned(-n)) : Power(x, unsigned(n));
 }
 
-// TODO: Rename to something better. This detects collisions and captures.
-auto grlensing::background_colision(realtype, N_Vector y, realtype *cs, void *user_data) noexcept
+auto grlensing::detect_collisions(realtype, N_Vector y, realtype *cs, void *user_data) noexcept
     -> int {
 
   const svector X = {NV_Ith_S(y, 3), NV_Ith_S(y, 4), NV_Ith_S(y, 5)}; // NOLINT

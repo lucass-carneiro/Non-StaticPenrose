@@ -77,7 +77,10 @@ static auto make_plugin_paths(const YAML::Node &config_file) -> std::vector<fs::
 }
 
 /**
- * TODO: Document.
+ * Loads all plugins in the configured paths.
+ *
+ * @param kernel The application kernel
+ * @param config_file The yaml general configuration file.
  */
 static void load_plugins(grlensing::kernel &kernel, const YAML::Node &config_file) {
   const auto plugin_paths = make_plugin_paths(config_file);
@@ -88,7 +91,13 @@ static void load_plugins(grlensing::kernel &kernel, const YAML::Node &config_fil
 }
 
 /**
- * TODO: Document. make this take a const  reference to a kernel
+ * Implements the list-plugins functionality.
+ *
+ * The list-plugins mode is usefull for finding out how many plugins and what types of plugins were
+ * loaded and are available to be used during execution.
+ * TODO: Make this take a const  reference to a kernel
+ *
+ * @param kernel The application kernel.
  */
 static void list_plugins(grlensing::kernel &kernel) {
   using grlensing::log;
@@ -100,7 +109,12 @@ static void list_plugins(grlensing::kernel &kernel) {
 }
 
 /**
- * TODO: Doc. Make this take a cosnt kernel ref.
+ * Implements the integrate-trajectory mode.
+ *
+ * This mode integrates a single trajectory with parameters specified in a yaml configuration file.
+ * This is usefull for doing single trajectory tests to quickly visualize or do physics with a
+ * single trajectory.
+ * TODO: Make this take a cosnt kernel ref.
  */
 static void integrate_trajectory(grlensing::kernel &kernel,
                                  const grlensing::integrator_config &int_conf,
@@ -142,8 +156,16 @@ static void integrate_trajectory(grlensing::kernel &kernel,
 }
 
 /**
- * TODO: doc. Take a const ref to a kernel
- * TODO: Finish. Dump metric
+ * Implements the dump-metric command.
+ *
+ * The dump-metric command is usefull for testing spacetime metric implementations. All metric
+ * quantities are output as per the confoguration in the general yaml configuration file.
+ *
+ * @param kernel The application kernel.
+ * @param metric_name The name of the spacetime metric to dump.
+ * @param config_file The general yaml config file.
+ * TODO: Take a const ref to a kernel
+ * TODO: Dump in parallel using mpi/threads
  */
 void dump_metric(grlensing::kernel &kernel, const std::string &metric_name,
                  const YAML::Node &config_file) {

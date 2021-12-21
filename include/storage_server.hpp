@@ -158,8 +158,6 @@ public:
    */
   GRLENSING_API void print_names() const;
 
-  // TODO: Find a way to provide writing utilities to users
-
 private:
   /**
    * A list of archive readers
