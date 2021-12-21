@@ -48,6 +48,7 @@ configure_file("${GRLensing_SOURCE_DIR}/include/options_in.txt" "${GRLensing_SOU
 set(
   GRLENSING_HEADER_LIST
   "${GRLensing_SOURCE_DIR}/include/api_macros.hpp"
+  "${GRLensing_SOURCE_DIR}/include/cli.hpp"
   "${GRLensing_SOURCE_DIR}/include/kernel.hpp"
   "${GRLensing_SOURCE_DIR}/include/log.hpp"
   "${GRLensing_SOURCE_DIR}/include/metric_server.hpp"
@@ -70,6 +71,10 @@ set(
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_equations.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_integrate.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_jacobian.cpp"
+  "${GRLensing_SOURCE_DIR}/source/cli_dump_metric.cpp"
+  "${GRLensing_SOURCE_DIR}/source/cli_integrate_trajectory.cpp"
+  "${GRLensing_SOURCE_DIR}/source/cli_list_plugins.cpp"
+  "${GRLensing_SOURCE_DIR}/source/cli_load_plugins.cpp"
 )
 
 # Executable target
