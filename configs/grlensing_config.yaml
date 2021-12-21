@@ -2,9 +2,9 @@
 #############################################################
 # General settings                                          #
 #############################################################
-metric_plugin_folder      :   "build/plugins/metrics"
-archive_reader_plugin_folder: "build/plugins/archive_readers"
-archive_writer_plugin_folder: "build/plugins/archive_writers"
+metric_plugin_folder      :   "lib/"
+archive_reader_plugin_folder: "lib/"
+archive_writer_plugin_folder: "lib/"
 
 #############################################################
 # List of metrics to load at startup                        #

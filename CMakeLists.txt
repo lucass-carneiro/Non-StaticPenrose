@@ -31,23 +31,8 @@ endif()
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
 
-# Include conan installed packages
-#include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
-
 # Message passing for distributed parallelism
 find_package(MPI REQUIRED)
-
-# Command line arguemnt parsing
-#find_package(docopt REQUIRED)
-
-# YAML parser
-#find_package(yaml-cpp REQUIRED)
-
-# Printf like formating
-#find_package(fmt REQUIRED)
-
-# SUNDIALS ODE integrators
-#find_package(sundials REQUIRED)
 
 # -----------------------------------------
 # 4) Source files

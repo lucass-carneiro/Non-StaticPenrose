@@ -46,8 +46,9 @@ static void push_to_paths(const fs::path &plugin_folder, const YAML::Node &array
   for (const auto &plugin_name : array) {
     const auto base_name = plugin_name.as<std::string>();
 
-    // TODO: Find a better way to do this
-    const auto lib_name = base_name + std::string("/libgrlensing_") + base_name + suffix;
+    auto lib_name = std::string("libgrlensing_");
+    lib_name += base_name;
+    lib_name += suffix;
 
     const auto lib_path = fs::path(lib_name);
     path_vector.push_back(plugin_folder / lib_path);
