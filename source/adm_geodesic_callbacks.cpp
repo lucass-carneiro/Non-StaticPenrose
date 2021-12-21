@@ -26,7 +26,7 @@ auto grlensing::detect_collisions(realtype, N_Vector y, realtype *cs, void *user
 
   // Background colision
   const realtype current_radius = std::sqrt(Power(X[0], 2) + Power(X[1], 2) + Power(X[2], 2));
-  cs[0] = std::abs(traj_conf.background_radius - current_radius); // NOLINT
+  cs[0] = traj_conf.background_radius - current_radius; // NOLINT
 
   // Swallowing by object
   cs[1] = std::abs(EN - traj_conf.initial_EN) - traj_conf.energy_threshold; // NOLINT
