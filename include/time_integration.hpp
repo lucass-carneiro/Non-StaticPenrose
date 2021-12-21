@@ -96,13 +96,16 @@ struct integrator_config {
    * @return A new integrator config object.
    */
   integrator_config(const YAML::Node &config_file)
-      : absolute_tolerance(config_file["absolute_tolerance"].as<realtype>()),
-        relative_tolerance(config_file["relative_tolerance"].as<realtype>()),
-        convergence_coefficient(config_file["convergence_coefficient"].as<realtype>()),
-        max_error_test_fails(config_file["max_error_test_fails"].as<int>()),
-        max_nonlinear_iterations(config_file["max_nonlinear_iterations"].as<int>()),
-        max_steps(config_file["max_steps"].as<int>()),
-        predictor_method_order(config_file["predictor_method_order"].as<int>()) {
+      : absolute_tolerance(config_file["integrator_settings"]["absolute_tolerance"].as<realtype>()),
+        relative_tolerance(config_file["integrator_settings"]["relative_tolerance"].as<realtype>()),
+        convergence_coefficient(
+            config_file["integrator_settings"]["convergence_coefficient"].as<realtype>()),
+        max_error_test_fails(config_file["integrator_settings"]["max_error_test_fails"].as<int>()),
+        max_nonlinear_iterations(
+            config_file["integrator_settings"]["max_nonlinear_iterations"].as<int>()),
+        max_steps(config_file["integrator_settings"]["max_steps"].as<int>()),
+        predictor_method_order(
+            config_file["integrator_settings"]["predictor_method_order"].as<int>()) {
 
     if (max_error_test_fails < 0) {
       log<LogEvent::warning>("The parameter \"max_error_test_fails\" is negative. It will be "

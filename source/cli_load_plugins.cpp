@@ -18,22 +18,24 @@ void grlensing::push_to_paths(const std::filesystem::path &plugin_folder, const 
 auto grlensing::make_plugin_paths(const YAML::Node &config_file)
     -> std::vector<std::filesystem::path> {
   // Base plugin folders
-  const auto metric_plugin_folder
-      = std::filesystem::path(config_file["metric_plugin_folder"].as<std::string>());
-  const auto archive_reader_plugin_folder
-      = std::filesystem::path(config_file["archive_reader_plugin_folder"].as<std::string>());
-  const auto archive_writer_plugin_folder
-      = std::filesystem::path(config_file["archive_writer_plugin_folder"].as<std::string>());
+  const auto metric_plugin_folder = std::filesystem::path(
+      config_file["plugin_settings"]["metric_plugin_folder"].as<std::string>());
+  const auto archive_reader_plugin_folder = std::filesystem::path(
+      config_file["plugin_settings"]["archive_reader_plugin_folder"].as<std::string>());
+  const auto archive_writer_plugin_folder = std::filesystem::path(
+      config_file["plugin_settings"]["archive_writer_plugin_folder"].as<std::string>());
 
   // Find all plugins in the configured paths
   std::vector<std::filesystem::path> plugin_paths;
-  plugin_paths.reserve(config_file["load_metrics"].size() + config_file["load_readers"].size());
+  plugin_paths.reserve(config_file["plugin_settings"]["load_metrics"].size()
+                       + config_file["plugin_settings"]["load_readers"].size());
 
-  push_to_paths(metric_plugin_folder, config_file["load_metrics"], "_metric.so", plugin_paths);
-  push_to_paths(archive_reader_plugin_folder, config_file["load_readers"], "_archive.so",
+  push_to_paths(metric_plugin_folder, config_file["plugin_settings"]["load_metrics"], "_metric.so",
                 plugin_paths);
-  push_to_paths(archive_writer_plugin_folder, config_file["load_writers"], "_writer.so",
-                plugin_paths);
+  push_to_paths(archive_reader_plugin_folder, config_file["plugin_settings"]["load_readers"],
+                "_archive.so", plugin_paths);
+  push_to_paths(archive_writer_plugin_folder, config_file["plugin_settings"]["load_writers"],
+                "_writer.so", plugin_paths);
 
   return plugin_paths;
 }
