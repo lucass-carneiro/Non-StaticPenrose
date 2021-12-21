@@ -1,6 +1,8 @@
 #include "cli.hpp"
+#include "log.hpp"
 
 #include <docopt/docopt.h>
+#include <yaml-cpp/exceptions.h>
 
 auto main(int argc, char **argv) -> int {
   using namespace grlensing;
@@ -51,6 +53,10 @@ auto main(int argc, char **argv) -> int {
     if (MPI::COMM_WORLD.Get_rank() == 0) {
       fmt::print(
           "Unrecognized arguments passed. Rerun with the --help option for usage instructions.\n");
+    }
+  } catch (YAML::Exception &e) {
+    if (MPI::COMM_WORLD.Get_rank() == 0) {
+      log<LogEvent::error>("Yaml parser error: {:s}", e.what());
     }
   } catch (std::exception &e) {
     fmt::print("Error: {:s}\n", e.what());
