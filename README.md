@@ -15,3 +15,9 @@ conan install ../conan --remote=conancenter --build missing --profile ../conan/t
 cmake .. -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build . -j20
 ```
+
+# Executing
+```
+cd Debug
+ln -s ../configs/grlensing_config.yaml ./
+```

@@ -52,6 +52,7 @@ set(
   "${GRLensing_SOURCE_DIR}/include/kernel.hpp"
   "${GRLensing_SOURCE_DIR}/include/log.hpp"
   "${GRLensing_SOURCE_DIR}/include/metric_server.hpp"
+  "${GRLensing_SOURCE_DIR}/include/mpimatrix.hpp"
   "${GRLensing_SOURCE_DIR}/include/options.hpp"
   "${GRLensing_SOURCE_DIR}/include/plugin.hpp"
   "${GRLensing_SOURCE_DIR}/include/shared_library.hpp"
