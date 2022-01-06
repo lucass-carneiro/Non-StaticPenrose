@@ -1,6 +1,8 @@
 #ifndef GRLENSING_MPIMATRIX_HPP
 #define GRLENSING_MPIMATRIX_HPP
 
+// TODO: Refactor into map and data
+
 #include "log.hpp"
 
 #include <concepts>

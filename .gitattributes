@@ -1,0 +1,3 @@
+# Ignore Mathematica files for computing language statistics
+resources/*.m linguist-vendored
+resources/*.nb linguist-vendored
