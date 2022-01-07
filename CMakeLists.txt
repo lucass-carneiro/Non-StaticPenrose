@@ -40,6 +40,7 @@ find_package(MPI REQUIRED)
 
 # Available options
 option(GRLENSING_USE_LOG_COLOR "Use colors on log outputs" ON)
+option(GRLENSING_BUILD_TESTING "Build tests" ON)
 
 # Option file
 configure_file("${GRLensing_SOURCE_DIR}/include/options_in.txt" "${GRLensing_SOURCE_DIR}/include/options.hpp")
@@ -78,10 +79,21 @@ set(
   "${GRLensing_SOURCE_DIR}/source/cli_load_plugins.cpp"
 )
 
+set(GRLENSING_TESTS_SOURCE_LIST
+  "${GRLensing_SOURCE_DIR}/test/tests.cpp"
+)
+
 # Executable target
 add_executable(GRLensing ${GRLENSING_HEADER_LIST} ${GRLENSING_SOURCE_LIST})
 target_compile_features(GRLensing PRIVATE cxx_std_20)
 set_target_properties(GRLensing PROPERTIES OUTPUT_NAME "grlensing")
+
+# Test target
+if(BUILD_TESTING)
+  enable_testing()
+endif()
+add_executable(tests ${GRLENSING_TESTS_SOURCE_LIST})
+target_compile_features(tests PRIVATE cxx_std_20)
 
 # -----------------------------------------
 # 5) Compilers flags and options
@@ -124,6 +136,10 @@ target_link_libraries(GRLensing PRIVATE
   CONAN_PKG::sundials
   ${GRLENSING_DLL_LIBRARY}
 )
+
+target_link_libraries(tests PRIVATE CONAN_PKG::gtest MPI::MPI_CXX)
+include(GoogleTest)
+gtest_discover_tests(tests)
 
 target_include_directories(
   GRLensing PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
