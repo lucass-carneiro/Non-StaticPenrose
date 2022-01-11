@@ -1,5 +1,5 @@
 #include "cli.hpp"
-#include "mpimatrix.hpp"
+#include "mpi_index_map_3D.hpp"
 
 #include <string>
 
@@ -26,22 +26,26 @@ void grlensing::dump_metric(grlensing::kernel &kernel, const std::string &metric
   auto r0 = -rf;
   const auto dr = 2 * rf / points;
 
-  mpimatrix<double> xy_coords(points + 1, points + 1);
-  const auto owned_linear_range = xy_coords.get_owned_linear_range();
-  const auto start_ij = xy_coords.global_linear_to_matrix(owned_linear_range.first);
-  const auto end_ij = xy_coords.global_linear_to_matrix(owned_linear_range.second);
+  mpi_index_map_3D coords_map(points + 1, points + 1, points + 1);
+  const auto glor = coords_map.get_glor();
+  const auto start_ijk = coords_map.global_linear_to_matrix(glor.first);
+  const auto end_ijk = coords_map.global_linear_to_matrix(glor.second);
 
   log<LogEvent::message>("Dumping metric {:s}", metric_name);
 
-  for (auto i = start_ij.first; i <= end_ij.first; i++) {
-    for (auto j = start_ij.second; j <= end_ij.second; j++) {
-      const auto x = r0 + i * dr;
-      const auto y = r0 + j * dr;
+  for (auto i = std::get<0>(start_ijk); i <= std::get<0>(end_ijk); i++) {
+    for (auto j = std::get<1>(start_ijk); j <= std::get<1>(end_ijk); j++) {
+      for (auto k = std::get<2>(start_ijk); k <= std::get<2>(end_ijk); k++) {
+        const auto x = r0 + i * dr;
+        const auto y = r0 + j * dr;
+        const auto z = r0 + k * dr;
 
-      writer->push_real(x);
-      writer->push_real(y);
+        writer->push_real(x);
+        writer->push_real(y);
+        writer->push_real(z);
 
-      writer->push_final_real(metric->lapse(0.0, x, y, 0.0));
+        writer->push_final_real(metric->lapse(0.0, x, y, z));
+      }
     }
   }
 

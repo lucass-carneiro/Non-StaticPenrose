@@ -53,6 +53,8 @@ set(
   "${GRLensing_SOURCE_DIR}/include/kernel.hpp"
   "${GRLensing_SOURCE_DIR}/include/log.hpp"
   "${GRLensing_SOURCE_DIR}/include/metric_server.hpp"
+  "${GRLensing_SOURCE_DIR}/include/mpi_index_map_3D.hpp"
+  "${GRLensing_SOURCE_DIR}/include/mpi_utilities.hpp"
   "${GRLensing_SOURCE_DIR}/include/mpimatrix.hpp"
   "${GRLensing_SOURCE_DIR}/include/options.hpp"
   "${GRLensing_SOURCE_DIR}/include/plugin.hpp"
@@ -89,11 +91,17 @@ target_compile_features(GRLensing PRIVATE cxx_std_20)
 set_target_properties(GRLensing PROPERTIES OUTPUT_NAME "grlensing")
 
 # Test target
-if(BUILD_TESTING)
+if(GRLENSING_BUILD_TESTING)
   enable_testing()
+
+  add_executable(tests ${GRLENSING_TESTS_SOURCE_LIST})
+  target_compile_features(tests PRIVATE cxx_std_20)
+
+  target_link_libraries(tests PRIVATE CONAN_PKG::gtest MPI::MPI_CXX)
+  include(GoogleTest)
+  gtest_discover_tests(tests)
+  
 endif()
-add_executable(tests ${GRLENSING_TESTS_SOURCE_LIST})
-target_compile_features(tests PRIVATE cxx_std_20)
 
 # -----------------------------------------
 # 5) Compilers flags and options
@@ -130,16 +138,13 @@ endif()
 
 target_link_libraries(GRLensing PRIVATE 
   MPI::MPI_CXX
+  CONAN_PKG::range-v3
   CONAN_PKG::fmt
   CONAN_PKG::docopt.cpp
   CONAN_PKG::yaml-cpp
   CONAN_PKG::sundials
   ${GRLENSING_DLL_LIBRARY}
 )
-
-target_link_libraries(tests PRIVATE CONAN_PKG::gtest MPI::MPI_CXX)
-include(GoogleTest)
-gtest_discover_tests(tests)
 
 target_include_directories(
   GRLensing PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

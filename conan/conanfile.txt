@@ -4,6 +4,7 @@ docopt.cpp/0.6.3
 sundials/5.4.0
 yaml-cpp/0.7.0
 gtest/cci.20210126
+range-v3/0.11.0
 
 [options]
 sundials:build_arkode=True
