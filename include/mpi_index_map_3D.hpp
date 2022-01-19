@@ -98,7 +98,7 @@ public:
    * @param I The global linear index.
    * @return The corresponding global index triplet.
    */
-  auto global_linear_to_matrix(index_t I) -> index_triplet<index_t> {
+  auto global_linear_to_matrix(index_t I) const -> index_triplet<index_t> {
     if constexpr (bound_checked) {
       if (I >= global_size) {
         std::cout << "From process " << MPI::COMM_WORLD.Get_rank() << ": The index " << I

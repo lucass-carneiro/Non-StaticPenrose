@@ -33,6 +33,7 @@ conan_basic_setup(TARGETS)
 
 # Message passing for distributed parallelism
 find_package(MPI REQUIRED)
+find_package(OpenMP REQUIRED)
 
 # -----------------------------------------
 # 4) Source files
@@ -116,8 +117,8 @@ endif()
 
 if($<CONFIG:Debug>)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(GRLensing PUBLIC -g -Wall -Wextra -Werror -pedantic -pedantic-errors -O2 -fsanitize=address,undefined)
-    target_link_options(GRLensing PUBLIC -g -Wall -Wextra -Werror -pedantic -pedantic-errors -O2 -fsanitize=address,undefined)
+    target_compile_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fsanitize=address,undefined)
+    target_link_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fsanitize=address,undefined)
   elseif(MSVC)
     # TODO: get the actual flags and dll libraryfor msvc
     target_compile_options(GRLensing PUBLIC /Wall /Wextra /permissive- /O2)
@@ -138,6 +139,7 @@ endif()
 
 target_link_libraries(GRLensing PRIVATE 
   MPI::MPI_CXX
+  OpenMP::OpenMP_CXX
   CONAN_PKG::range-v3
   CONAN_PKG::fmt
   CONAN_PKG::docopt.cpp
