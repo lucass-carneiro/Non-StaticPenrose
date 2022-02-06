@@ -153,8 +153,9 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
     if (flag == ARK_ROOT_RETURN) {
       rtflag = ARKStepGetRootInfo(arkode_mem.get(), rootsfound.data());
       check_flag(rtflag, "ARKStepGetRootInfo");
-      writer->push_metadata("background colision: ", std::size_t(rootsfound[0]));
-      writer->push_metadata("swallowed: ", std::size_t(rootsfound[1]));
+      writer->push_metadata("background colision: ",
+                            rootsfound[0] ? std::size_t(1) : std::size_t(0));
+      writer->push_metadata("swallowed: ", rootsfound[1] ? std::size_t(1) : std::size_t(0));
       break;
     }
 

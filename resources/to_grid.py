@@ -12,9 +12,7 @@ def to_grid():
 			).drop_duplicates().reset_index(drop=True)	
 
 	x_unique = df["x"].drop_duplicates().sort_values().reset_index(drop=True)	
-	y_unique = df["y"].drop_duplicates().sort_values().reset_index(drop=True)	
-
-	df = df.sort_values(by=["y"])
+	y_unique = df["y"].drop_duplicates().sort_values().reset_index(drop=True)
 
 	x_grid, y_grid = np.meshgrid(x_unique, y_unique)
 	z_grid = np.array([df["data"][df["x"] == x_unique[i]].values for i in range(len(x_unique))])
