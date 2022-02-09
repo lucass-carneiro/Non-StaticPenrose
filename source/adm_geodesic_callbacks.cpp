@@ -29,7 +29,8 @@ auto grlensing::detect_collisions(realtype, N_Vector y, realtype *cs, void *user
   cs[0] = traj_conf.background_radius - current_radius; // NOLINT
 
   // Swallowing by object
-  cs[1] = std::abs(EN - traj_conf.initial_EN) - traj_conf.energy_threshold; // NOLINT
+  // NOLINTNEXTLINE
+  cs[1] = std::abs(EN - traj_conf.initial_EN) / traj_conf.initial_EN - traj_conf.energy_threshold;
 
   return 0;
 }

@@ -27,10 +27,12 @@ data = pd.read_csv(file_name, delim_whitespace=True, names=vars);
 
 plt.close("all")
 
-horizon = plt.Circle((0, 0), 10.0, color="black", fill=False)
+horizon = plt.Circle((0, 0), 2.0, color="black", fill=False)
+background = plt.Circle((0, 0), 10.0, color="red", fill=False)
 
 fig, ax = plt.subplots()
 ax.add_patch(horizon)
+ax.add_patch(background)
 
 
 ax.plot(
