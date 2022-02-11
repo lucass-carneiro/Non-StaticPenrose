@@ -21,7 +21,7 @@ auto grlensing::adm_geodesic_system(realtype t, N_Vector y, N_Vector ydot, void 
 
   const svector V = {NV_Ith_S(y, 0), NV_Ith_S(y, 1), NV_Ith_S(y, 2)}; // NOLINT
   const svector X = {NV_Ith_S(y, 3), NV_Ith_S(y, 4), NV_Ith_S(y, 5)}; // NOLINT
-  const auto EN = NV_Ith_S(y, 6);                                     // NOLINT
+  const auto El = NV_Ith_S(y, 6);                                     // NOLINT
 
   // Reinterpret user data
   const auto cast_user_data = static_cast<user_data_t *>(user_data);
@@ -114,7 +114,7 @@ auto grlensing::adm_geodesic_system(realtype t, N_Vector y, N_Vector ydot, void 
 
   // NOLINTNEXTLINE
   NV_Ith_S(ydot, 6)
-      = EN
+      = El
         * (-(grad_lapse[0] * V[0]) - grad_lapse[1] * V[1] - grad_lapse[2] * V[2]
            + lapse
                  * (ll_extrinsic[0][0] * Power(V[0], 2)

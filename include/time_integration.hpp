@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <tuple>
+#include <array>
 
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
@@ -20,7 +21,7 @@
 namespace grlensing {
 
 /**
- * Alias for a pointer to a file write robject
+ * Alias for a pointer to a file write object
  */
 using writer_ptr = std::unique_ptr<grlensing::storage_server::trajectory_writer>;
 
@@ -160,11 +161,11 @@ auto adm_geodesic_system(realtype t, N_Vector y, N_Vector ydot, void *user_data)
 auto adm_geodesic_jacobian(realtype t, N_Vector y, N_Vector fy, SUNMatrix J, void *user_data,
                            N_Vector tmp1, N_Vector tmp2, N_Vector tmp3) noexcept -> int;
 /**
- * Detects if a particle has colided with the background during the integration
- * of the system or if it was swalloed by a black hole.
+ * Detects if a particle has collided with the background during the integration
+ * of the system or if it was swallowed by a black hole.
  *
  * Background collision occurs when a particle trajectory intersects with a sphere of user supplied
- * radius. Swallowing by the astrophysical object occures when the energy becomes greater then a
+ * radius. Swallowing by the astrophysical object occurs when the energy becomes greater then a
  * user supplied threshold.
  *
  * @param t The time parameter of the ODE system. In this case, the coordinate time.
@@ -214,15 +215,34 @@ template <typename T> void check_flag(const T &flagvalue, const char *funcname) 
 /**
  * Normalizes velocities.
  *
- * When the user chooses the initial velocitis for a particle, these might not be physicall, that
+ * When the user chooses the initial velocities for a particle, these might not be physicall, that
  * is, their norm might be greater than one. If the user chooses to compute the trajectory of
- * photons, however, the velocity norm must be exaclty one. This function normalizes the user
+ * photons, however, the velocity norm must be exactly one. This function normalizes the user
  * supplied velocities in this case to ensure that the propper normalization is achieved.
  *
  * @param config A trajectory configuration data.
- * @param metric A spacetime metric objject.
+ * @param metric A spacetime metric object.
  */
 void normalize(trajectory_config &config, const metric_server::metric_ptr &metric);
+
+/**
+ * Computes the global energy from local quantities.
+ *
+ * The global energy is the energy as measured by an observer that uses the propper time to
+ * parametrize it's trajectory. Such quantity can be computed from the local energy (the one
+ * measured by the Eulerian observer) using the following equation:
+ * $$E_\text{Global} = (N - \gamma_{ij} \beta^i V^j) * E_\text{Local}$$
+ *
+ * @param metric The background metric where the trajectory is being integrated.
+ * @param ti The current coordinate time being integrated.
+ * @param Vi The current local velocities of the particle.
+ * @param Xi The current local positions of the particle.
+ * @param En The current local energy of the particle.
+ * @return The global energy.
+ */
+auto compute_global_energy(const metric_server::metric_ptr &metric, double ti,
+                           const std::array<double, 3> &Vi, const std::array<double, 3> &Xi,
+                           double En) -> double;
 
 } // namespace grlensing
 

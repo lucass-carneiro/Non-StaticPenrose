@@ -74,6 +74,7 @@ set(
   "${GRLensing_SOURCE_DIR}/source/storage_server.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_callbacks.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_equations.cpp"
+  "${GRLensing_SOURCE_DIR}/source/adm_geodesic_global_energy.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_integrate.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_jacobian.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_dump_metric.cpp"

@@ -126,9 +126,19 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
 
   // output initial condition to disk
   writer->push_real(traj_conf.initial_time);
-  for (std::size_t i = 0; i < system_size - 1; i++)
-    writer->push_real(NV_Ith_S(y.get(), i));     // NOLINT
-  writer->push_final_real(NV_Ith_S(y.get(), 6)); // NOLINT
+  for (std::size_t i = 0; i < system_size; i++)
+    writer->push_real(NV_Ith_S(y.get(), i)); // NOLINT
+
+  // NOLINTNEXTLINE
+  std::array<double, 3> Vi = {NV_Ith_S(y.get(), 0), NV_Ith_S(y.get(), 1), NV_Ith_S(y.get(), 2)};
+
+  // NOLINTNEXTLINE
+  std::array<double, 3> Xi = {NV_Ith_S(y.get(), 3), NV_Ith_S(y.get(), 4), NV_Ith_S(y.get(), 5)};
+
+  // NOLINTNEXTLINE
+  double El = NV_Ith_S(y.get(), 6);
+  auto Eg = compute_global_energy(metric, traj_conf.initial_time, Vi, Xi, El);
+  writer->push_final_real(Eg);
 
   /* Main time-stepping loop: calls ARKStepEvolve to perform the integration, then
    * prints results.  Stops when the final time has been reached
@@ -145,9 +155,19 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
 
     // access/print solution
     writer->push_real(t);
-    for (std::size_t i = 0; i < system_size - 1; i++)
-      writer->push_real(NV_Ith_S(y.get(), i));     // NOLINT
-    writer->push_final_real(NV_Ith_S(y.get(), 6)); // NOLINT
+    for (std::size_t i = 0; i < system_size; i++)
+      writer->push_real(NV_Ith_S(y.get(), i)); // NOLINT
+
+    // NOLINTNEXTLINE
+    Vi = {NV_Ith_S(y.get(), 0), NV_Ith_S(y.get(), 1), NV_Ith_S(y.get(), 2)};
+
+    // NOLINTNEXTLINE
+    Xi = {NV_Ith_S(y.get(), 3), NV_Ith_S(y.get(), 4), NV_Ith_S(y.get(), 5)};
+
+    // NOLINTNEXTLINE
+    El = NV_Ith_S(y.get(), 6);
+    Eg = compute_global_energy(metric, t, Vi, Xi, El);
+    writer->push_final_real(Eg);
 
     // Exit due to root found.
     if (flag == ARK_ROOT_RETURN) {

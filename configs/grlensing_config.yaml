@@ -17,10 +17,10 @@ plugin_settings:
   # Ttrajectory writers to load at startup
   load_writers: ["ascii"]
 
-#############################################################
-# These settings govern the behaviour of the ARKODE         #
-# integrator                                                #
-#############################################################
+############################################################
+# These settings govern the behavior of the ARKODE         #
+# integrator                                               #
+############################################################
 integrator_settings:
   # Error tolerances
   absolute_tolerance: 1.0e-12
@@ -48,9 +48,9 @@ integrator_settings:
   # solver convergence test.
   convergence_coefficient: 1.0e-7
 
-#############################################################
-# These settings govern the behaviour of "dump-metric"      #
-#############################################################
+############################################################
+# These settings govern the behavior of "dump-metric"      #
+############################################################
 dump_metric_settings:
   # Extension of the dumped data
   extension: ".ascii"
