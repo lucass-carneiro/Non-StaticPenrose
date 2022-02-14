@@ -129,11 +129,11 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
   for (std::size_t i = 0; i < system_size; i++)
     writer->push_real(NV_Ith_S(y.get(), i)); // NOLINT
 
-  // NOLINTNEXTLINE
-  std::array<double, 3> Vi = {NV_Ith_S(y.get(), 0), NV_Ith_S(y.get(), 1), NV_Ith_S(y.get(), 2)};
+  metric_server::spatial_vector Vi
+      = {NV_Ith_S(y.get(), 0), NV_Ith_S(y.get(), 1), NV_Ith_S(y.get(), 2)}; // NOLINT
 
-  // NOLINTNEXTLINE
-  std::array<double, 3> Xi = {NV_Ith_S(y.get(), 3), NV_Ith_S(y.get(), 4), NV_Ith_S(y.get(), 5)};
+  metric_server::spatial_vector Xi
+      = {NV_Ith_S(y.get(), 3), NV_Ith_S(y.get(), 4), NV_Ith_S(y.get(), 5)}; // NOLINT
 
   // NOLINTNEXTLINE
   double El = NV_Ith_S(y.get(), 6);
