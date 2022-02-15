@@ -34,6 +34,9 @@ auto main(int argc, char **argv) -> int {
 
     } else if (args["integrate-trajectory"].asBool()) {
       integrate_trajectory(proc_kernel, int_conf, args["<trajectory-file>"].asString());
+
+    } else if (args["penrose-breakup"].asBool()) {
+      penrose_breakup(proc_kernel, int_conf, args["<breakup-file>"].asString());
     }
   } catch (docopt::DocoptLanguageError &) {
     if (MPI::COMM_WORLD.Get_rank() == 0) {

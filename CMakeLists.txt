@@ -82,6 +82,7 @@ set(
   "${GRLensing_SOURCE_DIR}/source/cli_integrate_trajectory.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_list_plugins.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_load_plugins.cpp"
+  "${GRLensing_SOURCE_DIR}/source/cli_penrose_breakup.cpp"
 )
 
 set(GRLENSING_TESTS_SOURCE_LIST

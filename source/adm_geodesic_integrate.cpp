@@ -26,8 +26,7 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
   constexpr const auto callback_size = 2;
 
   const auto output_times = traj_conf.output_times;
-  const auto output_time_step
-      = std::abs(traj_conf.final_time - traj_conf.initial_time) / output_times;
+  const auto dt = (traj_conf.final_time - traj_conf.initial_time) / output_times;
 
   using nvec = _generic_N_Vector;
   using nvec_deleter = void (*)(N_Vector);
@@ -145,7 +144,7 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
    */
   auto t = traj_conf.initial_time;
 
-  auto tout = t + output_time_step;
+  auto tout = t + dt;
   auto iout = 0;
 
   while (true) {
@@ -173,16 +172,15 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
     if (flag == ARK_ROOT_RETURN) {
       rtflag = ARKStepGetRootInfo(arkode_mem.get(), rootsfound.data());
       check_flag(rtflag, "ARKStepGetRootInfo");
-      writer->push_metadata("background colision: ",
-                            rootsfound[0] ? std::size_t(1) : std::size_t(0));
-      writer->push_metadata("swallowed: ", rootsfound[1] ? std::size_t(1) : std::size_t(0));
+      writer->push_metadata("background colision", rootsfound[0] ? std::size_t(1) : std::size_t(0));
+      writer->push_metadata("swallowed", rootsfound[1] ? std::size_t(1) : std::size_t(0));
       break;
     }
 
     // Exit due to solver error.
     if (flag >= 0) {
       iout++;
-      tout = t + output_time_step;
+      tout = t + dt;
     } else {
       log<LogEvent::error>("Solver failure, stopping integration\n");
       break;
@@ -242,11 +240,10 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
                         std::size_t(ncfn));
   writer->push_metadata("   Total number of error test failures", std::size_t(netf));
 
-  if (traj_conf.particle_type == 0) {
-    writer->push_metadata("   V1 after normalization", traj_conf.initial_V1);
-    writer->push_metadata("   V2 after normalization", traj_conf.initial_V2);
-    writer->push_metadata("   V3 after normalization", traj_conf.initial_V3);
-  }
+  writer->push_metadata("   Initial V1 after processing", traj_conf.initial_V1);
+  writer->push_metadata("   Initial V2 after processing", traj_conf.initial_V2);
+  writer->push_metadata("   Initial V3 after processing", traj_conf.initial_V3);
+  writer->push_metadata("   Initial EN after processing", traj_conf.initial_EN);
 }
 
 void grlensing::normalize(trajectory_config &traj_conf, const metric_server::metric_ptr &metric) {

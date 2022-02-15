@@ -29,31 +29,35 @@ using writer_ptr = std::unique_ptr<grlensing::storage_server::trajectory_writer>
  * Holds the necessary data to plot a single trajectory in a given spacetime.
  */
 struct trajectory_config {
-  realtype initial_time;
-  realtype final_time;
+  realtype initial_time{0.0};
+  realtype final_time{0.0};
 
-  realtype initial_V1;
-  realtype initial_V2;
-  realtype initial_V3;
+  realtype initial_V1{0.0};
+  realtype initial_V2{0.0};
+  realtype initial_V3{0.0};
 
-  realtype initial_X1;
-  realtype initial_X2;
-  realtype initial_X3;
+  realtype initial_X1{0.0};
+  realtype initial_X2{0.0};
+  realtype initial_X3{0.0};
 
-  realtype initial_EN;
+  realtype initial_EN{0.0};
 
-  realtype background_radius;
-  realtype energy_threshold;
+  realtype background_radius{0.0};
+  realtype energy_threshold{0.0};
 
-  int output_times;
+  int output_times{0};
 
-  int particle_type;
+  int particle_type{0};
+
+  /**
+   * Default constructor
+   */
+  trajectory_config() = default;
 
   /**
    * Parses a trajectory configuration from a yaml file.
    *
    * @param trajectory_file The yaml file contain data for the trajectory.
-   * @return A new trajectory_config object.
    */
   trajectory_config(const YAML::Node &trajectory_file)
       : initial_time(trajectory_file["initial_time"].as<realtype>()),
@@ -259,6 +263,10 @@ auto compute_global_energy(const metric_server::metric_ptr &metric, double ti,
 auto reconstruct_u_p(const metric_server::metric_ptr &metric, double ti,
                      const metric_server::spatial_vector &Vi,
                      const metric_server::spatial_vector &Xi, double En) -> std::array<double, 4>;
+
+auto decompose_u_p(const metric_server::metric_ptr &metric, const std::array<double, 4> &u_p,
+                   double ti, const metric_server::spatial_vector &Xi)
+    -> std::tuple<metric_server::spatial_vector, double>;
 
 } // namespace grlensing
 

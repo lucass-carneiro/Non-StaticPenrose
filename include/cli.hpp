@@ -21,6 +21,7 @@ static constexpr const char *USAGE =
       grlensing list-plugins
       grlensing dump-metric <metric-name> [--extension=<ext>]
       grlensing integrate-trajectory <trajectory-file>
+      grlensing penrose-breakup <breakup-file>
       grlensing (-h | --help)
       grlensing --version
 
@@ -89,10 +90,18 @@ void integrate_trajectory(grlensing::kernel &kernel, const grlensing::integrator
  * @param metric_name The name of the spacetime metric to dump.
  * @param config_file The general yaml config file.
  * TODO: Take a const ref to a kernel
- * TODO: Dump in parallel using mpi/threads
  */
 void dump_metric(grlensing::kernel &kernel, const std::string &metric_name,
                  const YAML::Node &config_file);
+
+/**
+ * Implements the penrose-breakup mode.
+ *
+ * TODO: Doc.
+ * TODO: Make this take a cosnt kernel ref.
+ */
+void penrose_breakup(grlensing::kernel &kernel, const grlensing::integrator_config &int_conf,
+                     const std::string &break_file);
 
 } // namespace grlensing
 
