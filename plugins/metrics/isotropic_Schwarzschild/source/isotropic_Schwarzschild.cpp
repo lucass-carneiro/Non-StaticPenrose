@@ -6,11 +6,11 @@ using grlensing::kernel;
 using grlensing::metric_server;
 
 template <typename T> constexpr auto Power(T x, unsigned n) -> double {
-  return (n == 0) ? T(1) : x * Power(x, n - 1);
+  return (n == 0) ? T{1} : x * Power(x, n - 1);
 }
 
 template <typename T> constexpr auto Power(T x, int n) -> double {
-  return (n < 0) ? T(1) / Power(x, unsigned(-n)) : Power(x, unsigned(n));
+  return (n < 0) ? T{1} / Power(x, unsigned(-n)) : Power(x, unsigned(n));
 }
 
 constexpr auto Sqrt(auto x) { return std::sqrt(x); }

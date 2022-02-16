@@ -39,7 +39,14 @@ set(
 
 set(
   grlensing_KerrSchild_Kerr_metric_SOURCE_LIST
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/aux_functions.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/christoffel.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/grad_lapse.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/grad_ushift.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/KerrSchild_Kerr.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/ll_extrinsic.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/metric.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/ul_extrinsic.cpp"
 )
 
 # Plugin module library
