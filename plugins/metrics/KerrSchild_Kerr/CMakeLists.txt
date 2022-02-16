@@ -17,6 +17,7 @@ project(
 
 # YAML parser
 find_package(yaml-cpp REQUIRED)
+find_package(fmt REQUIRED)
 
 # -----------------------------------------
 # 3) Sources
@@ -32,6 +33,7 @@ configure_file(
 set(
   grlensing_KerrSchild_Kerr_metric_HEADER_LIST
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/include/api_macros.hpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/include/aux_functions.hpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/include/KerrSchild_Kerr.hpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/include/options.hpp"
   "${GRLensing_SOURCE_DIR}/include/kernel.hpp"
@@ -92,4 +94,4 @@ target_include_directories(
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE yaml-cpp)
+target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE yaml-cpp fmt)
