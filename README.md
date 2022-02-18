@@ -6,6 +6,14 @@ conan install ../conan --remote=conancenter --build missing --profile ../conan/t
 cmake .. -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DGRLENSING_BUILD_TESTING=ON
 cmake --build . -j20
 ```
+# Progile Build instructions
+
+```
+mkdir Profile && cd Profile
+conan install ../conan --remote=conancenter --build missing --profile ../conan/toolchain-gcc-11-release
+cmake .. -G "Unix Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Profile 
+cmake --build . -j20
+```
 
 # Release Build instructions
 

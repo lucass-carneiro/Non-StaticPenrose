@@ -18,6 +18,7 @@ Options:
 """
 
 from docopt import docopt
+import numpy as np
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -56,6 +57,15 @@ def plot_trajectory(arguments):
   if background_metric == "Isotropic Schwarzschild":
     M = float(config_file["Isotropic_Schwarzschild_Settings"]["M"])
     bh_radius = 2 * M
+  elif background_metric == "Kerr-Schild Kerr":
+    M = float(config_file["KerrSchild_Kerr_Settings"]["M"])
+    a = float(config_file["KerrSchild_Kerr_Settings"]["a"])
+
+    if a*a > M*M:
+      warn("Naked singularity detected. Drawing a unit radius horizon.")
+      bh_radius = 1
+    else:
+      bh_radius = M + np.sqrt(M*M - a * a)
   else:
     raise Exception("Cannot plot data due to unrecognized metric: " + background_metric)
 
