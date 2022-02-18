@@ -1,19 +1,21 @@
 """GRLensing data plotter.
 
 Usage:
-  data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>]
+  data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>]
   data_plotter.py energy (local|global) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>]
   data_plotter.py (-h | --help)
   data_plotter.py --version
 
 Options:
-  -h --help           Show this screen.
-  --version           Show version.
-  --font_size=<size>  The size of the font in the plots [default: 20].
-  --color_1=<color1>  The color of the first trajectory. [default: red]
-  --color_2=<color2>  The color of the first trajectory. [default: black]
-  --color_3=<color3>  The color of the first trajectory. [default: blue]
+  -h --help               Show this screen.
+  --version               Show version.
+  --font_size=<size>      The size of the font in the plots [default: 20].
+  --delta=<value>         The grid spacing used in internal grid generation [default: 0.1].
+  --plot_radius=<radius>  The radius of the background.
+  --color_1=<color1>      The color of the first trajectory. [default: red]
+  --color_2=<color2>      The color of the first trajectory. [default: black]
+  --color_3=<color3>      The color of the first trajectory. [default: blue]
 
 """
 
@@ -46,13 +48,19 @@ def plot_trajectory(arguments):
   config_file_name = arguments["<trajectory_config_file>"]
   output_file_name = arguments["<trajectory_output_file>"]
   font_size = int(arguments["--font_size"])
+  delta = float(arguments["--delta"])
   
   # Open the trajectory config file and extract relevant data
   with open(config_file_name, "r") as file:
     config_file = yaml.safe_load(file)
-  
+
   background_radius = float(config_file["background_radius"])
   background_metric = config_file["background_metric"]
+  
+  if arguments["--plot_radius"] == None:
+    plot_radius = background_radius
+  else:
+    plot_radius = float(arguments["--plot_radius"])
 
   if background_metric == "Isotropic Schwarzschild":
     M = float(config_file["Isotropic_Schwarzschild_Settings"]["M"])
@@ -65,7 +73,7 @@ def plot_trajectory(arguments):
       warn("Naked singularity detected. Drawing a unit radius horizon.")
       bh_radius = 1
     else:
-      bh_radius = M + np.sqrt(M*M - a * a)
+      bh_radius = M + np.sqrt(M**2 - a**2)
   else:
     raise Exception("Cannot plot data due to unrecognized metric: " + background_metric)
 
@@ -77,20 +85,38 @@ def plot_trajectory(arguments):
 
   plt.close("all")
 
-  horizon = plt.Circle((0, 0), bh_radius, color="black", fill=False)
-  background = plt.Circle((0, 0), background_radius, color="red", fill=False)
-
   fig, ax = plt.subplots()
-  ax.add_patch(horizon)
-  ax.add_patch(background)
 
+  # Background
+  background = plt.Circle((0, 0), background_radius, color="red", fill=False)
+  ax.add_patch(background)
+  
+  # Trajectory
   ax.plot(data["X1"], data["X2"])
+
+  # Ergosphere and horizons
+  x = np.arange(-plot_radius, plot_radius, delta)
+  y = x
+  X, Y = np.meshgrid(x, y)
+
+  if background_metric == "Isotropic Schwarzschild":
+    R = np.sqrt(X**2 + Y**2)
+  elif background_metric == "Kerr-Schild Kerr":
+    part1 = X**2 + Y**2 - a**2
+    part2 = np.abs(part1)
+    
+    R = np.sqrt((part1 + part2)/2)
+    ergo = M * np.sqrt(2*(part1 + part2))/part2 - 1
+    ax.contour(X, Y, ergo, [0.0], colors="black", linestyles="--")
+    
+  # Event horizon
+  ax.contour(X, Y, R, [bh_radius], colors="black")
 
   plt.xlabel("$x$", fontsize = font_size);
   plt.ylabel("$y$", fontsize = font_size);
 
-  plt.xlim([-background_radius, background_radius])
-  plt.ylim([-background_radius, background_radius])
+  plt.xlim([-plot_radius, plot_radius])
+  plt.ylim([-plot_radius, plot_radius])
 
   plt.show()
 
