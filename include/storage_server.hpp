@@ -25,7 +25,7 @@ public:
    * Reads archive files like zips and rars.
    * Abstract interface to be implemented by the user
    */
-  class archive_reader {
+  class archive_reader { // TODO: add remaining constructors
   public:
     /**
      * Checks whether the reader can open an archive
@@ -47,13 +47,15 @@ public:
      * @return A string with the name of the reader.
      */
     virtual auto name() -> std::string_view = 0;
+
+    virtual ~archive_reader() = default;
   };
 
   /**
    * Writes files containing the result of trajectory integration.
    * Abstract interface to be implemented by the user.
    */
-  class trajectory_writer {
+  class trajectory_writer { // TODO: add remaining constructors
   public:
     /**
      * Tests wether or not the writer can write files in a certain extension type.
@@ -116,6 +118,8 @@ public:
      * @return The name of the writer.
      */
     virtual auto name() -> std::string_view = 0;
+
+    virtual ~trajectory_writer() = default;
   };
 
   /**

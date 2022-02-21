@@ -66,16 +66,8 @@ set(
 
 set(
   GRLENSING_SOURCE_LIST
-  "${GRLensing_SOURCE_DIR}/source/kernel.cpp"
-  "${GRLensing_SOURCE_DIR}/source/main.cpp"
-  "${GRLensing_SOURCE_DIR}/source/metric_server.cpp"
-  "${GRLensing_SOURCE_DIR}/source/plugin.cpp"
-  "${GRLensing_SOURCE_DIR}/source/shared_library.cpp"
-  "${GRLensing_SOURCE_DIR}/source/storage_server.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_callbacks.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_equations.cpp"
-  "${GRLensing_SOURCE_DIR}/source/adm_geodesic_four_momentum.cpp"
-  "${GRLensing_SOURCE_DIR}/source/adm_geodesic_global_energy.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_integrate.cpp"
   "${GRLensing_SOURCE_DIR}/source/adm_geodesic_jacobian.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_dump_metric.cpp"
@@ -83,6 +75,12 @@ set(
   "${GRLensing_SOURCE_DIR}/source/cli_list_plugins.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_load_plugins.cpp"
   "${GRLensing_SOURCE_DIR}/source/cli_penrose_breakup.cpp"
+  "${GRLensing_SOURCE_DIR}/source/kernel.cpp"
+  "${GRLensing_SOURCE_DIR}/source/main.cpp"
+  "${GRLensing_SOURCE_DIR}/source/metric_server.cpp"
+  "${GRLensing_SOURCE_DIR}/source/plugin.cpp"
+  "${GRLensing_SOURCE_DIR}/source/shared_library.cpp"
+  "${GRLensing_SOURCE_DIR}/source/storage_server.cpp"
 )
 
 set(GRLENSING_TESTS_SOURCE_LIST
@@ -121,8 +119,8 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   message(STATUS "Generating a debug build system")
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fsanitize=address,undefined)
-    target_link_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fsanitize=address,undefined)
+    target_compile_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fno-omit-frame-pointer -fsanitize=address,undefined)
+    target_link_options(GRLensing PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fno-omit-frame-pointer -fsanitize=address,undefined)
   elseif(MSVC)
     # TODO: get the actual flags and dll libraryfor msvc
     target_compile_options(GRLensing PUBLIC /Wall /Wextra /permissive- /O2)

@@ -33,7 +33,7 @@ public:
    * Define a spacetime metric using it's ADM components and
    * their derivatives.
    */
-  class adm_metric {
+  class adm_metric { // TODO: add remaining constructors
   public:
     virtual void load_parameters(const YAML::Node &) = 0;
 
@@ -154,6 +154,8 @@ public:
      * @return A string with the name of the metric.
      */
     virtual auto name() -> std::string_view = 0;
+
+    virtual ~adm_metric() = default;
   };
 
   /**
@@ -191,6 +193,77 @@ private:
    */
   metric_list metrics;
 };
+
+/**
+ * The module of the shift four vector.
+ *
+ * This quantity is simply the contraction $\beta_i \beta^i$.
+ * computed directly from metric components
+ *
+ * @param metric The spacetime metric to use.
+ * @param t The time coordinate value.
+ * @param x The first spatial coordinate value.
+ * @param y The first spatial coordinate value.
+ * @param z The first spatial coordinate value.
+ * @return The reconstructed $\beta_i \beta^i$ contraction.
+ * component.
+ */
+auto shift_module(const metric_server::metric_ptr &, double, double, double, double) -> double;
+
+/**
+ * The (covariant) diagonal time component of the spacetime metric.
+ *
+ * This quantity is computed from a ADM metric by the relation
+ * $g_{00} = \gamma_{ij} \beta^i \beta^j - \alpha^2$
+ *
+ * @param metric The spacetime metric to use.
+ * @param t The time coordinate value.
+ * @param x The first spatial coordinate value.
+ * @param y The first spatial coordinate value.
+ * @param z The first spatial coordinate value.
+ * @return The reconstructed $g_{00}$ metric component.
+ * component.
+ */
+auto ll_g_00(const metric_server::metric_ptr &, double, double, double, double) -> double;
+
+/**
+ * Computes the global energy from local quantities.
+ *
+ * The global energy is the energy as measured by an observer that uses the propper time to
+ * parametrize it's trajectory. Such quantity can be computed from the local energy (the one
+ * measured by the Eulerian observer) using the following equation:
+ * $$E_\text{Global} = (N - \gamma_{ij} \beta^i V^j) * E_\text{Local}$$
+ *
+ * @param metric The background metric where the trajectory is being integrated.
+ * @param ti The current coordinate time being integrated.
+ * @param Vi The current local velocities of the particle.
+ * @param Xi The current local positions of the particle.
+ * @param En The current local energy of the particle.
+ * @return The global energy.
+ */
+auto compute_global_energy(const metric_server::metric_ptr &metric, double ti,
+                           const metric_server::spatial_vector &Vi,
+                           const metric_server::spatial_vector &Xi, double En) -> double;
+
+/**
+ * Reconstructs the upper index four momentum of the particle from local quantities.
+ *
+ * The four momentum is given by $p^\mu = E_l * (1/N, V^i - \beta^i/N)$
+ *
+ * @param metric The background metric where the trajectory is being integrated.
+ * @param ti The current coordinate time being integrated.
+ * @param Vi The current local velocities of the particle.
+ * @param Xi The current local positions of the particle.
+ * @param En The current local energy of the particle.
+ * @return The global energy.
+ */
+auto reconstruct_u_p(const metric_server::metric_ptr &metric, double ti,
+                     const metric_server::spatial_vector &Vi,
+                     const metric_server::spatial_vector &Xi, double En) -> std::array<double, 4>;
+
+auto decompose_u_p(const metric_server::metric_ptr &metric, const std::array<double, 4> &u_p,
+                   double ti, const metric_server::spatial_vector &Xi)
+    -> std::tuple<metric_server::spatial_vector, double>;
 
 } // namespace grlensing
 

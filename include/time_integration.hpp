@@ -229,45 +229,6 @@ template <typename T> void check_flag(const T &flagvalue, const char *funcname) 
  */
 void normalize(trajectory_config &config, const metric_server::metric_ptr &metric);
 
-/**
- * Computes the global energy from local quantities.
- *
- * The global energy is the energy as measured by an observer that uses the propper time to
- * parametrize it's trajectory. Such quantity can be computed from the local energy (the one
- * measured by the Eulerian observer) using the following equation:
- * $$E_\text{Global} = (N - \gamma_{ij} \beta^i V^j) * E_\text{Local}$$
- *
- * @param metric The background metric where the trajectory is being integrated.
- * @param ti The current coordinate time being integrated.
- * @param Vi The current local velocities of the particle.
- * @param Xi The current local positions of the particle.
- * @param En The current local energy of the particle.
- * @return The global energy.
- */
-auto compute_global_energy(const metric_server::metric_ptr &metric, double ti,
-                           const metric_server::spatial_vector &Vi,
-                           const metric_server::spatial_vector &Xi, double En) -> double;
-
-/**
- * Reconstructs the upper index four momentum of the particle from local quantities.
- *
- * The four momentum is given by $p^\mu = E_l * (1/N, V^i - \beta^i/N)$
- *
- * @param metric The background metric where the trajectory is being integrated.
- * @param ti The current coordinate time being integrated.
- * @param Vi The current local velocities of the particle.
- * @param Xi The current local positions of the particle.
- * @param En The current local energy of the particle.
- * @return The global energy.
- */
-auto reconstruct_u_p(const metric_server::metric_ptr &metric, double ti,
-                     const metric_server::spatial_vector &Vi,
-                     const metric_server::spatial_vector &Xi, double En) -> std::array<double, 4>;
-
-auto decompose_u_p(const metric_server::metric_ptr &metric, const std::array<double, 4> &u_p,
-                   double ti, const metric_server::spatial_vector &Xi)
-    -> std::tuple<metric_server::spatial_vector, double>;
-
 } // namespace grlensing
 
 #endif // GRLENSING_TIME_INTEGRATION_HPP
