@@ -122,5 +122,5 @@ auto grlensing::compute_mass(const metric_server::metric_ptr &metric, double ti,
     }
   }
 
-  return (m2 < 0.0 ? std::sqrt(-m2) : -1.0);
+  return (m2 < 0.0 ? std::sqrt(-m2) : 0.0);
 }
