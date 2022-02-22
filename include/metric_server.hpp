@@ -224,15 +224,29 @@ auto shift_module(const metric_server::metric_ptr &, double, double, double, dou
  * @return The reconstructed $g_{00}$ metric component.
  * component.
  */
-auto ll_g_00(const metric_server::metric_ptr &, double, double, double, double) -> double;
+auto ll_g_00(const metric_server::metric_ptr &metric, double t, double x, double y, double z)
+    -> double;
+
+/**
+ * The (covariant) full pacetime metric reconstructed from the ADM components
+ *
+ * @param metric The spacetime ADM metric to use.
+ * @param t The time coordinate value.
+ * @param x The first spatial coordinate value.
+ * @param y The first spatial coordinate value.
+ * @param z The first spatial coordinate value.
+ * @return The reconstructed 4D spacetime metric component.
+ * component.
+ */
+auto ll_g(const metric_server::metric_ptr &metric, double t, double x, double y, double z)
+    -> std::array<std::array<double, 4>, 4>;
 
 /**
  * Computes the global energy from local quantities.
  *
  * The global energy is the energy as measured by an observer that uses the propper time to
- * parametrize it's trajectory. Such quantity can be computed from the local energy (the one
- * measured by the Eulerian observer) using the following equation:
- * $$E_\text{Global} = (N - \gamma_{ij} \beta^i V^j) * E_\text{Local}$$
+ * parametrize it's trajectory, or equivalently the energy as measured by a static observer at
+ * infinity
  *
  * @param metric The background metric where the trajectory is being integrated.
  * @param ti The current coordinate time being integrated.
@@ -264,6 +278,13 @@ auto reconstruct_u_p(const metric_server::metric_ptr &metric, double ti,
 auto decompose_u_p(const metric_server::metric_ptr &metric, const std::array<double, 4> &u_p,
                    double ti, const metric_server::spatial_vector &Xi)
     -> std::tuple<metric_server::spatial_vector, double>;
+
+/**
+ * TODO: Doc
+ */
+auto compute_mass(const metric_server::metric_ptr &metric, double ti,
+                  const metric_server::spatial_vector &Vi, const metric_server::spatial_vector &Xi,
+                  double En) -> double;
 
 } // namespace grlensing
 

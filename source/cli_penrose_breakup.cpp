@@ -125,6 +125,9 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
   traj_3_conf.output_times = breakup_file["trajectory_3"]["output_times"].as<int>();
   traj_3_conf.particle_type = breakup_file["particle_type"].as<int>();
 
+  metric_server::spatial_vector V_traj3
+      = {traj_3_conf.initial_V1, traj_3_conf.initial_V2, traj_3_conf.initial_V3};
+
   // Normalize velocities
   normalize(traj_1_conf, metric);
   normalize(traj_2_conf, metric);
@@ -132,16 +135,31 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
 
   // Integrate trajectory 1
   writer->open_file(traj_1_file, traj_1_metadata_file);
+
   integrate(int_conf, writer, metric, traj_1_conf);
+
+  const auto mass1 = compute_mass(metric, 0, V_traj1, breakup_point, traj_1_conf.initial_EN);
+  writer->push_metadata("   mass", mass1);
+
   writer->close_file();
 
   // Integrate trajectory 2
   writer->open_file(traj_2_file, traj_2_metadata_file);
+
   integrate(int_conf, writer, metric, traj_2_conf);
+
+  const auto mass2 = compute_mass(metric, 0, V_traj2, breakup_point, traj_2_conf.initial_EN);
+  writer->push_metadata("   mass", mass2);
+
   writer->close_file();
 
   // Integrate trajectory 3
   writer->open_file(traj_3_file, traj_3_metadata_file);
+
   integrate(int_conf, writer, metric, traj_3_conf);
+
+  const auto mass3 = compute_mass(metric, 0, V_traj3, breakup_point, traj_3_conf.initial_EN);
+  writer->push_metadata("   mass", mass3);
+
   writer->close_file();
 }
