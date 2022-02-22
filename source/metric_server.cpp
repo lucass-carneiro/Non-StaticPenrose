@@ -70,7 +70,7 @@ auto grlensing::compute_global_energy(const metric_server::metric_ptr &metric, d
     }
   }
 
-  return Eg;
+  return -Eg;
 }
 
 auto grlensing::reconstruct_u_p(const metric_server::metric_ptr &metric, double ti,

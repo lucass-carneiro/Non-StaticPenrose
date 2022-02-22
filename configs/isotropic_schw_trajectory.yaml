@@ -19,8 +19,8 @@ initial_X3: 0.0
 
 initial_EN: 1.0
 
-output_file: "trajectory.ascii"
-metadata_file: "trajectory_metadata.ascii"
+output_file: "isotropic_schw_trajectory.ascii"
+metadata_file: "isotropic_schw_trajectory_metadata.ascii"
 
 background_metric: "Isotropic Schwarzschild"
 
