@@ -83,27 +83,10 @@ set(
   "${GRLensing_SOURCE_DIR}/source/storage_server.cpp"
 )
 
-set(GRLENSING_TESTS_SOURCE_LIST
-  "${GRLensing_SOURCE_DIR}/test/tests.cpp"
-)
-
 # Executable target
 add_executable(GRLensing ${GRLENSING_HEADER_LIST} ${GRLENSING_SOURCE_LIST})
 target_compile_features(GRLensing PRIVATE cxx_std_20)
 set_target_properties(GRLensing PROPERTIES OUTPUT_NAME "grlensing")
-
-# Test target
-if(GRLENSING_BUILD_TESTING)
-  enable_testing()
-
-  add_executable(tests ${GRLENSING_TESTS_SOURCE_LIST})
-  target_compile_features(tests PRIVATE cxx_std_20)
-
-  target_link_libraries(tests PRIVATE CONAN_PKG::gtest MPI::MPI_CXX)
-  include(GoogleTest)
-  gtest_discover_tests(tests)
-  
-endif()
 
 # -----------------------------------------
 # 5) Compilers flags and options
@@ -172,3 +155,12 @@ target_include_directories(
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/plugins/archive_readers)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/plugins/metrics)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/plugins/archive_writers)
+
+
+# -----------------------------------------
+# 9) Compile tests
+# -----------------------------------------
+
+if(GRLENSING_BUILD_TESTING)
+  add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/test)
+endif()
