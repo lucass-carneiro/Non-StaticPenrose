@@ -1,0 +1,47 @@
+---
+#############################################################
+# Particle breakup process settings                         #
+#############################################################
+
+background_metric: "Kerr-Schild Kerr"
+background_radius: 100.0
+
+KerrSchild_Kerr_Settings:
+  M: 1.0
+  a: 1.0
+
+energy_threshold: 1.0
+
+output_format: ".ascii"
+
+# Zero for photons, anything else for massive.
+particle_type: 1
+
+breakup_point:
+  X1: 2.1
+  X2: 0.0
+  X3: 0.0
+
+trajectory_1:
+  final_time: -100.0
+  output_times: 1000
+  
+  initial_V1: 0.0
+  initial_V2: 0.5
+  initial_V3: 0.0
+  
+  initial_EN: 6.0
+
+trajectory_2:
+  final_time: 100.0
+  output_times: 1000
+  
+  initial_V1: 0.5
+  initial_V2: -0.5
+  initial_V3: 0.0
+  
+  initial_EN: 0.5
+
+trajectory_3:
+  final_time: 100.0
+  output_times: 1000
