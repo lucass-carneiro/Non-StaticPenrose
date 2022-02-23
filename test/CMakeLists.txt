@@ -1,10 +1,16 @@
 set(GRLENSING_TESTS_SOURCE_LIST ${GRLENSING_SOURCE_LIST})
+set(GRLENSING_TESTS_HEADER_LIST ${GRLENSING_HEADER_LIST})
+
 list(REMOVE_ITEM GRLENSING_TESTS_SOURCE_LIST ${GRLensing_SOURCE_DIR}/source/main.cpp)
+list(APPEND GRLENSING_TESTS_SOURCE_LIST "${GRLensing_SOURCE_DIR}/test/kerr_schild_kerr_tests.cpp")
 list(APPEND GRLENSING_TESTS_SOURCE_LIST "${GRLensing_SOURCE_DIR}/test/tests.cpp")
+
+list(APPEND GRLENSING_TESTS_HEADER_LIST "${GRLensing_SOURCE_DIR}/test/kerr_schild_kerr_tests.hpp")
+list(APPEND GRLENSING_TESTS_HEADER_LIST "${GRLensing_SOURCE_DIR}/test/test_constants.hpp")
 
 enable_testing()
 
-add_executable(tests ${GRLENSING_HEADER_LIST} ${GRLENSING_TESTS_SOURCE_LIST})
+add_executable(tests ${GRLENSING_TESTS_HEADER_LIST} ${GRLENSING_TESTS_SOURCE_LIST})
 target_compile_features(tests PRIVATE cxx_std_20)
 
 target_include_directories(
