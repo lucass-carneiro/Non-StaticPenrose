@@ -1,8 +1,8 @@
 """GRLensing data plotter.
 
 Usage:
-  data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>]
-  data_plotter.py energy (local|global) <trajectory_output_file> [--font_size=<size>]
+  data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
+  data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
   data_plotter.py (-h | --help)
   data_plotter.py --version
@@ -13,9 +13,10 @@ Options:
   --font_size=<size>      The size of the font in the plots [default: 20].
   --delta=<value>         The grid spacing used in internal grid generation [default: 0.1].
   --plot_radius=<radius>  The radius of the background.
-  --color_1=<color1>      The color of the first trajectory. [default: red]
-  --color_2=<color2>      The color of the first trajectory. [default: black]
-  --color_3=<color3>      The color of the first trajectory. [default: blue]
+  --color=<color>         The color of the trajectory. [default: black]
+  --color_1=<color1>      The color of the first breakup trajectory. [default: red]
+  --color_2=<color2>      The color of the first breakup trajectory. [default: black]
+  --color_3=<color3>      The color of the first breakup trajectory. [default: blue]
 
 """
 
@@ -41,7 +42,8 @@ vars = [
   "X2",
   "X3",
   "El",
-  "Eg"
+  "Eg",
+  "residual_Eg"
 ]
 
 def plot_horizons(plt, ax, arguments, config_file):
@@ -111,7 +113,7 @@ def plot_trajectory(arguments):
   plt.close("all")
   fig, ax = plt.subplots()
 
-  plot_single_trajectory(plt, ax, "black", output_file_name)
+  plot_single_trajectory(plt, ax, arguments["--color"], output_file_name)
   plot_horizons(plt, ax, arguments, config_file)
 
   plt.show()
@@ -143,9 +145,6 @@ def plot_energy(arguments):
   output_file_name = arguments["<trajectory_output_file>"]
   font_size = int(arguments["--font_size"])
 
-  mpl.rcParams['xtick.labelsize'] = font_size
-  mpl.rcParams['ytick.labelsize'] = font_size
-
   data = pd.read_csv(output_file_name, delim_whitespace=True, names=vars)
 
   plt.close("all")
@@ -155,10 +154,12 @@ def plot_energy(arguments):
   if arguments["local"]:
     plt.plot(data["time"], data["El"])
     plt.ylabel("$E_l$", fontsize = font_size)
-
-  else:
+  elif arguments["global"]:
     plt.plot(data["time"], data["Eg"])
     plt.ylabel("$E_g$", fontsize = font_size)
+  elif arguments["residual"]:
+    plt.loglog(data["time"], data["residual_Eg"])
+    plt.ylabel("$|E_g(t) - E_g(0)|$", fontsize = font_size)
 
   plt.show()
 

@@ -137,7 +137,9 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
   // NOLINTNEXTLINE
   double El = NV_Ith_S(y.get(), 6);
   auto Eg = compute_global_energy(metric, traj_conf.initial_time, Vi, Xi, El);
-  writer->push_final_real(Eg);
+  auto initial_Eg = Eg;
+  writer->push_real(Eg);
+  writer->push_final_real(std::abs(Eg - initial_Eg));
 
   /* Main time-stepping loop: calls ARKStepEvolve to perform the integration, then
    * prints results.  Stops when the final time has been reached
@@ -166,7 +168,8 @@ void grlensing::integrate(const integrator_config &int_conf, const writer_ptr &w
     // NOLINTNEXTLINE
     El = NV_Ith_S(y.get(), 6);
     Eg = compute_global_energy(metric, t, Vi, Xi, El);
-    writer->push_final_real(Eg);
+    writer->push_real(Eg);
+    writer->push_final_real(std::abs(Eg - initial_Eg));
 
     // Exit due to root found.
     if (flag == ARK_ROOT_RETURN) {
