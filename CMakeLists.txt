@@ -61,6 +61,7 @@ set(
   "${GRLensing_SOURCE_DIR}/include/plugin.hpp"
   "${GRLensing_SOURCE_DIR}/include/shared_library.hpp"
   "${GRLensing_SOURCE_DIR}/include/storage_server.hpp"
+  "${GRLensing_SOURCE_DIR}/include/tensor_types.hpp"
   "${GRLensing_SOURCE_DIR}/include/time_integration.hpp"
 )
 
