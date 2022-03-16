@@ -41,36 +41,60 @@ GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto isotropic_Schwarzschild::u_shi
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::ll_smetric(double, double x, double y, double z)
     -> metric_server::spatial_matrix {
+
   const auto nonzero_term = Power(1 + M / (2. * Sqrt(Power(x, 2) + Power(y, 2) + Power(z, 2))), 4);
-  return metric_server::spatial_matrix{
-      {{nonzero_term, 0.0, 0.0}, {0.0, nonzero_term, 0.0}, {0.0, 0.0, nonzero_term}}};
+
+  metric_server::spatial_matrix matrix{};
+  matrix[0][0] = nonzero_term;
+  matrix[0][1] = 0.0;
+  matrix[0][2] = 0.0;
+  matrix[1][1] = nonzero_term;
+  matrix[1][2] = 0.0;
+  matrix[2][2] = nonzero_term;
+  matrix[1][0] = matrix[0][1];
+  matrix[2][0] = matrix[0][2];
+  matrix[2][1] = matrix[1][2];
+
+  return matrix;
 }
 
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::uu_smetric(double, double x, double y, double z)
     -> metric_server::spatial_matrix {
+
   const auto nonzero_term
       = 1.0 / (Power(1 + M / (2. * Sqrt(Power(x, 2) + Power(y, 2) + Power(z, 2))), 4));
-  return metric_server::spatial_matrix{
-      {{nonzero_term, 0.0, 0.0}, {0.0, nonzero_term, 0.0}, {0.0, 0.0, nonzero_term}}};
+
+  metric_server::spatial_matrix matrix{};
+  matrix[0][0] = nonzero_term;
+  matrix[0][1] = 0.0;
+  matrix[0][2] = 0.0;
+  matrix[1][1] = nonzero_term;
+  matrix[1][2] = 0.0;
+  matrix[2][2] = nonzero_term;
+  matrix[1][0] = matrix[0][1];
+  matrix[2][0] = matrix[0][2];
+  matrix[2][1] = matrix[1][2];
+
+  return matrix;
 }
 
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::ll_extrinsic(double, double, double, double)
     -> metric_server::spatial_matrix {
-  return metric_server::spatial_matrix{{{0.0, 0.0, 0.0}, {0.0, 0.0, 0}, {0.0, 0.0, 0.0}}};
+  return metric_server::spatial_matrix{};
 }
 
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::ul_extrinsic(double, double, double, double)
     -> metric_server::spatial_matrix {
-  return metric_server::spatial_matrix{{{0.0, 0.0, 0.0}, {0.0, 0.0, 0}, {0.0, 0.0, 0.0}}};
+  return metric_server::spatial_matrix{};
 }
 
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::spatial_christoffel(double, double x, double y, double z)
     -> metric_server::chirstofell_t {
-  metric_server::chirstofell_t Gamma;
+  metric_server::chirstofell_t Gamma{};
 
   Gamma[0][0][0] = (-2 * M * x)
                    / ((Power(x, 2) + Power(y, 2) + Power(z, 2))
@@ -158,7 +182,7 @@ isotropic_Schwarzschild::grad_lapse(double, double x, double y, double z)
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto
 isotropic_Schwarzschild::grad_ushift(double, double, double, double)
     -> metric_server::spatial_matrix {
-  return metric_server::spatial_matrix{{{0.0, 0.0, 0.0}, {0.0, 0.0, 0}, {0.0, 0.0, 0.0}}};
+  return metric_server::spatial_matrix{};
 }
 
 GRLENSING_ISOTROPIC_SCHWARZSCHILD_METRIC_API auto isotropic_Schwarzschild::name()

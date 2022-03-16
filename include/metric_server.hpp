@@ -2,8 +2,8 @@
 #define GRLENSING_METRIC_SERVER_HPP
 
 #include "api_macros.hpp"
+#include "tensor_types.hpp"
 
-#include <array>
 #include <list>
 #include <memory>
 #include <string>
@@ -17,17 +17,17 @@ public:
   /**
    * Alias for a 3-vector.
    */
-  using spatial_vector = std::array<double, 3>;
+  using spatial_vector = callable_array<>;
 
   /**
    * Alias for a 3-matrix
    */
-  using spatial_matrix = std::array<std::array<double, 3>, 3>;
+  using spatial_matrix = callable_matrix<>;
 
   /**
    * Alias used for storing Chirstoffel symbol components
    */
-  using chirstofell_t = std::array<std::array<std::array<double, 3>, 3>, 3>;
+  using chirstofell_t = callable_3tensor<>;
 
   /**
    * Define a spacetime metric using it's ADM components and

@@ -6,7 +6,9 @@
 #include <sundials/sundials_nvector.h>
 #include <sundials/sundials_types.h>
 
-using svector = std::array<realtype, 3>;
+// TODO: Review geodesic eq and adm metrics
+
+using svector = grlensing::callable_array<3, realtype>;
 
 template <typename T> constexpr auto Power(T x, unsigned n) -> double {
   return (n == 0) ? T(1) : x * Power(x, n - 1);
@@ -37,90 +39,47 @@ auto grlensing::adm_geodesic_system(realtype t, N_Vector y, N_Vector ydot, void 
   const auto grad_ushift = metric->grad_ushift(t, X[0], X[1], X[2]);
   const auto spatial_christoffel = metric->spatial_christoffel(t, X[0], X[1], X[2]);
 
-  // NOLINTNEXTLINE
-  NV_Ith_S(ydot, 0)
-      = -(grad_lapse[1] * uu_smetric[1][0]) - grad_lapse[2] * uu_smetric[2][0]
-        - V[0]
-              * (grad_ushift[0][0] - 2 * lapse * ul_extrinsic[0][0]
-                 + lapse * spatial_christoffel[0][0][0] * V[0])
-        + grad_lapse[0] * (-uu_smetric[0][0] + Power(V[0], 2)) - grad_ushift[1][0] * V[1]
-        - grad_ushift[2][0] * V[2] + V[0] * (grad_lapse[1] * V[1] + grad_lapse[2] * V[2])
-        + lapse
-              * (-(ll_extrinsic[0][0] * Power(V[0], 3))
-                 - V[1]
-                       * (-2 * ul_extrinsic[0][1]
-                          + 2 * V[0] * (spatial_christoffel[0][1][0] + ll_extrinsic[1][0] * V[0])
-                          + (spatial_christoffel[0][1][1] + ll_extrinsic[1][1] * V[0]) * V[1])
-                 - 2
-                       * (-ul_extrinsic[0][2] + spatial_christoffel[0][2][1] * V[1]
-                          + V[0]
-                                * (spatial_christoffel[0][2][0] + ll_extrinsic[2][0] * V[0]
-                                   + ll_extrinsic[2][1] * V[1]))
-                       * V[2]
-                 - (spatial_christoffel[0][2][2] + ll_extrinsic[2][2] * V[0]) * Power(V[2], 2));
+  // Contracted vectors
+  const auto cv1 = [&](std::size_t i) -> realtype {
+    return grad_lapse(0) * uu_smetric(i, 0) + grad_lapse(1) * uu_smetric(i, 1)
+           + grad_lapse(2) * uu_smetric(i, 2);
+  };
+
+  const auto cv2 = [&](std::size_t i) -> realtype {
+    return grad_ushift(0, i) * V(0) + grad_ushift(1, i) * V(1) + grad_ushift(2, i) * V(2);
+  };
+
+  const auto cv3 = [&](std::size_t i) -> realtype {
+    return lapse
+           * (ul_extrinsic(i, 0) * V(0) + ul_extrinsic(i, 1) * V(1) + ul_extrinsic(i, 2) * V(2));
+  };
+
+  const auto cv4 = [&](std::size_t i) -> realtype {
+    return lapse
+           * (spatial_christoffel(i, 0, 0) * Power(V(0), 2)
+              + 2 * spatial_christoffel(i, 0, 1) * V(0) * V(1)
+              + spatial_christoffel(i, 1, 1) * Power(V(1), 2)
+              + 2 * (spatial_christoffel(i, 0, 2) * V(0) + spatial_christoffel(i, 1, 2) * V(1))
+                    * V(2)
+              + spatial_christoffel(i, 2, 2) * Power(V(2), 2));
+  };
+
+  // Contracted scalars
+  const auto cs1 = grad_lapse(0) * V(0) + grad_lapse(1) * V(1) + grad_lapse(2) * V(2);
+  const auto cs2 = lapse
+                   * (ll_extrinsic(0, 0) * Power(V(0), 2)
+                      + V(1) * (2 * ll_extrinsic(0, 1) * V(0) + ll_extrinsic(1, 1) * V(1))
+                      + (2 * ll_extrinsic(0, 2) * V(0) + 2 * ll_extrinsic(1, 2) * V(1)) * V(2)
+                      + ll_extrinsic(2, 2) * Power(V(2), 2));
 
   // NOLINTNEXTLINE
-  NV_Ith_S(ydot, 1)
-      = -(grad_lapse[1] * uu_smetric[1][1]) - grad_lapse[2] * uu_smetric[2][1]
-        - V[0]
-              * (grad_ushift[0][1] - 2 * lapse * ul_extrinsic[1][0]
-                 + lapse * spatial_christoffel[1][0][0] * V[0])
-        - grad_ushift[1][1] * V[1]
-        + 2 * lapse * (ul_extrinsic[1][1] - spatial_christoffel[1][1][0] * V[0]) * V[1]
-        + grad_lapse[0] * (-uu_smetric[1][0] + V[0] * V[1])
-        - V[1]
-              * (lapse * ll_extrinsic[0][0] * Power(V[0], 2) - grad_lapse[1] * V[1]
-                 + lapse * V[1]
-                       * (spatial_christoffel[1][1][1] + 2 * ll_extrinsic[1][0] * V[0]
-                          + ll_extrinsic[1][1] * V[1]))
-        - grad_ushift[2][1] * V[2]
-        + (grad_lapse[2] * V[1]
-           - 2 * lapse
-                 * (-ul_extrinsic[1][2] + spatial_christoffel[1][2][0] * V[0]
-                    + V[1]
-                          * (spatial_christoffel[1][2][1] + ll_extrinsic[2][0] * V[0]
-                             + ll_extrinsic[2][1] * V[1])))
-              * V[2]
-        - lapse * (spatial_christoffel[1][2][2] + ll_extrinsic[2][2] * V[1]) * Power(V[2], 2);
-
-  // NOLINTNEXTLINE
-  NV_Ith_S(ydot, 2)
-      = -(grad_lapse[1] * uu_smetric[2][1]) - grad_lapse[2] * uu_smetric[2][2]
-        - grad_ushift[0][2] * V[0] - grad_ushift[1][2] * V[1] - grad_ushift[2][2] * V[2]
-        + grad_lapse[0] * (-uu_smetric[2][0] + V[0] * V[2])
-        + lapse
-              * (2 * ul_extrinsic[2][0] * V[0] - spatial_christoffel[2][0][0] * Power(V[0], 2)
-                 - V[1]
-                       * (-2 * ul_extrinsic[2][1] + 2 * spatial_christoffel[2][1][0] * V[0]
-                          + spatial_christoffel[2][1][1] * V[1])
-                 + 2 * (ul_extrinsic[2][2] - spatial_christoffel[2][2][0] * V[0]) * V[2])
-        + V[2]
-              * (grad_lapse[1] * V[1] + grad_lapse[2] * V[2]
-                 - lapse
-                       * (ll_extrinsic[0][0] * Power(V[0], 2)
-                          + V[1]
-                                * (2 * spatial_christoffel[2][2][1] + 2 * ll_extrinsic[1][0] * V[0]
-                                   + ll_extrinsic[1][1] * V[1])
-                          + (spatial_christoffel[2][2][2] + 2 * ll_extrinsic[2][0] * V[0]
-                             + 2 * ll_extrinsic[2][1] * V[1])
-                                * V[2]
-                          + ll_extrinsic[2][2] * Power(V[2], 2)));
-
-  NV_Ith_S(ydot, 3) = -u_shift[0] + lapse * V[0]; // NOLINT
-
-  NV_Ith_S(ydot, 4) = -u_shift[1] + lapse * V[1]; // NOLINT
-
-  NV_Ith_S(ydot, 5) = -u_shift[2] + lapse * V[2]; // NOLINT
-
-  // NOLINTNEXTLINE
-  NV_Ith_S(ydot, 6)
-      = El
-        * (-(grad_lapse[0] * V[0]) - grad_lapse[1] * V[1] - grad_lapse[2] * V[2]
-           + lapse
-                 * (ll_extrinsic[0][0] * Power(V[0], 2)
-                    + V[1] * (2 * ll_extrinsic[1][0] * V[0] + ll_extrinsic[1][1] * V[1])
-                    + (2 * ll_extrinsic[2][0] * V[0] + 2 * ll_extrinsic[2][1] * V[1]) * V[2]
-                    + ll_extrinsic[2][2] * Power(V[2], 2)));
+  NV_Ith_S(ydot, 0) = -cv1(0) - cv2(0) + 2 * cv3(0) - cv4(0) + V(0) * (cs1 - cs2);
+  NV_Ith_S(ydot, 1) = -cv1(1) - cv2(1) + 2 * cv3(1) - cv4(1) + V(1) * (cs1 - cs2);
+  NV_Ith_S(ydot, 2) = -cv1(2) - cv2(2) + 2 * cv3(2) - cv4(2) + V(2) * (cs1 - cs2);
+  NV_Ith_S(ydot, 3) = lapse * V(0) - u_shift(0);
+  NV_Ith_S(ydot, 4) = lapse * V(1) - u_shift(1);
+  NV_Ith_S(ydot, 5) = lapse * V(2) - u_shift(2);
+  NV_Ith_S(ydot, 6) = El * (cs2 - cs1);
 
   return 0;
 }
