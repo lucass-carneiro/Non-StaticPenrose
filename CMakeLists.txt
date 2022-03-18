@@ -40,6 +40,7 @@ find_package(OpenMP REQUIRED)
 # -----------------------------------------
 
 # Available options
+option(GRLENSING_USE_LOG "Enable log messages" ON)
 option(GRLENSING_USE_LOG_COLOR "Use colors on log outputs" ON)
 option(GRLENSING_BUILD_TESTING "Build tests" ON)
 

@@ -147,9 +147,13 @@ template <> inline void vlog<LogEvent::error>(fmt::string_view str, fmt::format_
  * @param str A fmt-like format string.
  * @param args The arguments of the fmt-like format string.
  */
+#ifdef GRLENSING_USE_LOG
 template <LogEvent e, typename... Args> void log(fmt::string_view str, Args &&...args) {
   vlog<e>(str, fmt::make_format_args(args...));
 }
+#else
+template <LogEvent e, typename... Args> void log(fmt::string_view, Args &&...) { return; }
+#endif
 
 } // namespace grlensing
 
