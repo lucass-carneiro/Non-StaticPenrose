@@ -1,4 +1,4 @@
-#include "kerr_schild_kerr_tests.hpp"
+//#include "kerr_schild_kerr_tests.hpp"
 
 #include <gtest/gtest.h>
 #include <mpi.h>

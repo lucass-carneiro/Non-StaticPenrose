@@ -4,9 +4,9 @@
 #############################################################
 plugin_settings:
   # Folders
-  metric_plugin_folder      :   "../lib/"
-  archive_reader_plugin_folder: "../lib/"
-  archive_writer_plugin_folder: "../lib/"
+  metric_plugin_folder      :   "./lib/"
+  archive_reader_plugin_folder: "./lib/"
+  archive_writer_plugin_folder: "./lib/"
 
   # Metrics to load at startup
   load_metrics: ["isotropic_Schwarzschild", "KerrSchild_Kerr"]

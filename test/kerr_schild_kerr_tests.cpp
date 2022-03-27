@@ -1,81 +1,152 @@
-#include "kerr_schild_kerr_tests.hpp"
-
 #include "cli.hpp"
+#include "kernel.hpp"
+#include "kerr_schild_kerr_test_data.hpp"
 #include "log.hpp"
+#include "metric_server.hpp"
 #include "test_constants.hpp"
 
-#include <cmath>
 #include <gtest/gtest.h>
-#include <mpi.h>
 #include <random>
 
-template <typename T> inline constexpr auto Power(T x, unsigned n) -> double {
-  return (n == 0) ? T{1} : x * Power(x, n - 1);
-}
+class Kerr_Schild_Kerr_Tests : public testing::Test {
+protected:
+  static void SetUpTestSuite() {
+    using namespace grlensing;
+    using namespace grlensing_tests;
+    using std::mt19937_64;
+    using std::uniform_real_distribution;
 
-template <typename T> inline constexpr auto Power(T x, int n) -> double {
-  return (n < 0) ? T{1} / Power(x, unsigned(-n)) : Power(x, unsigned(n));
-}
+    // Avoid reallocating static objects if called in subclasses of FooTest.
+    if (shared_kernel == nullptr) {
+      shared_kernel = new kernel();
 
-inline constexpr auto Sqrt(auto x) {
-  using std::sqrt;
-  return sqrt(x);
-}
+      // Load global configuration file
+      const auto config_file = YAML::LoadFile("./grlensing_testing_config.yaml");
 
-auto grlensing_tests::r(double M, double a, double x, double y, double z) -> double {
-  using std::sqrt;
-  double part1 = -a * a + x * x + y * y + z * z;
-  return sqrt(0.5 * (part1 + sqrt(4 * a * a * z * z + part1 * part1)));
-}
+      // Load plugins
+      load_plugins(*shared_kernel, config_file);
+    }
 
-auto grlensing_tests::alpha(double M, double a, double x, double y, double z) -> double {
-  double rVal = r(M, a, x, y, z);
-  return Sqrt(1
-              - (2 * M * Power(rVal, 3) * (Power(a, 2) + Power(rVal, 2)))
-                    / (Power(a, 4) * Power(z, 2) + 2 * Power(a, 2) * M * Power(z, 2) * rVal
-                       + Power(a, 2) * Power(z, 2) * Power(rVal, 2)
-                       + 2 * M * (Power(x, 2) + Power(y, 2) + Power(z, 2)) * Power(rVal, 3)
-                       + Power(a, 2) * Power(rVal, 4) + Power(rVal, 6)));
-}
+    if (shared_random_engine == nullptr) {
+      shared_random_engine = new mt19937_64(random_seed);
+    }
 
-TEST(Kerr_Schild_Kerr_Tests, correct_lapse) {
+    if (shared_coord_distrib == nullptr) {
+      shared_coord_distrib = new uniform_real_distribution<double>(coord_range[0], coord_range[1]);
+    }
+  }
+
+  static void TearDownTestSuite() {
+    delete shared_kernel;
+    delete shared_random_engine;
+    delete shared_coord_distrib;
+
+    shared_kernel = nullptr;
+    shared_random_engine = nullptr;
+    shared_coord_distrib = nullptr;
+  }
+
+  static grlensing::kernel *shared_kernel;
+  static std::mt19937_64 *shared_random_engine;
+  static std::uniform_real_distribution<double> *shared_coord_distrib;
+};
+
+grlensing::kernel *Kerr_Schild_Kerr_Tests::shared_kernel = nullptr;
+std::mt19937_64 *Kerr_Schild_Kerr_Tests::shared_random_engine = nullptr;
+std::uniform_real_distribution<double> *Kerr_Schild_Kerr_Tests::shared_coord_distrib = nullptr;
+
+TEST_F(Kerr_Schild_Kerr_Tests, lapse_correcness) {
   using namespace grlensing_tests;
   using namespace grlensing;
-  using std::mt19937_64;
-  using std::uniform_real_distribution;
 
-  try {
-    // Load global configuration file
-    const auto config_file = YAML::LoadFile("../../configs/grlensing_testing_config.yaml");
+  const double M = 1.0;
+  const double a = M / 2;
 
-    // Initilize kernel
-    kernel proc_kernel;
+  const double x = (*shared_coord_distrib)(*shared_random_engine);
+  const double y = (*shared_coord_distrib)(*shared_random_engine);
+  const double z = (*shared_coord_distrib)(*shared_random_engine);
 
-    // Load plugins
-    load_plugins(proc_kernel, config_file);
+  const auto &metric = shared_kernel->get_metric_server().get_metric("Kerr-Schild Kerr");
 
-    // Random parameter generation
-    mt19937_64 engine(random_seed);
-    uniform_real_distribution<double> mass_distrib(par_range[0], par_range[1]);
-    uniform_real_distribution<double> coord_distrib(coord_range[0], coord_range[1]);
+  // Reference metric
+  const auto ref_uu_g = uu_g(M, a, x, y, z);
 
-    const double M = 1;
-    const double a = M / 2;
-
-    const double x = coord_distrib(engine);
-    const double y = coord_distrib(engine);
-    const double z = coord_distrib(engine);
-
-    const auto &metric = proc_kernel.get_metric_server().get_metric("Kerr-Schild Kerr");
-
-    // Tests
-    EXPECT_NEAR(alpha(M, a, x, y, z), metric->lapse(0.0, x, y, z), double_comp_tol);
-
-  } catch (YAML::Exception &e) {
-    if (MPI::COMM_WORLD.Get_rank() == 0) {
-      log<LogEvent::error>("Yaml parser error: {:s}", e.what());
-    }
-  } catch (std::exception &e) {
-    fmt::print("Error: {:s}\n", e.what());
-  }
+  EXPECT_NEAR(metric->lapse(0.0, x, y, z), sqrt(-1.0 / ref_uu_g[0][0]), double_comp_tol);
 }
+
+TEST_F(Kerr_Schild_Kerr_Tests, lower_shift_correcness) {
+  using namespace grlensing_tests;
+  using namespace grlensing;
+
+  const double M = 1.0;
+  const double a = M / 2;
+
+  const double x = (*shared_coord_distrib)(*shared_random_engine);
+  const double y = (*shared_coord_distrib)(*shared_random_engine);
+  const double z = (*shared_coord_distrib)(*shared_random_engine);
+
+  const auto &metric = shared_kernel->get_metric_server().get_metric("Kerr-Schild Kerr");
+
+  // Reference metric
+  const auto ref_ll_g = ll_g(M, a, x, y, z);
+
+  EXPECT_NEAR(metric->l_shift(0.0, x, y, z)[0], ref_ll_g[0][1], double_comp_tol);
+  EXPECT_NEAR(metric->l_shift(0.0, x, y, z)[1], ref_ll_g[0][2], double_comp_tol);
+  EXPECT_NEAR(metric->l_shift(0.0, x, y, z)[2], ref_ll_g[0][3], double_comp_tol);
+}
+
+TEST_F(Kerr_Schild_Kerr_Tests, upper_shift_correcness) {
+  using namespace grlensing_tests;
+  using namespace grlensing;
+
+  const double M = 1.0;
+  const double a = M / 2;
+
+  const double x = (*shared_coord_distrib)(*shared_random_engine);
+  const double y = (*shared_coord_distrib)(*shared_random_engine);
+  const double z = (*shared_coord_distrib)(*shared_random_engine);
+
+  const auto &metric = shared_kernel->get_metric_server().get_metric("Kerr-Schild Kerr");
+
+  // Reference metric
+  const auto ref_uu_g = uu_g(M, a, x, y, z);
+
+  EXPECT_NEAR(metric->u_shift(0.0, x, y, z)[0], -ref_uu_g[0][1] / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->u_shift(0.0, x, y, z)[1], -ref_uu_g[0][2] / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->u_shift(0.0, x, y, z)[2], -ref_uu_g[0][3] / ref_uu_g[0][0], double_comp_tol);
+}
+
+TEST_F(Kerr_Schild_Kerr_Tests, lower_spatial_metric_correcness) {
+  using namespace grlensing_tests;
+  using namespace grlensing;
+
+  const double M = 1.0;
+  const double a = M / 2;
+
+  const double x = (*shared_coord_distrib)(*shared_random_engine);
+  const double y = (*shared_coord_distrib)(*shared_random_engine);
+  const double z = (*shared_coord_distrib)(*shared_random_engine);
+
+  const auto &metric = shared_kernel->get_metric_server().get_metric("Kerr-Schild Kerr");
+
+  // Reference metric
+  const auto ref_ll_g = ll_g(M, a, x, y, z);
+
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[0][0], ref_ll_g[1][1], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[0][1], ref_ll_g[1][2], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[0][2], ref_ll_g[1][3], double_comp_tol);
+
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[1][0], ref_ll_g[2][1], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[1][1], ref_ll_g[2][2], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[1][2], ref_ll_g[2][3], double_comp_tol);
+
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[2][0], ref_ll_g[3][1], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[2][1], ref_ll_g[3][2], double_comp_tol);
+  EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[2][2], ref_ll_g[3][3], double_comp_tol);
+}
+
+/* TODO:
+ * 1 - Test upper spatial metric
+ * 2 - Test lapse gradient
+ * 3 - Test shift gradient
+ */

@@ -1,3 +1,5 @@
+#!/bin/python
+
 """GRLensing data plotter.
 
 Usage:

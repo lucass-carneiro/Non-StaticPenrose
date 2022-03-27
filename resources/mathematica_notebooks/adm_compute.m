@@ -10,7 +10,7 @@ coords = {t, x, y, z};
 
 (* The function to use for simplifications *)
 ClearAll[simplifyier];
-simplifyier = Simplify;
+simplifyier = FullSimplify;
 
 
 (* ::Section:: *)
@@ -18,24 +18,20 @@ simplifyier = Simplify;
 
 
 (* Auxiliary metric functions *)
-ClearAll[f,k,eta];
-f[x,y,z] := (2 * M * r[x,y,z]^3)/(r[x,y,z]^4 + a^2 * z^2);
-k = {1, (r[x,y,z] * x + a * y)/(r[x,y,z]^2 + a^2), (r[x,y,z] * y - a * x)/(r[x,y,z]^2 + a^2), z/r[x,y,z]};
+ClearAll[l,eta];
+l={1,l1[x,y,z],l2[x,y,z],l3[x,y,z]};
 eta = DiagonalMatrix[{-1,1,1,1}];
 
 (* A 4x4 matrix with the metric to generate *)
 ClearAll[ll4metric];
-ll4metric = Table[eta[[mu,nu]] + f[x,y,z] * k[[mu]] * k[[nu]], {mu,1,4}, {nu,1,4}];
+ll4metric =FullSimplify[Table[eta[[mu,nu]] + 2*H[x,y,z] * l[[mu]] * l[[nu]], {mu,1,4}, {nu,1,4}]];
 
-$Assumptions = M > 0 && a > 0 && r[x,y,z] >= 0;
-
-
-ClearAll[r];
-(*r[x_,y_,z_]:=Sqrt[Sqrt[(-a^2+x^2+y^2+z^2)^2+4*a^2*z^2]-a^2+x^2+y^2+z^2]/Sqrt[2];*)
-ClearAll[r];
+$Assumptions = M > 0 &&
+               a > 0 &&
+               r[x,y,z] >= 0;
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*ADM components*)
 
 
@@ -62,7 +58,7 @@ lshift = simplifyier[ll4metric[[1, 2;;4]]];
 ushift = simplifyier[lapse^2 * uu4metric[[1, 2;;4]]];
 
 ClearAll[\[CapitalGamma],Dd];
-\[CapitalGamma][a_,b_,c_] := simplifyier[1/2 * Sum[uusmetric[[a,d]] * ( D[llsmetric[[d,b]],spaceCoords[[c]]] + D[llsmetric[[d,c]],spaceCoords[[b]]] - D[llsmetric[[b,c]],spaceCoords[[d]]] ),{d,1,3}]];
+\[CapitalGamma][i_,j_,k_] := simplifyier[Sum[1/2 * uusmetric[[i,l]] * ( D[llsmetric[[l,j]],spaceCoords[[k]]] + D[llsmetric[[l,k]],spaceCoords[[j]]] - D[llsmetric[[j,k]],spaceCoords[[l]]] ),{l,1,3}]];
 Dd[b_,c_,f_] := simplifyier[D[f[[c]], spaceCoords[[b]]] - Sum[\[CapitalGamma][d,b,c]f[[d]],{d,1,3}]];
 
 ClearAll[llextrinsic,ulextrinsic];
@@ -70,7 +66,7 @@ llextrinsic = simplifyier[1/(2*lapse)*Table[-D[llsmetric[[i,j]],coords[[1]]] + D
 ulextrinsic = simplifyier[Table[Sum[uusmetric[[i,k]]*llextrinsic[[k,j]],{k,1,3}],{i,1,3},{j,1,3}]];
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*ADM Derivatives*)
 
 
@@ -78,7 +74,7 @@ ClearAll[gradlapse];
 gradlapse = simplifyier[Table[D[lapse,spaceCoords[[i]]], {i,1,3}]];
 
 ClearAll[gradushift];
-gradushift = Table[D[ushift[[i]],spaceCoords[[j]]],{i,1,3},{j,1,3}];
+gradushift = Table[D[ushift[[j]],spaceCoords[[i]]],{i,1,3},{j,1,3}];
 
 
 (* ::Section:: *)
@@ -87,7 +83,30 @@ gradushift = Table[D[ushift[[i]],spaceCoords[[j]]],{i,1,3},{j,1,3}];
 
 ClearAll[rules];
 rules={
+  "H(x,y,z)"->"H",
+  
+  "l1(x,y,z)"->"l1",
+  "l2(x,y,z)"->"l2",
+  "l3(x,y,z)"->"l3",
+  
   "r(x,y,z)" -> "r",
+  
+  "Derivative(1,0,0)(H)(x,y,z)" -> "dH_dx",
+  "Derivative(0,1,0)(H)(x,y,z)" -> "dH_dy",
+  "Derivative(0,0,1)(H)(x,y,z)" -> "dH_dz",
+  
+  "Derivative(1,0,0)(l1)(x,y,z)" -> "dl1_dx",
+  "Derivative(0,1,0)(l1)(x,y,z)" -> "dl1_dy",
+  "Derivative(0,0,1)(l1)(x,y,z)" -> "dl1_dz",
+  
+  "Derivative(1,0,0)(l2)(x,y,z)" -> "dl2_dx",
+  "Derivative(0,1,0)(l2)(x,y,z)" -> "dl2_dy",
+  "Derivative(0,0,1)(l2)(x,y,z)" -> "dl2_dz",
+  
+  "Derivative(1,0,0)(l3)(x,y,z)" -> "dl3_dx",
+  "Derivative(0,1,0)(l3)(x,y,z)" -> "dl3_dy",
+  "Derivative(0,0,1)(l3)(x,y,z)" -> "dl3_dz",
+  
   "Derivative(1,0,0)(r)(x,y,z)" -> "dr_dx",
   "Derivative(0,1,0)(r)(x,y,z)" -> "dr_dy",
   "Derivative(0,0,1)(r)(x,y,z)" -> "dr_dz"
@@ -180,13 +199,63 @@ StringReplace[ToString[FullSimplify[\[CapitalGamma][3,2,3]],CForm],rules]<>";"
 StringReplace[ToString[FullSimplify[\[CapitalGamma][3,3,3]],CForm],rules]<>";"
 
 
-StringReplace[ToString[FullSimplify[(Sqrt[Sqrt[(-a^2+x^2+y^2+z^2)^2+4*a^2*z^2]-a^2+x^2+y^2+z^2]/Sqrt[2])],CForm],rules]<>";"
+(* ::Section:: *)
+(*Auxiliary functions*)
 
 
-StringReplace[ToString[FullSimplify[D[(Sqrt[Sqrt[(-a^2+x^2+y^2+z^2)^2+4*a^2*z^2]-a^2+x^2+y^2+z^2]/Sqrt[2]),x]],CForm],rules]<>";"
+ClearAll[r]
+r[x_,y_,z_]=rvar/.Solve[(x^2+y^2)/(rvar^2+a^2)+z^2/rvar^2==1,rvar][[4]]//FullSimplify;
+
+ToString[FullSimplify[r[x,y,z]],CForm]
+ToString[FullSimplify[D[r[x,y,z],x]],CForm]
+ToString[FullSimplify[D[r[x,y,z],y]],CForm]
+ToString[FullSimplify[D[r[x,y,z],z]],CForm]
+
+ClearAll[r]
 
 
-StringReplace[ToString[FullSimplify[D[(Sqrt[Sqrt[(-a^2+x^2+y^2+z^2)^2+4*a^2*z^2]-a^2+x^2+y^2+z^2]/Sqrt[2]),y]],CForm],rules]<>";"
+ClearAll[H];
+H[x_,y_,z_]:=(M*r[x,y,z])/(r[x,y,z]^2+a^2*(z/r[x,y,z])^2)
+
+StringReplace[ToString[FullSimplify[H[x,y,z]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[H[x,y,z],x]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[H[x,y,z],y]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[H[x,y,z],z]],CForm],rules]
+
+ClearAll[H];
 
 
-StringReplace[ToString[FullSimplify[D[(Sqrt[Sqrt[(-a^2+x^2+y^2+z^2)^2+4*a^2*z^2]-a^2+x^2+y^2+z^2]/Sqrt[2]),z]],CForm],rules]<>";"
+ClearAll[l1];
+l1[x_,y_,z_]:=(r[x,y,z]*x+a*y)/(r[x,y,z]^2+a^2)
+
+StringReplace[ToString[FullSimplify[l1[x,y,z]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l1[x,y,z],x]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l1[x,y,z],y]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l1[x,y,z],z]],CForm],rules]
+
+ClearAll[l1];
+
+
+ClearAll[l2];
+l2[x_,y_,z_]:=(r[x,y,z]*y-a*x)/(r[x,y,z]^2+a^2)
+
+StringReplace[ToString[FullSimplify[l2[x,y,z]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l2[x,y,z],x]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l2[x,y,z],y]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l2[x,y,z],z]],CForm],rules]
+
+ClearAll[l2];
+
+
+ClearAll[l3];
+l3[x_,y_,z_]:=z/r[x,y,z]
+
+StringReplace[ToString[FullSimplify[l3[x,y,z]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l3[x,y,z],x]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l3[x,y,z],y]],CForm],rules]
+StringReplace[ToString[FullSimplify[D[l3[x,y,z],z]],CForm],rules]
+
+ClearAll[l3];
+
+
+

@@ -132,7 +132,8 @@ public:
      * @param x The first spatial coordinate value.
      * @param y The first spatial coordinate value.
      * @param z The first spatial coordinate value.
-     * @return A 3 dimentional vector where each element represents a derivative.
+     * @return A 3 dimentional vector where each element represents a derivative, that is,
+     * grad_lapse[i] = $\partial_i \alpha$
      */
     virtual auto grad_lapse(double, double, double, double) -> spatial_vector = 0;
 
@@ -144,7 +145,7 @@ public:
      * @param y The first spatial coordinate value.
      * @param z The first spatial coordinate value.
      * @return A 3 dimentional matrix where each row represents a derivative and column a $\beta^i$
-     * component.
+     * component, that is, grad_ushift[i][j] = $\partial_i \beta^j$.
      */
     virtual auto grad_ushift(double, double, double, double) -> spatial_matrix = 0;
 
@@ -208,7 +209,7 @@ private:
  * @return The reconstructed $\beta_i \beta^i$ contraction.
  * component.
  */
-auto shift_module(const metric_server::metric_ptr &, double, double, double, double) -> double;
+auto shift_modulus(const metric_server::metric_ptr &, double, double, double, double) -> double;
 
 /**
  * The (covariant) diagonal time component of the spacetime metric.

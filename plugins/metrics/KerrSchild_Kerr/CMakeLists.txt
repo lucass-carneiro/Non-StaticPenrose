@@ -46,8 +46,11 @@ set(
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/grad_lapse.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/grad_ushift.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/KerrSchild_Kerr.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/l_shift.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/lapse.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/ll_extrinsic.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/metric.cpp"
+  "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/u_shift.cpp"
   "${grlensing_KerrSchild_Kerr_metric_SOURCE_DIR}/source/ul_extrinsic.cpp"
 )
 
