@@ -240,3 +240,14 @@ auto grlensing_tests::uu_g(double M, double a, double x, double y, double z)
 
   return uug;
 }
+
+/**
+ * TODO: Finnish implementation
+ */
+auto grlensing_tests::Gamma(double M, double a, double x, double y, double z)
+    -> grlensing::callable_3tensor<3, 3, 3, double> {
+
+  grlensing::callable_3tensor<3, 3, 3, double> gamma{};
+
+  return gamma;
+}

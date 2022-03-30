@@ -1,6 +1,7 @@
 #ifndef GRLENSING_TESTS_KERR_SCHILD_KERR_TEST_DATA_HPP
 #define GRLENSING_TESTS_KERR_SCHILD_KERR_TEST_DATA_HPP
 
+#include "metric_server.hpp"
 #include "tensor_types.hpp"
 
 namespace grlensing_tests {
@@ -59,6 +60,18 @@ auto ll_g(double M, double a, double x, double y, double z)
  */
 auto uu_g(double M, double a, double x, double y, double z)
     -> grlensing::callable_matrix<4, 4, double>;
+
+/**
+ * The Chirstoffel symbols of the metric.
+ *
+ * @param M The mass of the black hole.
+ * @param a The black hole dimensionlens spin.
+ * @param x The x coordinate value.
+ * @param y The y coordinate value.
+ * @param z The z coordinate value.
+ */
+auto Gamma(double M, double a, double x, double y, double z)
+    -> grlensing::callable_3tensor<3, 3, 3, double>;
 
 } // namespace grlensing_tests
 

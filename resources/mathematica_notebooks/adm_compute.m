@@ -77,7 +77,7 @@ ClearAll[gradushift];
 gradushift = Table[D[ushift[[j]],spaceCoords[[i]]],{i,1,3},{j,1,3}];
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Printout*)
 
 
@@ -259,3 +259,31 @@ ClearAll[l3];
 
 
 
+
+
+gradlapse[[2]]//FullSimplify
+
+
+(* ::Section:: *)
+(*Pointwise numeric printouts*)
+
+
+ClearAll[r];
+ClearAll[H];
+ClearAll[l1];
+ClearAll[l2];
+ClearAll[l3];
+
+r[x_,y_,z_]=rvar/.Solve[(x^2+y^2)/(rvar^2+a^2)+z^2/rvar^2==1,rvar][[4]]//FullSimplify;
+H[x_,y_,z_]:=(M*r[x,y,z])/(r[x,y,z]^2+a^2*(z/r[x,y,z])^2)
+l1[x_,y_,z_]:=(r[x,y,z]*x+a*y)/(r[x,y,z]^2+a^2)
+l2[x_,y_,z_]:=(r[x,y,z]*y-a*x)/(r[x,y,z]^2+a^2)
+l3[x_,y_,z_]:=z/r[x,y,z]
+
+gradushift//.{M->1,a->1/2,x->7.136661241052046,y->-8.538250461366117,z->6.04845459183446}//MatrixForm
+
+ClearAll[r];
+ClearAll[H];
+ClearAll[l1];
+ClearAll[l2];
+ClearAll[l3];
