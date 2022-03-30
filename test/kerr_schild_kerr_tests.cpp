@@ -145,8 +145,45 @@ TEST_F(Kerr_Schild_Kerr_Tests, lower_spatial_metric_correcness) {
   EXPECT_NEAR(metric->ll_smetric(0.0, x, y, z)[2][2], ref_ll_g[3][3], double_comp_tol);
 }
 
+TEST_F(Kerr_Schild_Kerr_Tests, upper_spatial_metric_correcness) {
+  using namespace grlensing_tests;
+  using namespace grlensing;
+
+  const double M = 1.0;
+  const double a = M / 2;
+
+  const double x = (*shared_coord_distrib)(*shared_random_engine);
+  const double y = (*shared_coord_distrib)(*shared_random_engine);
+  const double z = (*shared_coord_distrib)(*shared_random_engine);
+
+  const auto &metric = shared_kernel->get_metric_server().get_metric("Kerr-Schild Kerr");
+
+  // Reference metric
+  const auto ref_uu_g = uu_g(M, a, x, y, z);
+
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[0][0],
+              ref_uu_g[1][1] - (ref_uu_g[0][1] * ref_uu_g[0][1]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[0][1],
+              ref_uu_g[1][2] - (ref_uu_g[0][1] * ref_uu_g[0][2]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[0][2],
+              ref_uu_g[1][3] - (ref_uu_g[0][1] * ref_uu_g[0][3]) / ref_uu_g[0][0], double_comp_tol);
+
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[1][0],
+              ref_uu_g[2][1] - (ref_uu_g[0][2] * ref_uu_g[0][1]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[1][1],
+              ref_uu_g[2][2] - (ref_uu_g[0][2] * ref_uu_g[0][2]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[1][2],
+              ref_uu_g[2][3] - (ref_uu_g[0][2] * ref_uu_g[0][3]) / ref_uu_g[0][0], double_comp_tol);
+
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[2][0],
+              ref_uu_g[3][1] - (ref_uu_g[0][3] * ref_uu_g[0][1]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[2][1],
+              ref_uu_g[3][2] - (ref_uu_g[0][3] * ref_uu_g[0][2]) / ref_uu_g[0][0], double_comp_tol);
+  EXPECT_NEAR(metric->uu_smetric(0.0, x, y, z)[2][2],
+              ref_uu_g[3][3] - (ref_uu_g[0][3] * ref_uu_g[0][3]) / ref_uu_g[0][0], double_comp_tol);
+}
+
 /* TODO:
- * 1 - Test upper spatial metric
  * 2 - Test lapse gradient
  * 3 - Test shift gradient
  */
