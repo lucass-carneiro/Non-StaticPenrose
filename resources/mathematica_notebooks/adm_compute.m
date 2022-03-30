@@ -199,7 +199,7 @@ StringReplace[ToString[FullSimplify[\[CapitalGamma][3,2,3]],CForm],rules]<>";"
 StringReplace[ToString[FullSimplify[\[CapitalGamma][3,3,3]],CForm],rules]<>";"
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Auxiliary functions*)
 
 
@@ -264,7 +264,7 @@ ClearAll[l3];
 gradlapse[[2]]//FullSimplify
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Pointwise numeric printouts*)
 
 
