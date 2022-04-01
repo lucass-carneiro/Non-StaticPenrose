@@ -200,7 +200,7 @@ StringReplace[ToString[FullSimplify[\[CapitalGamma][3,3,3]],CForm],rules]<>";"
 
 
 (* ::Section::Closed:: *)
-(*Auxiliary functions*)
+(*Auxiliary functions Printouts*)
 
 
 ClearAll[r]
@@ -264,7 +264,7 @@ ClearAll[l3];
 gradlapse[[2]]//FullSimplify
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Pointwise numeric printouts*)
 
 
@@ -274,16 +274,25 @@ ClearAll[l1];
 ClearAll[l2];
 ClearAll[l3];
 
-r[x_,y_,z_]=rvar/.Solve[(x^2+y^2)/(rvar^2+a^2)+z^2/rvar^2==1,rvar][[4]]//FullSimplify;
+up=En*{1/lapse,V0-ushift[[1]]/lapse,V1-ushift[[2]]/lapse,V2-ushift[[3]]/lapse};
+\[Xi]={1,0,0,0};
+Eg=FullSimplify[-Sum[ll4metric[[a,b]]up[[a]]\[Xi][[b]],{a,1,4},{b,1,4}]];
+
+(*r[x_,y_,z_]=rvar/.Solve[(x^2+y^2)/(rvar^2+a^2)+z^2/rvar^2==1,rvar][[4]]//FullSimplify;
 H[x_,y_,z_]:=(M*r[x,y,z])/(r[x,y,z]^2+a^2*(z/r[x,y,z])^2)
 l1[x_,y_,z_]:=(r[x,y,z]*x+a*y)/(r[x,y,z]^2+a^2)
 l2[x_,y_,z_]:=(r[x,y,z]*y-a*x)/(r[x,y,z]^2+a^2)
-l3[x_,y_,z_]:=z/r[x,y,z]
+l3[x_,y_,z_]:=z/r[x,y,z]*)
 
-gradushift//.{M->1,a->1/2,x->7.136661241052046,y->-8.538250461366117,z->6.04845459183446}//MatrixForm
 
 ClearAll[r];
 ClearAll[H];
 ClearAll[l1];
 ClearAll[l2];
 ClearAll[l3];
+
+
+Eg=En ((2 M (a^2 (V0 x+V1 y-V2 z)+Sqrt[2] a (V1 x-V0 y) Sqrt[-a^2+x^2+y^2+z^2+Sqrt[(-a^2+x^2+y^2)^2+2 (a^2+x^2+y^2) z^2+z^4]]-(V0 x+V1 y+V2 z) (x^2+y^2+z^2+Sqrt[4 a^2 z^2+(-a^2+x^2+y^2+z^2)^2])))/(Sqrt[4 a^2 z^2+(-a^2+x^2+y^2+z^2)^2] (a^2+x^2+y^2+z^2+Sqrt[4 a^2 z^2+(-a^2+x^2+y^2+z^2)^2]))+1/Sqrt[1+Sqrt[2] M Sqrt[(-a^2+x^2+y^2+z^2+Sqrt[4 a^2 z^2+(-a^2+x^2+y^2+z^2)^2])/(4 a^2 z^2+(-a^2+x^2+y^2+z^2)^2)]]);
+
+
+Reduce[FullSimplify[Eg//.{M->1,a->9/10,y->0,z->0,x->-19/10,En->1/2,V0->-1/2}]==-10^-2,Reals]//N
