@@ -9,7 +9,7 @@ plugin_settings:
   archive_writer_plugin_folder: "lib/"
 
   # Metrics to load at startup
-  load_metrics: ["isotropic_Schwarzschild", "KerrSchild_Kerr"]
+  load_metrics: ["isotropic_Schwarzschild", "KerrSchild_Kerr", "SKS"]
   
   # Archive readers to load at startup
   load_readers: ["zip"]

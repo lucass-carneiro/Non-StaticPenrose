@@ -5,8 +5,8 @@ import os
 import subprocess
 
 # The name of the metric
-name = "isotropic_Schwarzschild"
-display_name = "Isotropic Schwarzschild"
+name = "SKS"
+display_name = "Superimposed Kerr binary in Kerr-Schild coordinates"
 
 # If the metric is static, the time coordinate will not appear explicitly
 # on the ADM functions, which avoid compiler warnings and errors.
@@ -98,8 +98,8 @@ project(
 # 2) Dependencies
 # -----------------------------------------
 
-# YAML parser
 find_package(yaml-cpp REQUIRED)
+find_package(fmt REQUIRED)
 
 # -----------------------------------------
 # 3) Sources
@@ -141,21 +141,32 @@ elseif(MSVC)
   set(GRLENSING_DLL_LIBRARY TODO.dll)
 endif()
 
-if($<CONFIG:Debug>)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  message(STATUS "Generating a debug build system")
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(GRLensing PUBLIC -g -Wall -Wextra -Werror -pedantic -pedantic-errors -O2 -fsanitize=address,undefined)
-    target_link_options(GRLensing PUBLIC -g -Wall -Wextra -Werror -pedantic -pedantic-errors -O2 -fsanitize=address,undefined)
+    target_compile_options(grlensing_{name}_metric PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fno-omit-frame-pointer -fsanitize=address,undefined)
+    target_link_options(grlensing_{name}_metric PUBLIC -g3 -O0 -Wall -Wextra -Werror -pedantic -pedantic-errors -fno-omit-frame-pointer -fsanitize=address,undefined)
   elseif(MSVC)
     # TODO: get the actual flags and dll libraryfor msvc
-    target_compile_options(GRLensing PUBLIC /Wall /Wextra /permissive- /O2)
+    target_compile_options(grlensing_{name}_metric PUBLIC /Wall /Wextra /permissive- /O2)
   endif()
-elseif($<CONFIG:Release>)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  message(STATUS "Generating a release build system")
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(GRLensing PUBLIC -O2)
-    target_link_options(GRLensing PUBLIC -O2)
+    target_compile_options(grlensing_{name}_metric PUBLIC -O2 -Wall -Wextra -pedantic)
+    target_link_options(grlensing_{name}_metric PUBLIC -O2 -Wall -Wextra -pedantic)
   elseif(MSVC)
     # TODO: get the actual flags and dll libraryfor msvc
-    target_compile_options(GRLensing PUBLIC /O2)
+    target_compile_options(grlensing_{name}_metric PUBLIC /O2)
+  endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Profile")
+  message(STATUS "Generating a profiling build system")
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(grlensing_{name}_metric PUBLIC -g3 -O2 -pg)
+    target_link_options(grlensing_{name}_metric PUBLIC -g3 -O2 -pg)
+  elseif(MSVC)
+    # TODO: get the actual flags and dll libraryfor msvc
+    target_compile_options(grlensing_{name}_metric PUBLIC /O2)
   endif()
 endif()
 
@@ -168,7 +179,7 @@ target_include_directories(
   $<INSTALL_INTERFACE:include/$\u007bPROJECT_NAME\u007d-$\u007bPROJECT_VERSION\u007d>
 )
 
-target_link_libraries(grlensing_{name}_metric PRIVATE yaml-cpp)
+target_link_libraries(grlensing_{name}_metric PRIVATE yaml-cpp fmt)
 """
 
 #-------------------------------------------------------------------------------
@@ -249,72 +260,51 @@ GRLENSING_{name.upper()}_METRIC_API auto {name}::lapse({function_signature}) -> 
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::l_shift({function_signature}) -> metric_server::spatial_vector \u007b
-  return metric_server::spatial_vector \u007b 0.0, 0.0, 0.0 \u007d;
+  return metric_server::spatial_vector \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::u_shift({function_signature}) -> metric_server::spatial_vector \u007b
-  return metric_server::spatial_vector \u007b 0.0, 0.0, 0.0 \u007d;
+  return metric_server::spatial_vector \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::ll_smetric({function_signature}) -> metric_server::spatial_matrix \u007b
-  return metric_server::spatial_matrix \u007b \u007b \u007b 1.0, 0.0, 0.0 \u007d, \u007b 0.0, 1.0, 0.0 \u007d, \u007b 0.0, 0.0, 1.0 \u007d \u007d \u007d;
+  metric_server::spatial_matrix metric\u007b\u007d;
+
+  metric[0][0] = 1.0;
+  metric[1][1] = metric[0][0];
+  metric[2][2] = metric[0][0];
+
+  return metric;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::uu_smetric({function_signature}) -> metric_server::spatial_matrix \u007b
-  return metric_server::spatial_matrix \u007b \u007b \u007b 1.0, 0.0, 0.0 \u007d, \u007b 0.0, 1.0, 0.0 \u007d, \u007b 0.0, 0.0, 1.0 \u007d \u007d \u007d;
+  metric_server::spatial_matrix metric\u007b\u007d;
+
+  metric[0][0] = 1.0;
+  metric[1][1] = metric[0][0];
+  metric[2][2] = metric[0][0];
+
+  return metric;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::ll_extrinsic({function_signature}) -> metric_server::spatial_matrix \u007b
-  return metric_server::spatial_matrix \u007b \u007b \u007b 0.0, 0.0, 0.0 \u007d, \u007b  0.0, 0.0, 0\u007d, \u007b  0.0, 0.0, 0.0 \u007d \u007d \u007d;
+  return metric_server::spatial_matrix \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::ul_extrinsic({function_signature}) -> metric_server::spatial_matrix \u007b
-  return metric_server::spatial_matrix \u007b \u007b \u007b 0.0, 0.0, 0.0 \u007d, \u007b  0.0, 0.0, 0\u007d, \u007b  0.0, 0.0, 0.0 \u007d \u007d \u007d;
+  return metric_server::spatial_matrix \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::spatial_christoffel({function_signature}) -> metric_server::chirstofell_t \u007b
-  metric_server::chirstofell_t Gamma;
-  
-  Gamma[0][0][0] = 0.0;
-  Gamma[0][0][1] = 0.0;
-  Gamma[0][0][2] = 0.0;
-  Gamma[0][1][1] = 0.0;
-  Gamma[0][1][2] = 0.0;
-  Gamma[0][2][2] = 0.0;
-
-  Gamma[1][0][0] = 0.0;
-  Gamma[1][0][1] = 0.0;
-  Gamma[1][0][2] = 0.0;
-  Gamma[1][1][1] = 0.0;
-  Gamma[1][1][2] = 0.0;
-  Gamma[1][2][2] = 0.0;
-
-  Gamma[2][0][0] = 0.0;
-  Gamma[2][0][1] = 0.0;
-  Gamma[2][0][2] = 0.0;
-  Gamma[2][1][1] = 0.0;
-  Gamma[2][1][2] = 0.0;
-  Gamma[2][2][2] = 0.0;
-
-  Gamma[0][1][0] = Gamma[0][0][1];
-  Gamma[0][2][0] = Gamma[0][0][2];
-  Gamma[0][2][1] = Gamma[0][1][2];
-  Gamma[1][1][0] = Gamma[1][0][1];
-  Gamma[1][2][0] = Gamma[1][0][2];
-  Gamma[1][2][1] = Gamma[1][1][2];
-  Gamma[2][1][0] = Gamma[2][0][1];
-  Gamma[2][2][0] = Gamma[2][0][2];
-  Gamma[2][2][1] = Gamma[2][1][2];
-
-  return Gamma;
+  return metric_server::chirstofell_t \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::grad_lapse({function_signature}) -> metric_server::spatial_vector \u007b
-  return metric_server::spatial_vector \u007b 0.0, 0.0, 0.0 \u007d;
+  return metric_server::spatial_vector \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::grad_ushift(double, double, double, double) -> metric_server::spatial_matrix \u007b
-  return metric_server::spatial_matrix \u007b \u007b \u007b 0.0, 0.0, 0.0 \u007d, \u007b  0.0, 0.0, 0\u007d, \u007b  0.0, 0.0, 0.0 \u007d \u007d \u007d;
+  return metric_server::spatial_matrix \u007b\u007d;
 \u007d
 
 GRLENSING_{name.upper()}_METRIC_API auto {name}::name() -> std::string_view \u007b
