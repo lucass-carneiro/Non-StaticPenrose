@@ -17,17 +17,20 @@ simplifyier = FullSimplify;
 (*Spacetime metric (User)*)
 
 
-funcs = {t[bhIndex][T,X,Y,Z], x[bhIndex][T,X,Y,Z], y[bhIndex][T,X,Y,Z], z[bhIndex][T,X,Y,Z]}
-J = FullSimplify[Table[D[funcs[[i]],{T,X,Y,Z}[[j]]], {i, 1, 3}, {j, 1, 3}]];
-iJ = FullSimplify[Inverse[J]]
-
-
 (* Auxiliary metric functions *)
 ClearAll[l];
-l[bhIndex_][x_,y_,z_]:= {1, l1[bhIndex][x,y,z], l2[bhIndex][x,y,z], l3[bhIndex][x,y,z] };
-\[ScriptCapitalH][bhIndex_][x_,y_,z_]:= Table[2 * H[bhIndex] * l[bhIndex][x,y,z][[a]]l[bhIndex][x,y,z][[b]], {a, 1, 3}, {b, 1,3}]
+l[a_,r_,x_,y_,z_]:= {1, l1[a, r, x, y], l2[a, r, x, y], l3[r, z] };
+\[ScriptCapitalH][M_,a_,r_,x_,y_,z_]:= Table[2 * H[M, a, r, z] * l[a, r, x, y, z][[a]]l[a, r, x, y, z][[b]], {a, 1, 4}, {b, 1,4}]
 
-\[ScriptCapitalH][1][x,y,z]//MatrixForm
+ClearAll[eta];
+eta = DiagonalMatrix[{-1, 1, 1, 1}];
+
+(* A 4x4 matrix with the metric to generate *)
+ClearAll[ll4metric];
+ll4metric =FullSimplify[Table[eta[[mu,nu]] + 2*H[x,y,z] * l[[mu]] * l[[nu]], {mu,1,4}, {nu,1,4}]];
+
+
+\[ScriptCapitalH][M1,a1,r1,x,y,z]//FullSimplify//MatrixForm
 
 
 eta = DiagonalMatrix[{-1,1,1,1}];

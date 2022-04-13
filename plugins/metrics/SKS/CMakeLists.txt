@@ -32,13 +32,16 @@ configure_file(
 set(
   grlensing_SKS_metric_HEADER_LIST
   "${grlensing_SKS_metric_SOURCE_DIR}/include/api_macros.hpp"
-  "${grlensing_SKS_metric_SOURCE_DIR}/include/SKS.hpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/include/aux_functions.hpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/include/options.hpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/include/SKS.hpp"
   "${GRLensing_SOURCE_DIR}/include/kernel.hpp"
+  "${GRLensing_SOURCE_DIR}/include/tensor_types.hpp"
 )
 
 set(
   grlensing_SKS_metric_SOURCE_LIST
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/lapse.cpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/source/SKS.cpp"
 )
 
