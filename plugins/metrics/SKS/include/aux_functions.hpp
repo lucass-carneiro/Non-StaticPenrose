@@ -20,115 +20,115 @@ template <typename T> constexpr auto Power(T x, int n) -> double {
 
 constexpr auto Sqrt(auto x) { return std::sqrt(x); }
 
-inline auto r_KS(double a, double x, double y, double z) -> double {
-  double part1 = Power(x, 2) + Power(y, 2) + Power(z, 2) - Power(a, 2);
-  return Sqrt(part1 + Sqrt(4 * Power(a, 2) * Power(z, 2) + Power(part1, 2))) / Sqrt(2);
+inline auto r_KS(double a, double X, double Y, double Z) -> double {
+  double part1 = Power(X, 2) + Power(Y, 2) + Power(Z, 2) - Power(a, 2);
+  return Sqrt(part1 + Sqrt(4 * Power(a, 2) * Power(Z, 2) + Power(part1, 2))) / Sqrt(2);
 }
 
-inline auto d_r_KS_dx(double a, double x, double y, double z) -> double {
-  return (x
-          * Sqrt(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2)
-                 + Sqrt(4 * Power(a, 2) * Power(z, 2)
-                        + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2))))
+inline auto d_r_KS_dX(double a, double X, double Y, double Z) -> double {
+  return (X
+          * Sqrt(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2)
+                 + Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                        + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2))))
          / (Sqrt(2)
-            * Sqrt(4 * Power(a, 2) * Power(z, 2)
-                   + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2)));
+            * Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                   + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2)));
 }
 
-inline auto d_r_KS_dy(double a, double x, double y, double z) -> double {
-  return (y
-          * Sqrt(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2)
-                 + Sqrt(4 * Power(a, 2) * Power(z, 2)
-                        + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2))))
+inline auto d_r_KS_dY(double a, double X, double Y, double Z) -> double {
+  return (Y
+          * Sqrt(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2)
+                 + Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                        + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2))))
          / (Sqrt(2)
-            * Sqrt(4 * Power(a, 2) * Power(z, 2)
-                   + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2)));
+            * Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                   + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2)));
 }
 
-inline auto d_r_KS_dz(double a, double x, double y, double z) -> double {
-  return (z
+inline auto d_r_KS_dZ(double a, double X, double Y, double Z) -> double {
+  return (Z
           * (1
-             + (Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2))
-                   / Sqrt(4 * Power(a, 2) * Power(z, 2)
-                          + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2))))
+             + (Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2))
+                   / Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                          + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2))))
          / (Sqrt(2)
-            * Sqrt(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2)
-                   + Sqrt(4 * Power(a, 2) * Power(z, 2)
-                          + Power(-Power(a, 2) + Power(x, 2) + Power(y, 2) + Power(z, 2), 2))));
+            * Sqrt(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2)
+                   + Sqrt(4 * Power(a, 2) * Power(Z, 2)
+                          + Power(-Power(a, 2) + Power(X, 2) + Power(Y, 2) + Power(Z, 2), 2))));
 }
 
-inline auto H_KS(double M, double a, double r, double z) -> double {
-  return (M * r) / (Power(r, 2) + Power(a, 2) * Power(z / r, 2));
+inline auto H_KS(double M, double a, double r, double Z) -> double {
+  return (M * r) / (Power(r, 2) + Power(a, 2) * Power(Z / r, 2));
 }
 
-inline auto d_H_KS_dx(double M, double a, double dr_dx, double r, double z) -> double {
-  return -((M * Power(r, 2) * (-3 * Power(a, 2) * Power(z, 2) + Power(r, 4)) * dr_dx)
-           / Power(Power(a, 2) * Power(z, 2) + Power(r, 4), 2));
+inline auto d_H_KS_dX(double M, double a, double dr_dX, double r, double Z) -> double {
+  return -((M * Power(r, 2) * (-3 * Power(a, 2) * Power(Z, 2) + Power(r, 4)) * dr_dX)
+           / Power(Power(a, 2) * Power(Z, 2) + Power(r, 4), 2));
 }
 
-inline auto d_H_KS_dy(double M, double a, double dr_dy, double r, double z) -> double {
-  return -((M * Power(r, 2) * (-3 * Power(a, 2) * Power(z, 2) + Power(r, 4)) * dr_dy)
-           / Power(Power(a, 2) * Power(z, 2) + Power(r, 4), 2));
+inline auto d_H_KS_dY(double M, double a, double dr_dY, double r, double Z) -> double {
+  return -((M * Power(r, 2) * (-3 * Power(a, 2) * Power(Z, 2) + Power(r, 4)) * dr_dY)
+           / Power(Power(a, 2) * Power(Z, 2) + Power(r, 4), 2));
 }
 
-inline auto d_H_KS_dz(double M, double a, double dr_dz, double r, double z) -> double {
+inline auto d_H_KS_dZ(double M, double a, double dr_dZ, double r, double Z) -> double {
   return (M * Power(r, 2)
-          * (-2 * Power(a, 2) * z * r + (3 * Power(a, 2) * Power(z, 2) - Power(r, 4)) * dr_dz))
-         / Power(Power(a, 2) * Power(z, 2) + Power(r, 4), 2);
+          * (-2 * Power(a, 2) * Z * r + (3 * Power(a, 2) * Power(Z, 2) - Power(r, 4)) * dr_dZ))
+         / Power(Power(a, 2) * Power(Z, 2) + Power(r, 4), 2);
 }
 
-inline auto l1_KS(double a, double r, double x, double y) -> double {
-  return (r * x + a * y) / (Power(r, 2) + Power(a, 2));
+inline auto l1_KS(double a, double r, double X, double Y) -> double {
+  return (r * X + a * Y) / (Power(r, 2) + Power(a, 2));
 }
 
-inline auto d_l1_KS_dx(double a, double dr_dx, double r, double x, double y) -> double {
-  return (r * (Power(a, 2) + Power(r, 2)) + (Power(a, 2) * x - r * (2 * a * y + x * r)) * dr_dx)
+inline auto d_l1_KS_dX(double a, double dr_dX, double r, double X, double Y) -> double {
+  return (r * (Power(a, 2) + Power(r, 2)) + (Power(a, 2) * X - r * (2 * a * Y + X * r)) * dr_dX)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto d_l1_KS_dy(double a, double dr_dy, double r, double x, double y) -> double {
-  return (Power(a, 3) + a * Power(r, 2) + (Power(a, 2) * x - r * (2 * a * y + x * r)) * dr_dy)
+inline auto d_l1_KS_dY(double a, double dr_dY, double r, double X, double Y) -> double {
+  return (Power(a, 3) + a * Power(r, 2) + (Power(a, 2) * X - r * (2 * a * Y + X * r)) * dr_dY)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto d_l1_KS_dz(double a, double dr_dz, double r, double x, double y) -> double {
-  return ((Power(a, 2) * x - r * (2 * a * y + x * r)) * dr_dz)
+inline auto d_l1_KS_dZ(double a, double dr_dZ, double r, double X, double Y) -> double {
+  return ((Power(a, 2) * X - r * (2 * a * Y + X * r)) * dr_dZ)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto l2_KS(double a, double r, double x, double y) -> double {
-  return (r * y - a * x) / (Power(r, 2) + Power(a, 2));
+inline auto l2_KS(double a, double r, double X, double Y) -> double {
+  return (r * Y - a * X) / (Power(r, 2) + Power(a, 2));
 }
 
-inline auto d_l2_KS_dx(double a, double dr_dx, double r, double x, double y) -> double {
+inline auto d_l2_KS_dX(double a, double dr_dX, double r, double X, double Y) -> double {
   return (-(a * (Power(a, 2) + Power(r, 2)))
-          + (Power(a, 2) * y + 2 * a * x * r - y * Power(r, 2)) * dr_dx)
+          + (Power(a, 2) * Y + 2 * a * X * r - Y * Power(r, 2)) * dr_dX)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto d_l2_KS_dy(double a, double dr_dy, double r, double x, double y) -> double {
+inline auto d_l2_KS_dY(double a, double dr_dY, double r, double X, double Y) -> double {
   return (r * (Power(a, 2) + Power(r, 2))
-          + (Power(a, 2) * y + 2 * a * x * r - y * Power(r, 2)) * dr_dy)
+          + (Power(a, 2) * Y + 2 * a * X * r - Y * Power(r, 2)) * dr_dY)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto d_l2_KS_dz(double a, double dr_dz, double r, double x, double y) -> double {
-  return ((Power(a, 2) * y + 2 * a * x * r - y * Power(r, 2)) * dr_dz)
+inline auto d_l2_KS_dZ(double a, double dr_dZ, double r, double X, double Y) -> double {
+  return ((Power(a, 2) * Y + 2 * a * X * r - Y * Power(r, 2)) * dr_dZ)
          / Power(Power(a, 2) + Power(r, 2), 2);
 }
 
-inline auto l3_KS(double r, double z) -> double { return z / r; }
+inline auto l3_KS(double r, double Z) -> double { return Z / r; }
 
-inline auto d_l3_KS_dx(double r, double dr_dx, double z) -> double {
-  return -((z * dr_dx) / Power(r, 2));
+inline auto d_l3_KS_dX(double r, double dr_dX, double Z) -> double {
+  return -((Z * dr_dX) / Power(r, 2));
 }
 
-inline auto d_l3_KS_dy(double r, double dr_dy, double z) -> double {
-  return -((z * dr_dy) / Power(r, 2));
+inline auto d_l3_KS_dY(double r, double dr_dY, double Z) -> double {
+  return -((Z * dr_dY) / Power(r, 2));
 }
 
-inline auto d_l3_KS_dz(double r, double dr_dz, double z) -> double {
-  return (r - z * dr_dz) / Power(r, 2);
+inline auto d_l3_KS_dZ(double r, double dr_dZ, double Z) -> double {
+  return (r - Z * dr_dZ) / Power(r, 2);
 }
 
 template <bh_tag tag> inline auto T(double b, double Omega, double t, double x, double y, double)
