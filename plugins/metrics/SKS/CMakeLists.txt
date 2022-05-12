@@ -41,8 +41,17 @@ set(
 
 set(
   grlensing_SKS_metric_SOURCE_LIST
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/grad_lapse.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/grad_ushift.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/l_shift.cpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/source/lapse.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/ll_extrinsic.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/ll_smetric.cpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/source/SKS.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/spatial_christoffel.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/u_shift.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/ul_extrinsic.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/uu_smetric.cpp"
 )
 
 # Plugin module library

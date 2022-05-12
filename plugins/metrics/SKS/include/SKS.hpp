@@ -45,6 +45,7 @@ private:
   double M2 = 1.0;
   double a1 = M1 / 2;
   double a2 = M2 / 2;
+  double b = 10.0;
 };
 
 extern "C" GRLENSING_SKS_METRIC_API auto get_engine_version() -> unsigned;

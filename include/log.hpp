@@ -8,11 +8,11 @@
 
 #include "options.hpp"
 
+#include <array>
 #include <ctime>
 #include <fmt/color.h>
 #include <fmt/core.h>
 #include <mpi.h>
-//#include <source_location>
 #include <string>
 
 namespace grlensing {
