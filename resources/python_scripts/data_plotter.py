@@ -6,6 +6,7 @@ Usage:
   data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
   data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
+  data_plotter.py gridfunction <grid_function_data_file>
   data_plotter.py (-h | --help)
   data_plotter.py --version
 
@@ -165,6 +166,23 @@ def plot_energy(arguments):
 
   plt.show()
 
+def plot_gf(arguments):
+    columns=["x", "y", "z", "data"]
+    data = np.genfromtxt(arguments["<grid_function_data_file>"])
+    df = pd.DataFrame(data, columns=columns)
+
+    # Pick a z value to plot
+    z_filtered_df = df[df["z"] == 0.0]
+
+    plt.close("all")
+
+    plt.xlabel("$x$", fontsize = font_size)
+    plt.ylabel("$y$", fontsize = font_size)
+
+    plt.tricontourf(z_filtered_df["x"], z_filtered_df["y"], z_filtered_df["data"], 100, vmin=0, vmax=1)
+    plt.colorbar()
+    plt.show()
+
 # Main
 if __name__ == '__main__':
   arguments = docopt(__doc__, version="GRLensing data plotter 1.0")
@@ -180,3 +198,5 @@ if __name__ == '__main__':
     plot_energy(arguments)
   elif arguments["penrose"]:
     plot_penrose(arguments)
+  elif arguments["gridfunction"]:
+    plot_gf(arguments)
