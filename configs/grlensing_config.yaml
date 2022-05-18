@@ -59,4 +59,4 @@ dump_metric_settings:
   radius: 10
   
   # Number of points in each direction to compute
-  points: 5
+  points: 100
