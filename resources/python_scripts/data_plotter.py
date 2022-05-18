@@ -49,7 +49,7 @@ vars = [
   "residual_Eg"
 ]
 
-def plot_horizons(plt, ax, arguments, config_file):
+def plot_horizons(plt, ax, arguments, config_file, tf):
   background_radius = float(config_file["background_radius"])
   background_metric = config_file["background_metric"]
 
@@ -67,6 +67,10 @@ def plot_horizons(plt, ax, arguments, config_file):
     M = float(config_file["Isotropic_Schwarzschild_Settings"]["M"])
     bh_radius = 2 * M
     R = np.sqrt(X**2 + Y**2)
+    
+    # Draw Event horizon
+    ax.contour(X, Y, R, [bh_radius], colors="black")
+
   elif background_metric == "Kerr-Schild Kerr":
     M = float(config_file["KerrSchild_Kerr_Settings"]["M"])
     a = float(config_file["KerrSchild_Kerr_Settings"]["a"])
@@ -85,11 +89,38 @@ def plot_horizons(plt, ax, arguments, config_file):
     
     # Draw ergosphere
     ax.contour(X, Y, ergo, [0.0], colors="black", linestyles="--")
+
+    # Draw Event horizon
+    ax.contour(X, Y, R, [bh_radius], colors="black")
+    
+  elif background_metric == "Superimposed Kerr binary in Kerr-Schild coordinates":
+    M1 = float(config_file["SKS_Settings"]["M1"])
+    M2 = float(config_file["SKS_Settings"]["M2"])
+    
+    a1 = float(config_file["SKS_Settings"]["a1"])
+    a2 = float(config_file["SKS_Settings"]["a2"])
+    
+    b = float(config_file["SKS_Settings"]["b"])
+
+    Omega = np.sqrt((M1 + M2)/b**3)
+    
+    partA_1 = X**2 + Y**2 - a1**2
+    partA_2 = X**2 + Y**2 - a1**2
+    
+    partB_1 = np.abs(partA_1)
+    partB_2 = np.abs(partA_2)
+    
+    R_1 = np.sqrt((partA_1 + partB_1)/2)
+    R_2 = np.sqrt((partA_2 + partB_2)/2)
+
+    bh_radius_1 = M1 + np.sqrt(M1**2 - a1**2)
+    bh_radius_2 = M2 + np.sqrt(M2**2 - a2**2)
+    
+    # Draw Event horizons
+    ax.contour(X - b/2 * np.cos(Omega * tf), Y - b/2 * np.sin(Omega * tf), R_1, [bh_radius_1], colors="black")
+    ax.contour(X + b/2 * np.cos(Omega * tf), Y + b/2 * np.sin(Omega * tf), R_2, [bh_radius_2], colors="black")
   else:
     raise Exception("Cannot plot data due to unrecognized metric: " + background_metric)
-    
-  # Draw Event horizon
-  ax.contour(X, Y, R, [bh_radius], colors="black")
 
   # Draw Background
   background = plt.Circle((0, 0), background_radius, color="red", fill=False)
@@ -99,12 +130,14 @@ def plot_horizons(plt, ax, arguments, config_file):
   plt.ylim([-plot_radius, plot_radius])
 
 
-def plot_single_trajectory(plt, ax, clr, output_file_name):  
+def plot_single_trajectory(plt, ax, clr, output_file_name, config_file):
   data = pd.read_csv(output_file_name, delim_whitespace=True, names=vars)
   ax.plot(data["X1"], data["X2"], color=clr)
 
   plt.xlabel("$x$", fontsize = font_size);
   plt.ylabel("$y$", fontsize = font_size);
+
+  plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[-1])
 
 def plot_trajectory(arguments):
   config_file_name = arguments["<trajectory_config_file>"]
@@ -116,8 +149,7 @@ def plot_trajectory(arguments):
   plt.close("all")
   fig, ax = plt.subplots()
 
-  plot_single_trajectory(plt, ax, arguments["--color"], output_file_name)
-  plot_horizons(plt, ax, arguments, config_file)
+  plot_single_trajectory(plt, ax, arguments["--color"], output_file_name, config_file)
 
   plt.show()
 
