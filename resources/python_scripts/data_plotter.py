@@ -4,7 +4,7 @@
 
 Usage:
   data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
-  data_plotter.py animated-trajectory <trajectory_config_file> <trajectory_output_file> <animation_output_file> [--delay=<delay>] [--loop] [--keep_frames] [--intermediate_format=<format>] [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
+  data_plotter.py animated-trajectory <trajectory_config_file> <trajectory_output_file> <animation_output_file> [--workers=<workers>] [--delay=<delay>] [--loop] [--keep_frames] [--intermediate_format=<format>] [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
   data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
   data_plotter.py gridfunction <grid_function_data_file>
@@ -14,6 +14,7 @@ Usage:
 Options:
   -h --help                         Show this screen.
   --version                         Show version.
+  --workers=<workers>               Number of parallel workers to use while producing frames. [default: 4]
   --delay=<delay>                   The delay between animation frames (in ms). [default: 0].
   --loop                            Whether or not to create a looping gif.
   --keep_frames                     Whether or not to keep the intermediate animation frames.
@@ -35,6 +36,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import yaml
 import os
+from multiprocess import Pool
 
 # MPL settings.
 mpl.rcParams['mathtext.fontset'] = 'cm'
@@ -176,11 +178,16 @@ def plot_animated_trajectory(arguments):
   
   data = pd.read_csv(output_file_name, delim_whitespace=True, names=vars)
   
-  for index in range(0, data["time"].size):
+  def frame_output_kernerl(index):
     plt.close("all")
     fig, ax = plt.subplots()
     plot_instant(plt, ax, arguments["--color"], data, index, config_file)
     plt.savefig("frame_" + (f"{index}").rjust(4, "0") + ".pdf")
+  
+  process_pool = Pool(int(arguments["--workers"]))
+  process_pool.map_async(frame_output_kernerl, range(0, data["time"].size))
+  process_pool.close()
+  process_pool.join()
   
   # Call imagemagick to convert stills to gif
   os.system("convert -delay " + arguments["--delay"] + " -loop " + ("0" if arguments["--loop"] else "1") + " *." + arguments["--intermediate_format"] + " " + arguments["<animation_output_file>"] + ".gif")
