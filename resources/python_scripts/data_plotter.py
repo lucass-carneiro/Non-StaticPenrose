@@ -179,7 +179,7 @@ def plot_gf(arguments):
     plt.xlabel("$x$", fontsize = font_size)
     plt.ylabel("$y$", fontsize = font_size)
 
-    plt.tricontourf(z_filtered_df["x"], z_filtered_df["y"], z_filtered_df["data"], 100, vmin=0, vmax=1)
+    plt.tricontourf(z_filtered_df["x"], z_filtered_df["y"], z_filtered_df["data"], levels=np.linspace(0, 4.0, 100))
     plt.colorbar()
     plt.show()
 
