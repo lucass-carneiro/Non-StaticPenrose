@@ -4,6 +4,7 @@
 
 Usage:
   data_plotter.py trajectory <trajectory_config_file> <trajectory_output_file> [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
+  data_plotter.py animated-trajectory <trajectory_config_file> <trajectory_output_file> <animation_output_file> [--delay=<delay>] [--loop] [--keep_frames] [--intermediate_format=<format>] [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
   data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
   data_plotter.py gridfunction <grid_function_data_file>
@@ -11,15 +12,19 @@ Usage:
   data_plotter.py --version
 
 Options:
-  -h --help               Show this screen.
-  --version               Show version.
-  --font_size=<size>      The size of the font in the plots [default: 20].
-  --delta=<value>         The grid spacing used in internal grid generation [default: 0.1].
-  --plot_radius=<radius>  The radius of the background.
-  --color=<color>         The color of the trajectory. [default: black]
-  --color_1=<color1>      The color of the first breakup trajectory. [default: red]
-  --color_2=<color2>      The color of the first breakup trajectory. [default: black]
-  --color_3=<color3>      The color of the first breakup trajectory. [default: blue]
+  -h --help                         Show this screen.
+  --version                         Show version.
+  --delay=<delay>                   The delay between animation frames (in ms). [default: 0].
+  --loop                            Whether or not to create a looping gif.
+  --keep_frames                     Whether or not to keep the intermediate animation frames.
+  --intermediate_format=<format>    The intermediate format to use while creating animation frames. [default: pdf]
+  --font_size=<size>                The size of the font in the plots [default: 20].
+  --delta=<value>                   The grid spacing used in internal grid generation. [default: 0.1].
+  --plot_radius=<radius>            The radius of the background.
+  --color=<color>                   The color of the trajectory. [default: black]
+  --color_1=<color1>                The color of the first breakup trajectory. [default: red]
+  --color_2=<color2>                The color of the first breakup trajectory. [default: black]
+  --color_3=<color3>                The color of the first breakup trajectory. [default: blue]
 
 """
 
@@ -29,6 +34,7 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import yaml
+import os
 
 # MPL settings.
 mpl.rcParams['mathtext.fontset'] = 'cm'
@@ -49,7 +55,7 @@ vars = [
   "residual_Eg"
 ]
 
-def plot_horizons(plt, ax, arguments, config_file, tf):
+def plot_horizons(plt, ax, arguments, config_file, t):
   background_radius = float(config_file["background_radius"])
   background_metric = config_file["background_metric"]
 
@@ -117,8 +123,8 @@ def plot_horizons(plt, ax, arguments, config_file, tf):
     bh_radius_2 = M2 + np.sqrt(M2**2 - a2**2)
     
     # Draw Event horizons
-    ax.contour(X - b/2 * np.cos(Omega * tf), Y - b/2 * np.sin(Omega * tf), R_1, [bh_radius_1], colors="black")
-    ax.contour(X + b/2 * np.cos(Omega * tf), Y + b/2 * np.sin(Omega * tf), R_2, [bh_radius_2], colors="black")
+    ax.contour(X - b/2 * np.cos(Omega * t), Y - b/2 * np.sin(Omega * t), R_1, [bh_radius_1], colors="black")
+    ax.contour(X + b/2 * np.cos(Omega * t), Y + b/2 * np.sin(Omega * t), R_2, [bh_radius_2], colors="black")
   else:
     raise Exception("Cannot plot data due to unrecognized metric: " + background_metric)
 
@@ -152,6 +158,35 @@ def plot_trajectory(arguments):
   plot_single_trajectory(plt, ax, arguments["--color"], output_file_name, config_file)
 
   plt.show()
+
+def plot_instant(plt, ax, clr, data, index, config_file):
+  ax.plot(data["X1"].iloc[index], data["X2"].iloc[index], marker="o", markersize=6, markeredgecolor=clr, markerfacecolor=clr)
+
+  plt.xlabel("$x$", fontsize = font_size);
+  plt.ylabel("$y$", fontsize = font_size);
+
+  plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[index])
+
+def plot_animated_trajectory(arguments):
+  config_file_name = arguments["<trajectory_config_file>"]
+  output_file_name = arguments["<trajectory_output_file>"]
+
+  with open(config_file_name, "r") as file:
+    config_file = yaml.safe_load(file)
+  
+  data = pd.read_csv(output_file_name, delim_whitespace=True, names=vars)
+  
+  for index in range(0, data["time"].size):
+    plt.close("all")
+    fig, ax = plt.subplots()
+    plot_instant(plt, ax, arguments["--color"], data, index, config_file)
+    plt.savefig("frame_" + (f"{index}").rjust(4, "0") + ".pdf")
+  
+  # Call imagemagick to convert stills to gif
+  os.system("convert -delay " + arguments["--delay"] + " -loop " + ("0" if arguments["--loop"] else "1") + " *." + arguments["--intermediate_format"] + " " + arguments["<animation_output_file>"] + ".gif")
+  
+  if not arguments["--keep_frames"]:
+    os.system("rm *." + arguments["--intermediate_format"])
 
 def plot_penrose(arguments):
   config_file_name = arguments["<penrose_config_file>"]
@@ -226,6 +261,8 @@ if __name__ == '__main__':
 
   if arguments["trajectory"]:
     plot_trajectory(arguments)
+  elif arguments["animated-trajectory"]:
+    plot_animated_trajectory(arguments)
   elif arguments["energy"]:
     plot_energy(arguments)
   elif arguments["penrose"]:
