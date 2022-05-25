@@ -56,7 +56,7 @@ dump_metric_settings:
   extension: ".ascii"
 
   # Size of the domain: [-radius, radius] in all directions
-  radius: 10
+  radius: 20
   
   # Number of points in each direction to compute
   points: 100
