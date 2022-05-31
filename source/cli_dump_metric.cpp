@@ -39,38 +39,26 @@ dump_kernel(grlensing::kernel &kernel, const std::string &metric_name, const std
     throw std::runtime_error("Invalid parameter error");
   }
 
-  auto r0 = -rf;
-  const auto dr = 2 * rf / points;
+  const auto r0 = -rf;
+  const auto dr = (rf - r0) / (points - 1);
 
-  const auto glor = coords_map.get_glor();
-  const auto start_ijk = coords_map.global_linear_to_matrix(glor.first);
-  const auto end_ijk = coords_map.global_linear_to_matrix(glor.second);
+  const auto [I_0, I_f] = coords_map.get_glor();
+  for (auto I = I_0; I <= I_f; I++) {
+    const auto [i, j, k] = coords_map.global_linear_to_global_matrix(I);
 
-  for (auto i = std::get<0>(start_ijk); i <= std::get<0>(end_ijk); i++) {
-    for (auto j = std::get<1>(start_ijk); j <= std::get<1>(end_ijk); j++) {
-      for (auto k = std::get<2>(start_ijk); k <= std::get<2>(end_ijk); k++) {
-        const auto x = r0 + i * dr;
-        const auto y = r0 + j * dr;
-        const auto z = r0 + k * dr;
+    const auto x = r0 + i * dr;
+    const auto y = r0 + j * dr;
+    const auto z = r0 + k * dr;
 
-        writer->push_real(x);
-        writer->push_real(y);
-        writer->push_real(z);
+    writer->push_real(x);
+    writer->push_real(y);
+    writer->push_real(z);
 
-        operation(x, y, z, metric, writer);
-      }
-    }
+    operation(x, y, z, metric, writer);
   }
 
-  writer->push_metadata("glor", std::size_t(glor.first));
-
-  writer->push_metadata("start_i", std::size_t(std::get<0>(start_ijk)));
-  writer->push_metadata("start_j", std::size_t(std::get<1>(start_ijk)));
-  writer->push_metadata("start_k", std::size_t(std::get<2>(start_ijk)));
-
-  writer->push_metadata("end_i", std::size_t(std::get<0>(end_ijk)));
-  writer->push_metadata("end_j", std::size_t(std::get<1>(end_ijk)));
-  writer->push_metadata("end_k", std::size_t(std::get<2>(end_ijk)));
+  writer->push_metadata("glor start", std::size_t(I_0));
+  writer->push_metadata("glor end", std::size_t(I_f));
 
   writer->close_file();
 }
@@ -86,7 +74,7 @@ void grlensing::dump_metric(grlensing::kernel &kernel, const std::string &metric
   auto rf = config_file["dump_metric_settings"]["radius"].as<double>();
   auto points = config_file["dump_metric_settings"]["points"].as<unsigned>();
 
-  mpi_index_map_3D coords_map(points + 1, points + 1, points + 1);
+  mpi_index_map_3D coords_map(points, points, points);
 
   // Lapse dumps
   dump_kernel(kernel, metric_name, "lapse", extension, rf, points, coords_map,
