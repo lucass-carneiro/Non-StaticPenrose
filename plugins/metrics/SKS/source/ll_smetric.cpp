@@ -1,26 +1,25 @@
 #include "SKS.hpp"
-#include "aux_functions.hpp"
 
 using namespace grlensing;
 
 GRLENSING_SKS_METRIC_API auto SKS::ll_smetric(double t, double x, double y, double z)
     -> metric_server::spatial_matrix {
-  using namespace sks_aux;
-
-  const auto llg = llg_SKS(M1, M2, a1, a2, b, t, x, y, z);
 
   metric_server::spatial_matrix llgamma{};
 
-  llgamma[0][0] = llg[1][1];
-  llgamma[0][1] = llg[1][2];
-  llgamma[0][2] = llg[1][3];
-  llgamma[1][1] = llg[2][2];
-  llgamma[1][2] = llg[2][3];
-  llgamma[2][2] = llg[3][3];
+  const double v0 = llgSKS_23(t, x, y, z);
+  const double v1 = llgSKS_13(t, x, y, z);
+  const double v2 = llgSKS_12(t, x, y, z);
 
-  llgamma[1][0] = llgamma[0][1];
-  llgamma[2][0] = llgamma[0][2];
-  llgamma[2][1] = llgamma[1][2];
+  llgamma[0][0] = llgSKS_11(t, x, y, z);
+  llgamma[0][1] = v2;
+  llgamma[0][2] = v1;
+  llgamma[1][0] = v2;
+  llgamma[1][1] = llgSKS_22(t, x, y, z);
+  llgamma[1][2] = v0;
+  llgamma[2][0] = v1;
+  llgamma[2][1] = v0;
+  llgamma[2][2] = llgSKS_33(t, x, y, z);
 
   return llgamma;
 }

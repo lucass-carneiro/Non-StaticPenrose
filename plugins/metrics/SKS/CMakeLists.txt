@@ -39,8 +39,103 @@ set(
   "${GRLensing_SOURCE_DIR}/include/tensor_types.hpp"
 )
 
-set(
+  set(
   grlensing_SKS_metric_SOURCE_LIST
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/sx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/sy.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dsx_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dsy_dt.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/d2sx_dt2.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/d2sy_dt2.cpp"
+  
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/T.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/X.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/Y.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/Z.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dT_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dT_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dT_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dT_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dX_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dX_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dX_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dX_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dY_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dY_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dY_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dY_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dZ_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dZ_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dZ_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dZ_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g00.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g01.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g02.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g03.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g11.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g12.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g13.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g22.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g23.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/g33.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg00_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg00_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg00_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg00_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg01_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg01_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg01_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg01_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg02_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg02_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg02_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg02_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg03_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg03_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg03_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg03_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg11_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg11_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg11_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg11_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg12_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg12_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg12_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg12_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg13_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg13_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg13_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg13_dz.cpp"
+
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg22_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg22_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg22_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg22_dz.cpp"
+  
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg23_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg23_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg23_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg23_dz.cpp"
+  
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg33_dt.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg33_dx.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg33_dy.cpp"
+  "${grlensing_SKS_metric_SOURCE_DIR}/source/dg33_dz.cpp"
+  
   "${grlensing_SKS_metric_SOURCE_DIR}/source/grad_lapse.cpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/source/grad_ushift.cpp"
   "${grlensing_SKS_metric_SOURCE_DIR}/source/l_shift.cpp"
