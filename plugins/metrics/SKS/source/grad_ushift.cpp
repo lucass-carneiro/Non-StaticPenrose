@@ -9,58 +9,58 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
 
   metric_server::spatial_matrix gradushift{};
 
-  const double v0 = llgSKS_23(t, x, y, z);
-  const double v1 = llgSKS_22(t, x, y, z);
-  const double v2 = llgSKS_12(t, x, y, z);
-  const double v3 = llgSKS_11(t, x, y, z);
-  const double v4 = llgSKS_01(t, x, y, z);
-  const double v5 = llgSKS_02(t, x, y, z);
-  const double v6 = llgSKS_13(t, x, y, z);
-  const double v7 = llgSKS_03(t, x, y, z);
-  const double v8 = llgSKS_33(t, x, y, z);
-  const double v9 = pow(v3, 2);
-  const double v10 = pow(v2, 3);
-  const double v11 = pow(v2, 2);
-  const double v12 = pow(v1, 2);
-  const double v13 = pow(v2, 4);
-  const double v14 = pow(v0, 2);
-  const double v15 = pow(v6, 2);
-  const double v16 = pow(v6, 3);
-  const double v17 = pow(v0, 3);
-  const double v18 = pow(v8, 2);
-  const double v19 = pow(v6, 4);
-  const double v20 = pow(v0, 4);
-  const double v21 = dllgSKS_33_dz(t, x, y, z);
-  const double v22 = dllgSKS_23_dz(t, x, y, z);
-  const double v23 = dllgSKS_22_dz(t, x, y, z);
-  const double v24 = dllgSKS_13_dz(t, x, y, z);
-  const double v25 = dllgSKS_12_dz(t, x, y, z);
-  const double v26 = dllgSKS_11_dz(t, x, y, z);
-  const double v27 = dllgSKS_03_dz(t, x, y, z);
-  const double v28 = dllgSKS_02_dz(t, x, y, z);
-  const double v29 = dllgSKS_01_dz(t, x, y, z);
-  const double v30 = dllgSKS_33_dy(t, x, y, z);
-  const double v31 = dllgSKS_23_dy(t, x, y, z);
-  const double v32 = dllgSKS_22_dy(t, x, y, z);
-  const double v33 = dllgSKS_13_dy(t, x, y, z);
-  const double v34 = dllgSKS_12_dy(t, x, y, z);
-  const double v35 = dllgSKS_11_dy(t, x, y, z);
-  const double v36 = dllgSKS_03_dy(t, x, y, z);
-  const double v37 = dllgSKS_02_dy(t, x, y, z);
-  const double v38 = dllgSKS_01_dy(t, x, y, z);
-  const double v39 = dllgSKS_33_dx(t, x, y, z);
-  const double v40 = dllgSKS_23_dx(t, x, y, z);
-  const double v41 = dllgSKS_22_dx(t, x, y, z);
-  const double v42 = dllgSKS_13_dx(t, x, y, z);
-  const double v43 = dllgSKS_12_dx(t, x, y, z);
-  const double v44 = dllgSKS_11_dx(t, x, y, z);
-  const double v45 = dllgSKS_03_dx(t, x, y, z);
-  const double v46 = dllgSKS_02_dx(t, x, y, z);
-  const double v47 = dllgSKS_01_dx(t, x, y, z);
-  const double v48 = v11 * v8;
-  const double v49 = v14 * v3;
-  const double v50 = v1 * v15;
-  const double v51 = pow(v48 + v49 + v50 - 2 * v0 * v2 * v6 - v1 * v3 * v8, -2);
+  const double v0{llgSKS_23(t, x, y, z)};
+  const double v1{llgSKS_22(t, x, y, z)};
+  const double v2{llgSKS_12(t, x, y, z)};
+  const double v3{llgSKS_11(t, x, y, z)};
+  const double v4{llgSKS_01(t, x, y, z)};
+  const double v5{llgSKS_02(t, x, y, z)};
+  const double v6{llgSKS_13(t, x, y, z)};
+  const double v7{llgSKS_03(t, x, y, z)};
+  const double v8{llgSKS_33(t, x, y, z)};
+  const double v9{pow(v3, 2)};
+  const double v10{pow(v2, 3)};
+  const double v11{pow(v2, 2)};
+  const double v12{pow(v1, 2)};
+  const double v13{pow(v2, 4)};
+  const double v14{pow(v0, 2)};
+  const double v15{pow(v6, 2)};
+  const double v16{pow(v6, 3)};
+  const double v17{pow(v0, 3)};
+  const double v18{pow(v8, 2)};
+  const double v19{pow(v6, 4)};
+  const double v20{pow(v0, 4)};
+  const double v21{dllgSKS_33_dz(t, x, y, z)};
+  const double v22{dllgSKS_23_dz(t, x, y, z)};
+  const double v23{dllgSKS_22_dz(t, x, y, z)};
+  const double v24{dllgSKS_13_dz(t, x, y, z)};
+  const double v25{dllgSKS_12_dz(t, x, y, z)};
+  const double v26{dllgSKS_11_dz(t, x, y, z)};
+  const double v27{dllgSKS_03_dz(t, x, y, z)};
+  const double v28{dllgSKS_02_dz(t, x, y, z)};
+  const double v29{dllgSKS_01_dz(t, x, y, z)};
+  const double v30{dllgSKS_33_dy(t, x, y, z)};
+  const double v31{dllgSKS_23_dy(t, x, y, z)};
+  const double v32{dllgSKS_22_dy(t, x, y, z)};
+  const double v33{dllgSKS_13_dy(t, x, y, z)};
+  const double v34{dllgSKS_12_dy(t, x, y, z)};
+  const double v35{dllgSKS_11_dy(t, x, y, z)};
+  const double v36{dllgSKS_03_dy(t, x, y, z)};
+  const double v37{dllgSKS_02_dy(t, x, y, z)};
+  const double v38{dllgSKS_01_dy(t, x, y, z)};
+  const double v39{dllgSKS_33_dx(t, x, y, z)};
+  const double v40{dllgSKS_23_dx(t, x, y, z)};
+  const double v41{dllgSKS_22_dx(t, x, y, z)};
+  const double v42{dllgSKS_13_dx(t, x, y, z)};
+  const double v43{dllgSKS_12_dx(t, x, y, z)};
+  const double v44{dllgSKS_11_dx(t, x, y, z)};
+  const double v45{dllgSKS_03_dx(t, x, y, z)};
+  const double v46{dllgSKS_02_dx(t, x, y, z)};
+  const double v47{dllgSKS_01_dx(t, x, y, z)};
+  const double v48{v11 * v8};
+  const double v49{v14 * v3};
+  const double v50{v1 * v15};
+  const double v51{pow(v48 + v49 + v50 - 2 * v0 * v2 * v6 - v1 * v3 * v8, -2)};
 
   gradushift[0][0]
       = v51
@@ -100,7 +100,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            - v0 * v2 * v3 * v41 * v7 * v8 - v12 * v3 * v42 * v7 * v8 + v0 * v1 * v3 * v43 * v7 * v8
            - v0 * v1 * v2 * v44 * v7 * v8 - 2 * v1 * v2 * v43 * v6 * v7 * v8
            + v12 * v44 * v6 * v7 * v8);
-
   gradushift[0][1]
       = v51
         * (-(v1 * v16 * v4 * v40) + v0 * v16 * v4 * v41 + v18 * v2 * v3 * v4 * v41
@@ -138,7 +137,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            + v0 * v1 * v39 * v7 * v9 - v14 * v40 * v7 * v9 - v0 * v1 * v45 * v8 * v9
            - v14 * v46 * v8 * v9 + 2 * v0 * v40 * v5 * v8 * v9 - v1 * v40 * v7 * v8 * v9
            + v0 * v41 * v7 * v8 * v9);
-
   gradushift[0][2]
       = v51
         * (v0 * v10 * v39 * v4 - v0 * v1 * v2 * v3 * v39 * v4 - v0 * v15 * v2 * v4 * v41
@@ -176,7 +174,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            + v0 * v1 * v39 * v5 * v9 - v14 * v40 * v5 * v9 - v12 * v39 * v7 * v9
            + 2 * v0 * v1 * v40 * v7 * v9 - v14 * v41 * v7 * v9 + v12 * v45 * v8 * v9
            - v0 * v1 * v46 * v8 * v9 - v1 * v40 * v5 * v8 * v9 + v0 * v41 * v5 * v8 * v9);
-
   gradushift[1][0]
       = v51
         * (v12 * v16 * v36 - v17 * v2 * v3 * v36 - v0 * v1 * v16 * v37 + v10 * v18 * v37
@@ -215,7 +212,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            - v0 * v2 * v3 * v32 * v7 * v8 - v12 * v3 * v33 * v7 * v8 + v0 * v1 * v3 * v34 * v7 * v8
            - v0 * v1 * v2 * v35 * v7 * v8 - 2 * v1 * v2 * v34 * v6 * v7 * v8
            + v12 * v35 * v6 * v7 * v8);
-
   gradushift[1][1]
       = v51
         * (2 * v0 * v11 * v15 * v36 - v1 * v16 * v2 * v36 + v1 * v19 * v37 - 2 * v0 * v16 * v2 * v37
@@ -253,7 +249,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            - v14 * v30 * v5 * v9 - v18 * v32 * v5 * v9 + v0 * v1 * v30 * v7 * v9
            - v14 * v31 * v7 * v9 - v0 * v1 * v36 * v8 * v9 - v14 * v37 * v8 * v9
            + 2 * v0 * v31 * v5 * v8 * v9 - v1 * v31 * v7 * v8 * v9 + v0 * v32 * v7 * v8 * v9);
-
   gradushift[1][2]
       = v51
         * (-(v12 * v15 * v3 * v36) + 2 * v0 * v11 * v15 * v37 - v1 * v16 * v2 * v37
@@ -292,7 +287,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            + v0 * v1 * v30 * v5 * v9 - v14 * v31 * v5 * v9 - v12 * v30 * v7 * v9
            + 2 * v0 * v1 * v31 * v7 * v9 - v14 * v32 * v7 * v9 + v12 * v36 * v8 * v9
            - v0 * v1 * v37 * v8 * v9 - v1 * v31 * v5 * v8 * v9 + v0 * v32 * v5 * v8 * v9);
-
   gradushift[2][0]
       = v51
         * (v12 * v16 * v27 - v0 * v1 * v16 * v28 + v10 * v18 * v28 + 2 * v14 * v15 * v2 * v28
@@ -331,7 +325,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            + v1 * v2 * v22 * v3 * v7 * v8 - v0 * v2 * v23 * v3 * v7 * v8 - v12 * v24 * v3 * v7 * v8
            + v0 * v1 * v25 * v3 * v7 * v8 - 2 * v1 * v2 * v25 * v6 * v7 * v8
            + v12 * v26 * v6 * v7 * v8);
-
   gradushift[2][1]
       = v51
         * (2 * v0 * v11 * v15 * v27 - v1 * v16 * v2 * v27 + v1 * v19 * v28 - 2 * v0 * v16 * v2 * v28
@@ -370,7 +363,6 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_ushift(double t, double x, double y, dou
            - v14 * v21 * v5 * v9 - v18 * v23 * v5 * v9 + v0 * v1 * v21 * v7 * v9
            - v14 * v22 * v7 * v9 - v0 * v1 * v27 * v8 * v9 - v14 * v28 * v8 * v9
            + 2 * v0 * v22 * v5 * v8 * v9 - v1 * v22 * v7 * v8 * v9 + v0 * v23 * v7 * v8 * v9);
-
   gradushift[2][2]
       = v51
         * (2 * v0 * v11 * v15 * v28 - v1 * v16 * v2 * v28 + v12 * v16 * v29 - v12 * v15 * v27 * v3

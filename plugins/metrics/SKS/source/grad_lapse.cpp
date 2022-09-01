@@ -9,78 +9,79 @@ GRLENSING_SKS_METRIC_API auto SKS::grad_lapse(double t, double x, double y, doub
 
   metric_server::spatial_vector gradalpha{};
 
-  const double v0 = llgSKS_23(t, x, y, z);
-  const double v1 = llgSKS_12(t, x, y, z);
-  const double v2 = llgSKS_01(t, x, y, z);
-  const double v3 = llgSKS_11(t, x, y, z);
-  const double v4 = llgSKS_02(t, x, y, z);
-  const double v5 = llgSKS_22(t, x, y, z);
-  const double v6 = llgSKS_13(t, x, y, z);
-  const double v7 = llgSKS_03(t, x, y, z);
-  const double v8 = llgSKS_33(t, x, y, z);
-  const double v9 = llgSKS_00(t, x, y, z);
-  const double v10 = pow(v0, 2);
-  const double v11 = pow(v1, 2);
-  const double v12 = pow(v2, 2);
-  const double v13 = pow(v3, 2);
-  const double v14 = pow(v4, 2);
-  const double v15 = pow(v1, 3);
-  const double v16 = pow(v5, 2);
-  const double v17 = pow(v6, 2);
-  const double v18 = pow(v7, 2);
-  const double v19 = pow(v1, 4);
-  const double v20 = pow(v6, 3);
-  const double v21 = pow(v8, 2);
-  const double v22 = pow(v6, 4);
-  const double v23 = pow(v0, 3);
-  const double v24 = pow(v0, 4);
-  const double v25 = dllgSKS_33_dz(t, x, y, z);
-  const double v26 = dllgSKS_23_dz(t, x, y, z);
-  const double v27 = dllgSKS_22_dz(t, x, y, z);
-  const double v28 = dllgSKS_13_dz(t, x, y, z);
-  const double v29 = dllgSKS_12_dz(t, x, y, z);
-  const double v30 = dllgSKS_11_dz(t, x, y, z);
-  const double v31 = dllgSKS_03_dz(t, x, y, z);
-  const double v32 = dllgSKS_02_dz(t, x, y, z);
-  const double v33 = dllgSKS_01_dz(t, x, y, z);
-  const double v34 = dllgSKS_00_dz(t, x, y, z);
-  const double v35 = dllgSKS_33_dy(t, x, y, z);
-  const double v36 = dllgSKS_23_dy(t, x, y, z);
-  const double v37 = dllgSKS_22_dy(t, x, y, z);
-  const double v38 = dllgSKS_13_dy(t, x, y, z);
-  const double v39 = dllgSKS_12_dy(t, x, y, z);
-  const double v40 = dllgSKS_11_dy(t, x, y, z);
-  const double v41 = dllgSKS_03_dy(t, x, y, z);
-  const double v42 = dllgSKS_02_dy(t, x, y, z);
-  const double v43 = dllgSKS_01_dy(t, x, y, z);
-  const double v44 = dllgSKS_00_dy(t, x, y, z);
-  const double v45 = dllgSKS_33_dx(t, x, y, z);
-  const double v46 = dllgSKS_23_dx(t, x, y, z);
-  const double v47 = dllgSKS_22_dx(t, x, y, z);
-  const double v48 = dllgSKS_13_dx(t, x, y, z);
-  const double v49 = dllgSKS_12_dx(t, x, y, z);
-  const double v50 = dllgSKS_11_dx(t, x, y, z);
-  const double v51 = dllgSKS_03_dx(t, x, y, z);
-  const double v52 = dllgSKS_02_dx(t, x, y, z);
-  const double v53 = dllgSKS_01_dx(t, x, y, z);
-  const double v54 = dllgSKS_00_dx(t, x, y, z);
-  const double v55 = v11 * v8;
-  const double v56 = v10 * v3;
-  const double v57 = v17 * v5;
-  const double v58 = v10 * v12;
-  const double v59 = v14 * v17;
-  const double v60 = v11 * v18;
-  const double v61 = -2 * v0 * v2 * v4 * v6;
-  const double v62 = -2 * v0 * v1 * v2 * v7;
-  const double v63 = -2 * v1 * v4 * v6 * v7;
-  const double v64 = v55 + v56 + v57 - 2 * v0 * v1 * v6 - v3 * v5 * v8;
-  const double v65 = pow(v64, -2);
-  const double v66
-      = 1
-        / sqrt((-(v18 * v3 * v5) + v58 + v59 + v60 + v61 + v62 + v63 + 2 * v0 * v3 * v4 * v7
-                + 2 * v2 * v5 * v6 * v7 - v14 * v3 * v8 + 2 * v1 * v2 * v4 * v8 - v12 * v5 * v8
-                - v55 * v9 - v56 * v9 - v57 * v9 + 2 * v0 * v1 * v6 * v9 + v3 * v5 * v8 * v9)
-               / v64);
+  const double v0{llgSKS_23(t, x, y, z)};
+  const double v1{llgSKS_12(t, x, y, z)};
+  const double v2{llgSKS_01(t, x, y, z)};
+  const double v3{llgSKS_11(t, x, y, z)};
+  const double v4{llgSKS_02(t, x, y, z)};
+  const double v5{llgSKS_22(t, x, y, z)};
+  const double v6{llgSKS_13(t, x, y, z)};
+  const double v7{llgSKS_03(t, x, y, z)};
+  const double v8{llgSKS_33(t, x, y, z)};
+  const double v9{llgSKS_00(t, x, y, z)};
+  const double v10{pow(v0, 2)};
+  const double v11{pow(v1, 2)};
+  const double v12{pow(v2, 2)};
+  const double v13{pow(v3, 2)};
+  const double v14{pow(v4, 2)};
+  const double v15{pow(v1, 3)};
+  const double v16{pow(v5, 2)};
+  const double v17{pow(v6, 2)};
+  const double v18{pow(v7, 2)};
+  const double v19{pow(v1, 4)};
+  const double v20{pow(v6, 3)};
+  const double v21{pow(v8, 2)};
+  const double v22{pow(v6, 4)};
+  const double v23{pow(v0, 3)};
+  const double v24{pow(v0, 4)};
+  const double v25{dllgSKS_33_dz(t, x, y, z)};
+  const double v26{dllgSKS_23_dz(t, x, y, z)};
+  const double v27{dllgSKS_22_dz(t, x, y, z)};
+  const double v28{dllgSKS_13_dz(t, x, y, z)};
+  const double v29{dllgSKS_12_dz(t, x, y, z)};
+  const double v30{dllgSKS_11_dz(t, x, y, z)};
+  const double v31{dllgSKS_03_dz(t, x, y, z)};
+  const double v32{dllgSKS_02_dz(t, x, y, z)};
+  const double v33{dllgSKS_01_dz(t, x, y, z)};
+  const double v34{dllgSKS_00_dz(t, x, y, z)};
+  const double v35{dllgSKS_33_dy(t, x, y, z)};
+  const double v36{dllgSKS_23_dy(t, x, y, z)};
+  const double v37{dllgSKS_22_dy(t, x, y, z)};
+  const double v38{dllgSKS_13_dy(t, x, y, z)};
+  const double v39{dllgSKS_12_dy(t, x, y, z)};
+  const double v40{dllgSKS_11_dy(t, x, y, z)};
+  const double v41{dllgSKS_03_dy(t, x, y, z)};
+  const double v42{dllgSKS_02_dy(t, x, y, z)};
+  const double v43{dllgSKS_01_dy(t, x, y, z)};
+  const double v44{dllgSKS_00_dy(t, x, y, z)};
+  const double v45{dllgSKS_33_dx(t, x, y, z)};
+  const double v46{dllgSKS_23_dx(t, x, y, z)};
+  const double v47{dllgSKS_22_dx(t, x, y, z)};
+  const double v48{dllgSKS_13_dx(t, x, y, z)};
+  const double v49{dllgSKS_12_dx(t, x, y, z)};
+  const double v50{dllgSKS_11_dx(t, x, y, z)};
+  const double v51{dllgSKS_03_dx(t, x, y, z)};
+  const double v52{dllgSKS_02_dx(t, x, y, z)};
+  const double v53{dllgSKS_01_dx(t, x, y, z)};
+  const double v54{dllgSKS_00_dx(t, x, y, z)};
+  const double v55{v11 * v8};
+  const double v56{v10 * v3};
+  const double v57{v17 * v5};
+  const double v58{v10 * v12};
+  const double v59{v14 * v17};
+  const double v60{v11 * v18};
+  const double v61{-2 * v0 * v2 * v4 * v6};
+  const double v62{-2 * v0 * v1 * v2 * v7};
+  const double v63{-2 * v1 * v4 * v6 * v7};
+  const double v64{v55 + v56 + v57 - 2 * v0 * v1 * v6 - v3 * v5 * v8};
+  const double v65{pow(v64, -2)};
+  const double v66{
+      1
+      / sqrt((-(v18 * v3 * v5) + v58 + v59 + v60 + v61 + v62 + v63 + 2 * v0 * v3 * v4 * v7
+              + 2 * v2 * v5 * v6 * v7 - v14 * v3 * v8 + 2 * v1 * v2 * v4 * v8 - v12 * v5 * v8
+              - v55 * v9 - v56 * v9 - v57 * v9 + 2 * v0 * v1 * v6 * v9 + v3 * v5 * v8 * v9)
+             / v64)};
+
   gradalpha[0]
       = (v65 * v66
          * (-(v10 * v13 * v14 * v45) - v12 * v16 * v17 * v45 - v13 * v16 * v18 * v45

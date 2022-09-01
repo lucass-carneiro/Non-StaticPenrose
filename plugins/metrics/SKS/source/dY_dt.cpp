@@ -6,24 +6,24 @@ auto grlensing::SKS::dY_dt(unsigned bhIdx, double t, double x, double y, double 
   using std::pow;
   using std::sqrt;
 
-  const double v0 = sx(bhIdx, t);
-  const double v1 = sy(bhIdx, t);
-  const double v2 = d2sy_dt2(bhIdx, t);
-  const double v3 = dsy_dt(bhIdx, t);
-  const double v4 = dsx_dt(bhIdx, t);
-  const double v5 = d2sx_dt2(bhIdx, t);
-  const double v6 = pow(v3, 2);
-  const double v7 = pow(v4, 2);
-  const double v8 = pow(v4, 3);
-  const double v9 = pow(v3, 5);
-  const double v10 = pow(v3, 3);
-  const double v11 = pow(v4, 4);
-  const double v12 = pow(v4, 5);
-  const double v13 = pow(v3, 4);
-  const double v14 = -v6;
-  const double v15 = -v7;
-  const double v16 = 1 + v14 + v15;
-  const double v17 = sqrt(v16);
+  const double v0{sx(bhIdx, t)};
+  const double v1{sy(bhIdx, t)};
+  const double v2{d2sy_dt2(bhIdx, t)};
+  const double v3{dsy_dt(bhIdx, t)};
+  const double v4{dsx_dt(bhIdx, t)};
+  const double v5{d2sx_dt2(bhIdx, t)};
+  const double v6{pow(v3, 2)};
+  const double v7{pow(v4, 2)};
+  const double v8{pow(v4, 3)};
+  const double v9{pow(v3, 5)};
+  const double v10{pow(v3, 3)};
+  const double v11{pow(v4, 4)};
+  const double v12{pow(v4, 5)};
+  const double v13{pow(v3, 4)};
+  const double v14{-v6};
+  const double v15{-v7};
+  const double v16{1 + v14 + v15};
+  const double v17{sqrt(v16)};
 
   return (3 * v10 * v11 + v0 * v12 * v2 - v11 * v3 + 2 * v1 * v11 * v2 * v3 + pow(v3, 7)
           + v3 * pow(v4, 6) - v0 * v10 * v5 + v0 * v10 * v17 * v5 - v1 * v13 * v4 * v5

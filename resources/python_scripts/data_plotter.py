@@ -138,14 +138,15 @@ def plot_horizons(plt, ax, arguments, config_file, t):
   plt.ylim([-plot_radius, plot_radius])
 
 
-def plot_single_trajectory(plt, ax, clr, output_file_name, config_file):
+def plot_single_trajectory(plt, ax, clr, output_file_name, config_file, draw_horizons=True):
   data = pd.read_csv(output_file_name, delim_whitespace=True, names=vars)
   ax.plot(data["X1"], data["X2"], color=clr)
 
   plt.xlabel("$x$", fontsize = font_size);
   plt.ylabel("$y$", fontsize = font_size);
 
-  plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[-1])
+  if draw_horizons:
+    plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[-1])
 
 def plot_trajectory(arguments):
   config_file_name = arguments["<trajectory_config_file>"]
@@ -161,13 +162,14 @@ def plot_trajectory(arguments):
 
   plt.show()
 
-def plot_instant(plt, ax, clr, data, index, config_file):
+def plot_instant(plt, ax, clr, data, index, config_file, draw_horizons=True):
   ax.plot(data["X1"].iloc[index], data["X2"].iloc[index], marker="o", markersize=6, markeredgecolor=clr, markerfacecolor=clr)
 
   plt.xlabel("$x$", fontsize = font_size);
   plt.ylabel("$y$", fontsize = font_size);
 
-  plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[index])
+  if draw_horizons:
+    plot_horizons(plt, ax, arguments, config_file, data["time"].iloc[index])
 
 def plot_animated_trajectory(arguments):
   config_file_name = arguments["<trajectory_config_file>"]
@@ -211,10 +213,9 @@ def plot_penrose(arguments):
   plt.close("all")
   fig, ax = plt.subplots()
 
-  plot_single_trajectory(plt, ax, color_1, trajectory_1)
-  plot_single_trajectory(plt, ax, color_2, trajectory_2)
-  plot_single_trajectory(plt, ax, color_3, trajectory_3)
-  plot_horizons(plt, ax, arguments, config_file)
+  plot_single_trajectory(plt, ax, color_1, trajectory_1, config_file, False)
+  plot_single_trajectory(plt, ax, color_2, trajectory_2, config_file, False)
+  plot_single_trajectory(plt, ax, color_3, trajectory_3, config_file)
 
   plt.show()
 

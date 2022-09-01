@@ -41,11 +41,11 @@ public:
   GRLENSING_SKS_METRIC_API auto name() -> std::string_view final;
 
 private:
-  double M1 = 1.0;
-  double M2 = 1.0;
-  double a1 = 0.0; // 0.9 * M1;
-  double a2 = 0.0; // 0.9 * M2;
-  double b = 20.0;
+  double M1 = 0.5;
+  double M2 = 0.5;
+  double a1 = 0.0;
+  double a2 = 0.0;
+  double b = 10.0;
 
   [[nodiscard]] auto sx(unsigned bhIdx, double t) const noexcept -> double;
   [[nodiscard]] auto sy(unsigned bhIdx, double t) const noexcept -> double;

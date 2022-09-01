@@ -9,210 +9,210 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
 
   metric_server::spatial_matrix ulK{};
 
-  const double v0 = llgSKS_33(t, x, y, z);
-  const double v1 = llgSKS_22(t, x, y, z);
-  const double v2 = llgSKS_11(t, x, y, z);
-  const double v3 = llgSKS_12(t, x, y, z);
-  const double v4 = llgSKS_23(t, x, y, z);
-  const double v5 = llgSKS_13(t, x, y, z);
-  const double v6 = llgSKS_01(t, x, y, z);
-  const double v7 = llgSKS_02(t, x, y, z);
-  const double v8 = llgSKS_03(t, x, y, z);
-  const double v9 = llgSKS_00(t, x, y, z);
-  const double v10 = pow(v1, 2);
-  const double v11 = pow(v2, 2);
-  const double v12 = pow(v3, 2);
-  const double v13 = pow(v3, 4);
-  const double v14 = pow(v4, 2);
-  const double v15 = pow(v3, 3);
-  const double v16 = pow(v5, 2);
-  const double v17 = pow(v4, 3);
-  const double v18 = pow(v5, 3);
-  const double v19 = pow(v6, 2);
-  const double v20 = pow(v7, 2);
-  const double v21 = pow(v8, 2);
-  const double v22 = pow(v0, 2);
-  const double v23 = pow(v5, 4);
-  const double v24 = pow(v4, 4);
-  const double v25 = dllgSKS_33_dt(t, x, y, z);
-  const double v26 = dllgSKS_23_dt(t, x, y, z);
-  const double v27 = dllgSKS_13_dt(t, x, y, z);
-  const double v28 = dllgSKS_33_dx(t, x, y, z);
-  const double v29 = dllgSKS_23_dx(t, x, y, z);
-  const double v30 = dllgSKS_03_dx(t, x, y, z);
-  const double v31 = dllgSKS_33_dy(t, x, y, z);
-  const double v32 = dllgSKS_13_dy(t, x, y, z);
-  const double v33 = dllgSKS_03_dy(t, x, y, z);
-  const double v34 = dllgSKS_33_dz(t, x, y, z);
-  const double v35 = dllgSKS_23_dz(t, x, y, z);
-  const double v36 = dllgSKS_22_dz(t, x, y, z);
-  const double v37 = dllgSKS_13_dz(t, x, y, z);
-  const double v38 = dllgSKS_12_dz(t, x, y, z);
-  const double v39 = dllgSKS_11_dz(t, x, y, z);
-  const double v40 = dllgSKS_03_dz(t, x, y, z);
-  const double v41 = dllgSKS_02_dz(t, x, y, z);
-  const double v42 = dllgSKS_01_dz(t, x, y, z);
-  const double v43 = dllgSKS_22_dt(t, x, y, z);
-  const double v44 = dllgSKS_12_dt(t, x, y, z);
-  const double v45 = dllgSKS_22_dx(t, x, y, z);
-  const double v46 = dllgSKS_02_dx(t, x, y, z);
-  const double v47 = dllgSKS_23_dy(t, x, y, z);
-  const double v48 = dllgSKS_22_dy(t, x, y, z);
-  const double v49 = dllgSKS_12_dy(t, x, y, z);
-  const double v50 = dllgSKS_11_dy(t, x, y, z);
-  const double v51 = dllgSKS_02_dy(t, x, y, z);
-  const double v52 = dllgSKS_01_dy(t, x, y, z);
-  const double v53 = dllgSKS_11_dt(t, x, y, z);
-  const double v54 = dllgSKS_13_dx(t, x, y, z);
-  const double v55 = dllgSKS_12_dx(t, x, y, z);
-  const double v56 = dllgSKS_11_dx(t, x, y, z);
-  const double v57 = dllgSKS_01_dx(t, x, y, z);
-  const double v58 = v0 * v12;
-  const double v59 = v14 * v2;
-  const double v60 = v1 * v16;
-  const double v61 = -(v0 * v1 * v2);
-  const double v62 = -2 * v3 * v4 * v5;
-  const double v63 = v10 * v18 * v30;
-  const double v64 = v11 * v17 * v33;
-  const double v65 = v11 * v17 * v41;
-  const double v66 = v10 * v18 * v42;
-  const double v67 = v15 * v22 * v46;
-  const double v68 = v15 * v22 * v52;
-  const double v69 = -(v11 * v17 * v26);
-  const double v70 = -(v10 * v18 * v27);
-  const double v71 = -(v15 * v22 * v44);
-  const double v72 = v0 * v15 * v26 * v5;
-  const double v73 = v1 * v18 * v26 * v3;
-  const double v74 = v0 * v15 * v27 * v4;
-  const double v75 = v17 * v2 * v27 * v3;
-  const double v76 = v17 * v2 * v29 * v6;
-  const double v77 = v1 * v18 * v32 * v7;
-  const double v78 = v17 * v2 * v44 * v5;
-  const double v79 = v1 * v18 * v4 * v44;
-  const double v80 = v0 * v15 * v38 * v8;
-  const double v81 = -(v1 * v18 * v29 * v7);
-  const double v82 = -(v0 * v15 * v30 * v4);
-  const double v83 = -(v17 * v2 * v3 * v30);
-  const double v84 = -(v17 * v2 * v32 * v6);
-  const double v85 = -(v0 * v15 * v33 * v5);
-  const double v86 = -(v1 * v18 * v3 * v33);
-  const double v87 = -(v17 * v2 * v38 * v6);
-  const double v88 = -(v1 * v18 * v38 * v7);
-  const double v89 = -(v0 * v15 * v41 * v5);
-  const double v90 = -(v1 * v18 * v3 * v41);
-  const double v91 = -(v0 * v15 * v4 * v42);
-  const double v92 = -(v17 * v2 * v3 * v42);
-  const double v93 = -(v0 * v15 * v29 * v8);
-  const double v94 = -(v17 * v2 * v46 * v5);
-  const double v95 = -(v1 * v18 * v4 * v46);
-  const double v96 = -(v0 * v15 * v32 * v8);
-  const double v97 = -(v17 * v2 * v5 * v52);
-  const double v98 = -(v1 * v18 * v4 * v52);
-  const double v99 = -2 * v12 * v16 * v26 * v4;
-  const double v100 = -2 * v12 * v14 * v27 * v5;
-  const double v101 = -(v10 * v16 * v28 * v6);
-  const double v102 = 2 * v12 * v14 * v30 * v5;
-  const double v103 = -(v11 * v14 * v31 * v7);
-  const double v104 = 2 * v12 * v16 * v33 * v4;
-  const double v105 = -(v11 * v14 * v36 * v8);
-  const double v106 = -(v10 * v16 * v39 * v8);
-  const double v107 = 2 * v12 * v16 * v4 * v41;
-  const double v108 = 2 * v12 * v14 * v42 * v5;
-  const double v109 = -2 * v14 * v16 * v3 * v44;
-  const double v110 = -(v12 * v22 * v45 * v6);
-  const double v111 = 2 * v14 * v16 * v3 * v46;
-  const double v112 = -(v12 * v22 * v50 * v7);
-  const double v113 = 2 * v14 * v16 * v3 * v52;
-  const double v114 = v0 * v1 * v11 * v26 * v4;
-  const double v115 = v0 * v10 * v2 * v27 * v5;
-  const double v116 = v28 * v3 * v59 * v7;
-  const double v117 = v28 * v3 * v60 * v7;
-  const double v118 = v29 * v4 * v58 * v6;
-  const double v119 = v29 * v4 * v6 * v60;
-  const double v120 = v1 * v30 * v5 * v58;
-  const double v121 = v1 * v30 * v5 * v59;
-  const double v122 = v3 * v31 * v59 * v6;
-  const double v123 = v3 * v31 * v6 * v60;
-  const double v124 = v32 * v5 * v58 * v7;
-  const double v125 = v32 * v5 * v59 * v7;
-  const double v126 = v2 * v33 * v4 * v58;
-  const double v127 = v2 * v33 * v4 * v60;
-  const double v128 = v36 * v5 * v58 * v6;
-  const double v129 = v36 * v5 * v59 * v6;
-  const double v130 = v39 * v4 * v58 * v7;
-  const double v131 = v39 * v4 * v60 * v7;
-  const double v132 = v2 * v4 * v41 * v58;
-  const double v133 = v2 * v4 * v41 * v60;
-  const double v134 = v1 * v42 * v5 * v58;
-  const double v135 = v1 * v42 * v5 * v59;
-  const double v136 = v1 * v2 * v22 * v3 * v44;
-  const double v137 = v45 * v5 * v58 * v8;
-  const double v138 = v45 * v5 * v59 * v8;
-  const double v139 = v0 * v3 * v46 * v59;
-  const double v140 = v0 * v3 * v46 * v60;
-  const double v141 = v4 * v50 * v58 * v8;
-  const double v142 = v4 * v50 * v60 * v8;
-  const double v143 = v0 * v3 * v52 * v59;
-  const double v144 = v0 * v3 * v52 * v60;
-  const double v145 = v3 * v38 * v59 * v8;
-  const double v146 = v3 * v38 * v60 * v8;
-  const double v147 = -(v2 * v26 * v4 * v58);
-  const double v148 = 3 * v26 * v3 * v5 * v59;
-  const double v149 = -(v2 * v26 * v4 * v60);
-  const double v150 = -(v1 * v27 * v5 * v58);
-  const double v151 = -(v1 * v27 * v5 * v59);
-  const double v152 = 3 * v27 * v3 * v4 * v60;
-  const double v153 = -2 * v14 * v29 * v3 * v5 * v6;
-  const double v154 = -(v0 * v10 * v2 * v30 * v5);
-  const double v155 = -3 * v3 * v30 * v4 * v60;
-  const double v156 = -2 * v16 * v3 * v32 * v4 * v7;
-  const double v157 = -(v0 * v1 * v11 * v33 * v4);
-  const double v158 = -3 * v3 * v33 * v5 * v59;
-  const double v159 = -2 * v12 * v38 * v4 * v5 * v8;
-  const double v160 = -(v0 * v1 * v11 * v4 * v41);
-  const double v161 = -3 * v3 * v41 * v5 * v59;
-  const double v162 = -(v0 * v10 * v2 * v42 * v5);
-  const double v163 = -3 * v3 * v4 * v42 * v60;
-  const double v164 = -(v0 * v3 * v44 * v59);
-  const double v165 = 3 * v4 * v44 * v5 * v58;
-  const double v166 = -(v0 * v3 * v44 * v60);
-  const double v167 = -(v1 * v2 * v22 * v3 * v46);
-  const double v168 = -3 * v4 * v46 * v5 * v58;
-  const double v169 = -(v1 * v2 * v22 * v3 * v52);
-  const double v170 = -3 * v4 * v5 * v52 * v58;
-  const double v171 = v0 * v1 * v2 * v29 * v5 * v7;
-  const double v172 = v0 * v1 * v2 * v3 * v30 * v4;
-  const double v173 = v0 * v1 * v2 * v32 * v4 * v6;
-  const double v174 = v0 * v1 * v2 * v3 * v33 * v5;
-  const double v175 = v0 * v1 * v2 * v38 * v4 * v6;
-  const double v176 = v0 * v1 * v2 * v38 * v5 * v7;
-  const double v177 = v0 * v1 * v2 * v3 * v41 * v5;
-  const double v178 = v0 * v1 * v2 * v3 * v4 * v42;
-  const double v179 = v0 * v1 * v2 * v29 * v3 * v8;
-  const double v180 = v0 * v1 * v2 * v4 * v46 * v5;
-  const double v181 = v0 * v1 * v2 * v3 * v32 * v8;
-  const double v182 = v0 * v1 * v2 * v4 * v5 * v52;
-  const double v183 = v26 * v3 * v5 * v61;
-  const double v184 = v27 * v3 * v4 * v61;
-  const double v185 = 2 * v1 * v28 * v3 * v4 * v5 * v6;
-  const double v186 = v29 * v4 * v6 * v61;
-  const double v187 = 2 * v2 * v3 * v31 * v4 * v5 * v7;
-  const double v188 = v32 * v5 * v61 * v7;
-  const double v189 = 2 * v2 * v3 * v36 * v4 * v5 * v8;
-  const double v190 = 2 * v1 * v3 * v39 * v4 * v5 * v8;
-  const double v191 = v4 * v44 * v5 * v61;
-  const double v192 = 2 * v0 * v3 * v4 * v45 * v5 * v6;
-  const double v193 = 2 * v0 * v3 * v4 * v5 * v50 * v7;
-  const double v194 = v3 * v38 * v61 * v8;
-  const double v195 = v58 + v59 + v60 + v61 + v62;
-  const double v196 = pow(v195, -2);
-  const double v197
-      = 1
-        / sqrt((-(v0 * v1 * v19) + v14 * v19 + v16 * v20 - v0 * v2 * v20 + v12 * v21 - v1 * v2 * v21
-                + 2 * v0 * v3 * v6 * v7 - 2 * v4 * v5 * v6 * v7 - 2 * v3 * v4 * v6 * v8
-                + 2 * v1 * v5 * v6 * v8 + 2 * v2 * v4 * v7 * v8 - 2 * v3 * v5 * v7 * v8
-                + v0 * v1 * v2 * v9 + 2 * v3 * v4 * v5 * v9 - v58 * v9 - v59 * v9 - v60 * v9)
-               / v195);
+  const double v0{llgSKS_33(t, x, y, z)};
+  const double v1{llgSKS_22(t, x, y, z)};
+  const double v2{llgSKS_11(t, x, y, z)};
+  const double v3{llgSKS_12(t, x, y, z)};
+  const double v4{llgSKS_23(t, x, y, z)};
+  const double v5{llgSKS_13(t, x, y, z)};
+  const double v6{llgSKS_01(t, x, y, z)};
+  const double v7{llgSKS_02(t, x, y, z)};
+  const double v8{llgSKS_03(t, x, y, z)};
+  const double v9{llgSKS_00(t, x, y, z)};
+  const double v10{pow(v1, 2)};
+  const double v11{pow(v2, 2)};
+  const double v12{pow(v3, 2)};
+  const double v13{pow(v3, 4)};
+  const double v14{pow(v4, 2)};
+  const double v15{pow(v3, 3)};
+  const double v16{pow(v5, 2)};
+  const double v17{pow(v4, 3)};
+  const double v18{pow(v5, 3)};
+  const double v19{pow(v6, 2)};
+  const double v20{pow(v7, 2)};
+  const double v21{pow(v8, 2)};
+  const double v22{pow(v0, 2)};
+  const double v23{pow(v5, 4)};
+  const double v24{pow(v4, 4)};
+  const double v25{dllgSKS_33_dt(t, x, y, z)};
+  const double v26{dllgSKS_23_dt(t, x, y, z)};
+  const double v27{dllgSKS_13_dt(t, x, y, z)};
+  const double v28{dllgSKS_33_dx(t, x, y, z)};
+  const double v29{dllgSKS_23_dx(t, x, y, z)};
+  const double v30{dllgSKS_03_dx(t, x, y, z)};
+  const double v31{dllgSKS_33_dy(t, x, y, z)};
+  const double v32{dllgSKS_13_dy(t, x, y, z)};
+  const double v33{dllgSKS_03_dy(t, x, y, z)};
+  const double v34{dllgSKS_33_dz(t, x, y, z)};
+  const double v35{dllgSKS_23_dz(t, x, y, z)};
+  const double v36{dllgSKS_22_dz(t, x, y, z)};
+  const double v37{dllgSKS_13_dz(t, x, y, z)};
+  const double v38{dllgSKS_12_dz(t, x, y, z)};
+  const double v39{dllgSKS_11_dz(t, x, y, z)};
+  const double v40{dllgSKS_03_dz(t, x, y, z)};
+  const double v41{dllgSKS_02_dz(t, x, y, z)};
+  const double v42{dllgSKS_01_dz(t, x, y, z)};
+  const double v43{dllgSKS_22_dt(t, x, y, z)};
+  const double v44{dllgSKS_12_dt(t, x, y, z)};
+  const double v45{dllgSKS_22_dx(t, x, y, z)};
+  const double v46{dllgSKS_02_dx(t, x, y, z)};
+  const double v47{dllgSKS_23_dy(t, x, y, z)};
+  const double v48{dllgSKS_22_dy(t, x, y, z)};
+  const double v49{dllgSKS_12_dy(t, x, y, z)};
+  const double v50{dllgSKS_11_dy(t, x, y, z)};
+  const double v51{dllgSKS_02_dy(t, x, y, z)};
+  const double v52{dllgSKS_01_dy(t, x, y, z)};
+  const double v53{dllgSKS_11_dt(t, x, y, z)};
+  const double v54{dllgSKS_13_dx(t, x, y, z)};
+  const double v55{dllgSKS_12_dx(t, x, y, z)};
+  const double v56{dllgSKS_11_dx(t, x, y, z)};
+  const double v57{dllgSKS_01_dx(t, x, y, z)};
+  const double v58{v0 * v12};
+  const double v59{v14 * v2};
+  const double v60{v1 * v16};
+  const double v61{-(v0 * v1 * v2)};
+  const double v62{-2 * v3 * v4 * v5};
+  const double v63{v10 * v18 * v30};
+  const double v64{v11 * v17 * v33};
+  const double v65{v11 * v17 * v41};
+  const double v66{v10 * v18 * v42};
+  const double v67{v15 * v22 * v46};
+  const double v68{v15 * v22 * v52};
+  const double v69{-(v11 * v17 * v26)};
+  const double v70{-(v10 * v18 * v27)};
+  const double v71{-(v15 * v22 * v44)};
+  const double v72{v0 * v15 * v26 * v5};
+  const double v73{v1 * v18 * v26 * v3};
+  const double v74{v0 * v15 * v27 * v4};
+  const double v75{v17 * v2 * v27 * v3};
+  const double v76{v17 * v2 * v29 * v6};
+  const double v77{v1 * v18 * v32 * v7};
+  const double v78{v17 * v2 * v44 * v5};
+  const double v79{v1 * v18 * v4 * v44};
+  const double v80{v0 * v15 * v38 * v8};
+  const double v81{-(v1 * v18 * v29 * v7)};
+  const double v82{-(v0 * v15 * v30 * v4)};
+  const double v83{-(v17 * v2 * v3 * v30)};
+  const double v84{-(v17 * v2 * v32 * v6)};
+  const double v85{-(v0 * v15 * v33 * v5)};
+  const double v86{-(v1 * v18 * v3 * v33)};
+  const double v87{-(v17 * v2 * v38 * v6)};
+  const double v88{-(v1 * v18 * v38 * v7)};
+  const double v89{-(v0 * v15 * v41 * v5)};
+  const double v90{-(v1 * v18 * v3 * v41)};
+  const double v91{-(v0 * v15 * v4 * v42)};
+  const double v92{-(v17 * v2 * v3 * v42)};
+  const double v93{-(v0 * v15 * v29 * v8)};
+  const double v94{-(v17 * v2 * v46 * v5)};
+  const double v95{-(v1 * v18 * v4 * v46)};
+  const double v96{-(v0 * v15 * v32 * v8)};
+  const double v97{-(v17 * v2 * v5 * v52)};
+  const double v98{-(v1 * v18 * v4 * v52)};
+  const double v99{-2 * v12 * v16 * v26 * v4};
+  const double v100{-2 * v12 * v14 * v27 * v5};
+  const double v101{-(v10 * v16 * v28 * v6)};
+  const double v102{2 * v12 * v14 * v30 * v5};
+  const double v103{-(v11 * v14 * v31 * v7)};
+  const double v104{2 * v12 * v16 * v33 * v4};
+  const double v105{-(v11 * v14 * v36 * v8)};
+  const double v106{-(v10 * v16 * v39 * v8)};
+  const double v107{2 * v12 * v16 * v4 * v41};
+  const double v108{2 * v12 * v14 * v42 * v5};
+  const double v109{-2 * v14 * v16 * v3 * v44};
+  const double v110{-(v12 * v22 * v45 * v6)};
+  const double v111{2 * v14 * v16 * v3 * v46};
+  const double v112{-(v12 * v22 * v50 * v7)};
+  const double v113{2 * v14 * v16 * v3 * v52};
+  const double v114{v0 * v1 * v11 * v26 * v4};
+  const double v115{v0 * v10 * v2 * v27 * v5};
+  const double v116{v28 * v3 * v59 * v7};
+  const double v117{v28 * v3 * v60 * v7};
+  const double v118{v29 * v4 * v58 * v6};
+  const double v119{v29 * v4 * v6 * v60};
+  const double v120{v1 * v30 * v5 * v58};
+  const double v121{v1 * v30 * v5 * v59};
+  const double v122{v3 * v31 * v59 * v6};
+  const double v123{v3 * v31 * v6 * v60};
+  const double v124{v32 * v5 * v58 * v7};
+  const double v125{v32 * v5 * v59 * v7};
+  const double v126{v2 * v33 * v4 * v58};
+  const double v127{v2 * v33 * v4 * v60};
+  const double v128{v36 * v5 * v58 * v6};
+  const double v129{v36 * v5 * v59 * v6};
+  const double v130{v39 * v4 * v58 * v7};
+  const double v131{v39 * v4 * v60 * v7};
+  const double v132{v2 * v4 * v41 * v58};
+  const double v133{v2 * v4 * v41 * v60};
+  const double v134{v1 * v42 * v5 * v58};
+  const double v135{v1 * v42 * v5 * v59};
+  const double v136{v1 * v2 * v22 * v3 * v44};
+  const double v137{v45 * v5 * v58 * v8};
+  const double v138{v45 * v5 * v59 * v8};
+  const double v139{v0 * v3 * v46 * v59};
+  const double v140{v0 * v3 * v46 * v60};
+  const double v141{v4 * v50 * v58 * v8};
+  const double v142{v4 * v50 * v60 * v8};
+  const double v143{v0 * v3 * v52 * v59};
+  const double v144{v0 * v3 * v52 * v60};
+  const double v145{v3 * v38 * v59 * v8};
+  const double v146{v3 * v38 * v60 * v8};
+  const double v147{-(v2 * v26 * v4 * v58)};
+  const double v148{3 * v26 * v3 * v5 * v59};
+  const double v149{-(v2 * v26 * v4 * v60)};
+  const double v150{-(v1 * v27 * v5 * v58)};
+  const double v151{-(v1 * v27 * v5 * v59)};
+  const double v152{3 * v27 * v3 * v4 * v60};
+  const double v153{-2 * v14 * v29 * v3 * v5 * v6};
+  const double v154{-(v0 * v10 * v2 * v30 * v5)};
+  const double v155{-3 * v3 * v30 * v4 * v60};
+  const double v156{-2 * v16 * v3 * v32 * v4 * v7};
+  const double v157{-(v0 * v1 * v11 * v33 * v4)};
+  const double v158{-3 * v3 * v33 * v5 * v59};
+  const double v159{-2 * v12 * v38 * v4 * v5 * v8};
+  const double v160{-(v0 * v1 * v11 * v4 * v41)};
+  const double v161{-3 * v3 * v41 * v5 * v59};
+  const double v162{-(v0 * v10 * v2 * v42 * v5)};
+  const double v163{-3 * v3 * v4 * v42 * v60};
+  const double v164{-(v0 * v3 * v44 * v59)};
+  const double v165{3 * v4 * v44 * v5 * v58};
+  const double v166{-(v0 * v3 * v44 * v60)};
+  const double v167{-(v1 * v2 * v22 * v3 * v46)};
+  const double v168{-3 * v4 * v46 * v5 * v58};
+  const double v169{-(v1 * v2 * v22 * v3 * v52)};
+  const double v170{-3 * v4 * v5 * v52 * v58};
+  const double v171{v0 * v1 * v2 * v29 * v5 * v7};
+  const double v172{v0 * v1 * v2 * v3 * v30 * v4};
+  const double v173{v0 * v1 * v2 * v32 * v4 * v6};
+  const double v174{v0 * v1 * v2 * v3 * v33 * v5};
+  const double v175{v0 * v1 * v2 * v38 * v4 * v6};
+  const double v176{v0 * v1 * v2 * v38 * v5 * v7};
+  const double v177{v0 * v1 * v2 * v3 * v41 * v5};
+  const double v178{v0 * v1 * v2 * v3 * v4 * v42};
+  const double v179{v0 * v1 * v2 * v29 * v3 * v8};
+  const double v180{v0 * v1 * v2 * v4 * v46 * v5};
+  const double v181{v0 * v1 * v2 * v3 * v32 * v8};
+  const double v182{v0 * v1 * v2 * v4 * v5 * v52};
+  const double v183{v26 * v3 * v5 * v61};
+  const double v184{v27 * v3 * v4 * v61};
+  const double v185{2 * v1 * v28 * v3 * v4 * v5 * v6};
+  const double v186{v29 * v4 * v6 * v61};
+  const double v187{2 * v2 * v3 * v31 * v4 * v5 * v7};
+  const double v188{v32 * v5 * v61 * v7};
+  const double v189{2 * v2 * v3 * v36 * v4 * v5 * v8};
+  const double v190{2 * v1 * v3 * v39 * v4 * v5 * v8};
+  const double v191{v4 * v44 * v5 * v61};
+  const double v192{2 * v0 * v3 * v4 * v45 * v5 * v6};
+  const double v193{2 * v0 * v3 * v4 * v5 * v50 * v7};
+  const double v194{v3 * v38 * v61 * v8};
+  const double v195{v58 + v59 + v60 + v61 + v62};
+  const double v196{pow(v195, -2)};
+  const double v197{
+      1
+      / sqrt((-(v0 * v1 * v19) + v14 * v19 + v16 * v20 - v0 * v2 * v20 + v12 * v21 - v1 * v2 * v21
+              + 2 * v0 * v3 * v6 * v7 - 2 * v4 * v5 * v6 * v7 - 2 * v3 * v4 * v6 * v8
+              + 2 * v1 * v5 * v6 * v8 + 2 * v2 * v4 * v7 * v8 - 2 * v3 * v5 * v7 * v8
+              + v0 * v1 * v2 * v9 + 2 * v3 * v4 * v5 * v9 - v58 * v9 - v59 * v9 - v60 * v9)
+             / v195)};
 
   ulK[0][0]
       = (v196 * v197
@@ -257,7 +257,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             - v3 * v32 * v60 * v8 + v4 * v50 * v61 * v8 + v80 + v81 + v82 + v83 + v88 + v91 + v92
             + v93 + v94 + v95 + v96 + v97 + v98))
         / 2.;
-
   ulK[0][1]
       = (v196 * v197
          * (-(v10 * v18 * v26) + v17 * v2 * v26 * v3 + v10 * v18 * v33 - v17 * v2 * v3 * v33
@@ -324,7 +323,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             + v3 * v36 * v60 * v8 - v4 * v45 * v60 * v8 + 2 * v4 * v49 * v60 * v8
             + v3 * v36 * v61 * v8 + v1 * v29 * v62 * v8))
         / 2.;
-
   ulK[0][2]
       = (v196 * v197
          * (-(v10 * v18 * v25) - v15 * v22 * v26 + v0 * v10 * v16 * v27 + v1 * v12 * v22 * v27
@@ -391,7 +389,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             + 2 * v3 * v35 * v60 * v8 - v29 * v4 * v60 * v8 + v32 * v4 * v60 * v8
             + v38 * v4 * v60 * v8 + v32 * v4 * v61 * v8 + v1 * v28 * v62 * v8))
         / 2.;
-
   ulK[1][0]
       = (v196 * v197
          * (-(v11 * v17 * v27) + v1 * v18 * v27 * v3 + v11 * v17 * v30 - v1 * v18 * v3 * v30
@@ -456,7 +453,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             - v2 * v38 * v60 * v8 + v3 * v39 * v60 * v8 + v4 * v56 * v60 * v8 + v3 * v39 * v61 * v8
             + v2 * v32 * v62 * v8))
         / 2.;
-
   ulK[1][1]
       = (v196 * v197
          * (v103 + v104 + v105 + v107 + v109 + v110 + v111 + v112 + v113 + v114 + v118 + v119 + v122
@@ -501,7 +497,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             + 2 * v2 * v47 * v60 * v8 + v45 * v5 * v61 * v8 + v80 + v84 + v85 + v86 + v87 + v89
             + v90 + v93 + v94 + v95 + v96 + v97 + v98 + v99))
         / 2.;
-
   ulK[1][2]
       = (v196 * v197
          * (-(v11 * v17 * v25) + v0 * v11 * v14 * v26 - v1 * v11 * v22 * v26 + v12 * v2 * v22 * v26
@@ -568,7 +563,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             + 2 * v3 * v37 * v60 * v8 + v39 * v4 * v60 * v8 + v29 * v5 * v61 * v8
             + v2 * v31 * v62 * v8))
         / 2.;
-
   ulK[2][0]
       = (v196 * v197
          * (-(v0 * v10 * v11 * v27) - v0 * v13 * v27 + v1 * v11 * v14 * v27 + v10 * v16 * v2 * v27
@@ -634,7 +628,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             - 2 * v1 * v2 * v4 * v5 * v55 * v8 - v12 * v14 * v56 * v8 - v10 * v16 * v56 * v8
             + 2 * v1 * v3 * v4 * v5 * v56 * v8 + 2 * v3 * v55 * v59 * v8 + 2 * v3 * v55 * v60 * v8))
         / 2.;
-
   ulK[2][1]
       = (v196 * v197
          * (-(v0 * v10 * v11 * v26) - v0 * v13 * v26 + v1 * v11 * v14 * v26 + v10 * v16 * v2 * v26
@@ -699,7 +692,6 @@ GRLENSING_SKS_METRIC_API auto SKS::ul_extrinsic(double t, double x, double y, do
             - v10 * v16 * v50 * v8 + 2 * v1 * v3 * v4 * v5 * v50 * v8 + 2 * v3 * v49 * v59 * v8
             + 2 * v3 * v49 * v60 * v8))
         / 2.;
-
   ulK[2][2]
       = (v196 * v197
          * (v100 + v101 + v102 + v103 + v104 + v105 + v106 + v107 + v108 + v114 + v115 + v116 + v117

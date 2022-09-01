@@ -8,24 +8,24 @@ auto grlensing::SKS::dllgSKS_33_dz(double t, double x, double y, double z) const
   using std::pow;
   using std::sqrt;
 
-  const double v0 = Z(2, t, x, y, z);
-  const double v1 = Y(2, t, x, y, z);
-  const double v2 = X(2, t, x, y, z);
-  const double v3 = Z(1, t, x, y, z);
-  const double v4 = Y(1, t, x, y, z);
-  const double v5 = X(1, t, x, y, z);
-  const double v6 = dX_dz(2, t, x, y, z);
-  const double v7 = dX_dz(1, t, x, y, z);
-  const double v8 = dY_dz(2, t, x, y, z);
-  const double v9 = dY_dz(1, t, x, y, z);
-  const double v10 = dZ_dz(2, t, x, y, z);
-  const double v11 = dZ_dz(1, t, x, y, z);
-  const double v12 = l3_KS(a2, v2, v1, v0);
-  const double v13 = l3_KS(a1, v5, v4, v3);
-  const double v14 = H_KS(M2, a2, v2, v1, v0);
-  const double v15 = H_KS(M1, a1, v5, v4, v3);
-  const double v16 = pow(v12, 2);
-  const double v17 = pow(v13, 2);
+  const double v0{Z(2, t, x, y, z)};
+  const double v1{Y(2, t, x, y, z)};
+  const double v2{X(2, t, x, y, z)};
+  const double v3{Z(1, t, x, y, z)};
+  const double v4{Y(1, t, x, y, z)};
+  const double v5{X(1, t, x, y, z)};
+  const double v6{dX_dz(2, t, x, y, z)};
+  const double v7{dX_dz(1, t, x, y, z)};
+  const double v8{dY_dz(2, t, x, y, z)};
+  const double v9{dY_dz(1, t, x, y, z)};
+  const double v10{dZ_dz(2, t, x, y, z)};
+  const double v11{dZ_dz(1, t, x, y, z)};
+  const double v12{l3_KS(a2, v2, v1, v0)};
+  const double v13{l3_KS(a1, v5, v4, v3)};
+  const double v14{H_KS(M2, a2, v2, v1, v0)};
+  const double v15{H_KS(M1, a1, v5, v4, v3)};
+  const double v16{pow(v12, 2)};
+  const double v17{pow(v13, 2)};
 
   return 2 * v11 * v13 * v15 * dl2_KS_dZ(a1, v5, v4, v3)
          + 2 * v10 * v12 * v14 * dl2_KS_dZ(a2, v2, v1, v0)

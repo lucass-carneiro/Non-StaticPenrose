@@ -7,9 +7,9 @@ GRLENSING_SKS_METRIC_API auto SKS::ll_smetric(double t, double x, double y, doub
 
   metric_server::spatial_matrix llgamma{};
 
-  const double v0 = llgSKS_23(t, x, y, z);
-  const double v1 = llgSKS_13(t, x, y, z);
-  const double v2 = llgSKS_12(t, x, y, z);
+  const double v0{llgSKS_23(t, x, y, z)};
+  const double v1{llgSKS_13(t, x, y, z)};
+  const double v2{llgSKS_12(t, x, y, z)};
 
   llgamma[0][0] = llgSKS_11(t, x, y, z);
   llgamma[0][1] = v2;
