@@ -32,12 +32,12 @@ auto grlensing::SKS::dllgSKS_03_dz(double t, double x, double y, double z) const
   const double v21{l1_KS(a1, v5, v4, v3)};
   const double v22{H_KS(M2, a2, v2, v1, v0)};
   const double v23{H_KS(M1, a1, v5, v4, v3)};
-  const double v24{dl2_KS_dZ(a2, v2, v1, v0)};
-  const double v25{dl2_KS_dZ(a1, v5, v4, v3)};
-  const double v26{dl2_KS_dY(a2, v2, v1, v0)};
-  const double v27{dl2_KS_dY(a1, v5, v4, v3)};
-  const double v28{dl2_KS_dX(a2, v2, v1, v0)};
-  const double v29{dl2_KS_dX(a1, v5, v4, v3)};
+  const double v24{dl3_KS_dZ(a2, v2, v1, v0)};
+  const double v25{dl3_KS_dZ(a1, v5, v4, v3)};
+  const double v26{dl3_KS_dY(a2, v2, v1, v0)};
+  const double v27{dl3_KS_dY(a1, v5, v4, v3)};
+  const double v28{dl3_KS_dX(a2, v2, v1, v0)};
+  const double v29{dl3_KS_dX(a1, v5, v4, v3)};
   const double v30{1 - pow(v7, 2) - pow(v8, 2)};
   const double v31{1 - pow(v6, 2) - pow(v9, 2)};
   const double v32{dH_KS_dX(M2, a2, v2, v1, v0)};

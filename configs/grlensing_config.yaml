@@ -23,8 +23,8 @@ plugin_settings:
 ############################################################
 integrator_settings:
   # Error tolerances
-  absolute_tolerance: 1.0e-12
-  relative_tolerance: 1.0e-12
+  absolute_tolerance: 1.0e-8
+  relative_tolerance: 1.0e-8
 
   # Specifies the maximum number of error test failures 
   # permitted in attempting one step, before returning with
@@ -46,7 +46,7 @@ integrator_settings:
 
   # Specifies the safety factor used within the nonlinear 
   # solver convergence test.
-  convergence_coefficient: 1.0e-7
+  convergence_coefficient: 1.0e-8
 
 ############################################################
 # These settings govern the behavior of "dump-metric"      #

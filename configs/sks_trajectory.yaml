@@ -4,16 +4,16 @@
 #############################################################
 
 initial_time: 0.0
-final_time: 1000.0
+final_time: -100.0
 
 # How many times to output between initial and final time
-output_times: 1000
+output_times: 100
 
-initial_V1: -0.5
-initial_V2: -0.5
-initial_V3: -0.5
+initial_V1: -0.8
+initial_V2: 0.3
+initial_V3: 0.0
 
-initial_X1: -2.0
+initial_X1: -1.5
 initial_X2: 2.0
 initial_X3: 0.0
 
@@ -25,7 +25,7 @@ metadata_file: "sks_trajectory_metadata.ascii"
 background_metric: "Superimposed Kerr binary in Kerr-Schild coordinates"
 
 background_radius: 10.0
-energy_threshold: 0.5
+energy_threshold: 500.0
 
 # Zero for photons, anything else for massive.
 particle_type: 1

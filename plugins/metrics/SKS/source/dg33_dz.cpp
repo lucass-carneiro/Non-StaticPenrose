@@ -27,12 +27,12 @@ auto grlensing::SKS::dllgSKS_33_dz(double t, double x, double y, double z) const
   const double v16{pow(v12, 2)};
   const double v17{pow(v13, 2)};
 
-  return 2 * v11 * v13 * v15 * dl2_KS_dZ(a1, v5, v4, v3)
-         + 2 * v10 * v12 * v14 * dl2_KS_dZ(a2, v2, v1, v0)
-         + 2 * v13 * v15 * v9 * dl2_KS_dY(a1, v5, v4, v3)
-         + 2 * v12 * v14 * v8 * dl2_KS_dY(a2, v2, v1, v0)
-         + 2 * v13 * v15 * v7 * dl2_KS_dX(a1, v5, v4, v3)
-         + 2 * v12 * v14 * v6 * dl2_KS_dX(a2, v2, v1, v0) + v11 * v17 * dH_KS_dZ(M1, a1, v5, v4, v3)
+  return 2 * v11 * v13 * v15 * dl3_KS_dZ(a1, v5, v4, v3)
+         + 2 * v10 * v12 * v14 * dl3_KS_dZ(a2, v2, v1, v0)
+         + 2 * v13 * v15 * v9 * dl3_KS_dY(a1, v5, v4, v3)
+         + 2 * v12 * v14 * v8 * dl3_KS_dY(a2, v2, v1, v0)
+         + 2 * v13 * v15 * v7 * dl3_KS_dX(a1, v5, v4, v3)
+         + 2 * v12 * v14 * v6 * dl3_KS_dX(a2, v2, v1, v0) + v11 * v17 * dH_KS_dZ(M1, a1, v5, v4, v3)
          + v10 * v16 * dH_KS_dZ(M2, a2, v2, v1, v0) + v17 * v9 * dH_KS_dY(M1, a1, v5, v4, v3)
          + v16 * v8 * dH_KS_dY(M2, a2, v2, v1, v0) + v17 * v7 * dH_KS_dX(M1, a1, v5, v4, v3)
          + v16 * v6 * dH_KS_dX(M2, a2, v2, v1, v0);
