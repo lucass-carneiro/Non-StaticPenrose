@@ -7,6 +7,7 @@ Usage:
   data_plotter.py animated-trajectory <trajectory_config_file> <trajectory_output_file> <animation_output_file> [--workers=<workers>] [--delay=<delay>] [--loop] [--keep_frames] [--intermediate_format=<format>] [--font_size=<size>] [--delta=<value>] [--plot_radius=<radius>] [--color=<color>]
   data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
+  data_plotter.py penrose-energy (local|global) <trajectory_1> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_3=<color3>] [--plot_radius=<radius>]
   data_plotter.py gridfunction <grid_function_data_file>
   data_plotter.py (-h | --help)
   data_plotter.py --version
@@ -160,6 +161,7 @@ def plot_trajectory(arguments):
 
   plot_single_trajectory(plt, ax, arguments["--color"], output_file_name, config_file)
 
+  plt.tight_layout()
   plt.show()
 
 def plot_instant(plt, ax, clr, data, index, config_file, draw_horizons=True):
@@ -217,6 +219,33 @@ def plot_penrose(arguments):
   plot_single_trajectory(plt, ax, color_2, trajectory_2, config_file, False)
   plot_single_trajectory(plt, ax, color_3, trajectory_3, config_file)
 
+  plt.tight_layout()
+  plt.show()
+
+def plot_penrose_energy(arguments):
+  trajectory_1 = arguments["<trajectory_1>"]
+  trajectory_3 = arguments["<trajectory_3>"]
+  
+  color_1 = arguments["--color_1"]
+  color_3 = arguments["--color_3"]
+
+  data_1 = pd.read_csv(trajectory_1, delim_whitespace=True, names=vars)
+  data_3 = pd.read_csv(trajectory_3, delim_whitespace=True, names=vars)
+
+  plt.close("all")
+
+  plt.xlabel("$t$", fontsize = font_size)
+
+  if arguments["local"]:
+    plt.plot(data_1["time"], data_1["El"], color=color_1)
+    plt.plot(data_3["time"], data_3["El"], color=color_3)
+    plt.ylabel("$E_l$", fontsize = font_size)
+  elif arguments["global"]:
+    plt.plot(data_1["time"], data_1["Eg"], color=color_1)
+    plt.plot(data_3["time"], data_3["Eg"], color=color_3)
+    plt.ylabel("$E_g$", fontsize = font_size)
+
+  plt.tight_layout()
   plt.show()
 
 def plot_energy(arguments):
@@ -239,6 +268,7 @@ def plot_energy(arguments):
     plt.loglog(data["time"], data["residual_Eg"])
     plt.ylabel("$|E_g(t) - E_g(0)|$", fontsize = font_size)
 
+  plt.tight_layout()
   plt.show()
 
 def plot_gf(arguments):
@@ -256,6 +286,7 @@ def plot_gf(arguments):
 
     plt.tricontourf(z_filtered_df["y"], z_filtered_df["x"], z_filtered_df["data"], levels=np.linspace(-7, 1, 100))
     plt.colorbar()
+    plt.tight_layout()
     plt.show()
 
 # Main
@@ -275,5 +306,7 @@ if __name__ == '__main__':
     plot_energy(arguments)
   elif arguments["penrose"]:
     plot_penrose(arguments)
+  elif arguments["penrose-energy"]:
+    plot_penrose_energy(arguments)
   elif arguments["gridfunction"]:
     plot_gf(arguments)
