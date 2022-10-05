@@ -4,14 +4,14 @@
 #############################################################
 
 background_metric: "Superimposed Kerr binary in Kerr-Schild coordinates"
-background_radius: 100.0
+background_radius: 100000.0
 
 SKS_Settings:
   M1: 0.5
   M2: 0.5
   a1: 0.475
   a2: 0.475
-  b: 3.0
+  b: 10.0
 
 energy_threshold: 1.0
 
@@ -21,30 +21,30 @@ output_format: ".ascii"
 particle_type: 1
 
 breakup_point:
-  X1: -1.5
-  X2: 2.0
+  X1: -6.2772
+  X2: 0.0
   X3: 0.0
 
 trajectory_1:
-  final_time: -100.0
+  final_time: -100000.0
   output_times: 1000
   
-  initial_V1: -0.8
-  initial_V2: 0.38
+  initial_V1: -0.632
+  initial_V2: -0.720
   initial_V3: 0.0
   
   initial_EN: 1.0
 
 trajectory_2:
-  final_time: 100.0
+  final_time: 100000.0
   output_times: 1000
   
-  initial_V1: 0.7
-  initial_V2: -0.4
+  initial_V1: 0.1
+  initial_V2: 0.5
   initial_V3: 0.0
   
   initial_EN: 0.001
 
 trajectory_3:
-  final_time: 100.0
+  final_time: 100000.0
   output_times: 1000

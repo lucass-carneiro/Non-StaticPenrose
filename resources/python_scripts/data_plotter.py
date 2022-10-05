@@ -8,6 +8,7 @@ Usage:
   data_plotter.py energy (local|global|residual) <trajectory_output_file> [--font_size=<size>]
   data_plotter.py penrose <penrose_config_file> <trajectory_1> <trajectory_2> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_2=<color2>] [--color_3=<color3>] [--plot_radius=<radius>]
   data_plotter.py penrose-energy (local|global) <trajectory_1> <trajectory_3> [--font_size=<size>] [--color_1=<color1>] [--color_3=<color3>] [--plot_radius=<radius>]
+  data_plotter.py penrose-energy-diff <trajectory_1> <trajectory_3>
   data_plotter.py gridfunction <grid_function_data_file>
   data_plotter.py (-h | --help)
   data_plotter.py --version
@@ -90,14 +91,13 @@ def plot_horizons(plt, ax, arguments, config_file, t):
     else:
       bh_radius = M + np.sqrt(M**2 - a**2)
 
-    part1 = X**2 + Y**2 - a**2
-    part2 = np.abs(part1)
+    rho2ma2 = X**2 + Y**2 - a**2
     
-    R = np.sqrt((part1 + part2)/2)
-    ergo = M * np.sqrt(2*(part1 + part2))/part2 - 1
+    R = np.sqrt((rho2ma2 + np.abs(rho2ma2))/2)
+    gtt = 2*M/R - 1
     
     # Draw ergosphere
-    ax.contour(X, Y, ergo, [0.0], colors="black", linestyles="--")
+    ax.contour(X, Y, gtt, [0.0], colors="black", linestyles="--")
 
     # Draw Event horizon
     ax.contour(X, Y, R, [bh_radius], colors="black")
@@ -222,6 +222,25 @@ def plot_penrose(arguments):
   plt.tight_layout()
   plt.show()
 
+def compute_penrose_energy_diff(arguments):
+  #data_plotter.py penrose-renegy-diff (local|global) <trajectory_1> <trajectory_3>
+  trajectory_1 = arguments["<trajectory_1>"]
+  trajectory_3 = arguments["<trajectory_3>"]
+
+  data_1 = pd.read_csv(trajectory_1, delim_whitespace=True, names=vars)
+  data_3 = pd.read_csv(trajectory_3, delim_whitespace=True, names=vars)
+
+  local_energy_1 = data_1["El"].iloc[-1]
+  local_energy_3 = data_3["El"].iloc[-1]
+
+  global_energy_1 = data_1["Eg"].iloc[-1]
+  global_energy_3 = data_3["Eg"].iloc[-1]
+
+  print("Local energy difference (3 - 1): ", local_energy_3 - local_energy_1)
+  print("Global energy difference (3 - 1): ", global_energy_3 - global_energy_1)
+  print("Global/localenergy absolute difference (1): ", np.abs(global_energy_1 - local_energy_1))
+  print("Global/localenergy absolute difference (3): ", np.abs(global_energy_3 - local_energy_3))
+
 def plot_penrose_energy(arguments):
   trajectory_1 = arguments["<trajectory_1>"]
   trajectory_3 = arguments["<trajectory_3>"]
@@ -308,5 +327,7 @@ if __name__ == '__main__':
     plot_penrose(arguments)
   elif arguments["penrose-energy"]:
     plot_penrose_energy(arguments)
+  elif arguments["penrose-energy-diff"]:
+    compute_penrose_energy_diff(arguments)
   elif arguments["gridfunction"]:
     plot_gf(arguments)

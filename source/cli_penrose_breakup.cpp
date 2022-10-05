@@ -107,7 +107,7 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
   std::array<double, 4> p_traj3 = {p_traj1[0] - p_traj2[0], p_traj1[1] - p_traj2[1],
                                    p_traj1[2] - p_traj2[2], p_traj1[3] - p_traj2[3]};
 
-  // Using p_traj3, we solve for EN, V1, V3 and V3 for the final trajectory
+  // Using p_traj3, we solve for EN, V1, V2 and V3 for the final trajectory
   auto conserved_data = decompose_u_p(metric, p_traj3, 0.0, breakup_point);
 
   trajectory_config traj_3_conf;
@@ -133,33 +133,42 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
   normalize(traj_2_conf, metric);
   normalize(traj_3_conf, metric);
 
-  // Integrate trajectory 1
-  writer->open_file(traj_1_file, traj_1_metadata_file);
+  // This effectivelly forces one to use 3 MPI ranks for penrose process integration, but at this
+  // point I just don't care anymore
+  if (MPI::COMM_WORLD.Get_rank() == 0) {
+    log<LogEvent::message>("Integrating entry trajectory");
+    
+    writer->open_file(traj_1_file, traj_1_metadata_file);
 
-  integrate(int_conf, writer, metric, traj_1_conf);
+    integrate(int_conf, writer, metric, traj_1_conf);
 
-  const auto mass1 = compute_mass(metric, 0, V_traj1, breakup_point, traj_1_conf.initial_EN);
-  writer->push_metadata("   mass", mass1);
+    const auto mass1 = compute_mass(metric, 0, V_traj1, breakup_point, traj_1_conf.initial_EN);
+    writer->push_metadata("   mass", mass1);
 
-  writer->close_file();
+    writer->close_file();
 
-  // Integrate trajectory 2
-  writer->open_file(traj_2_file, traj_2_metadata_file);
+  } else if (MPI::COMM_WORLD.Get_rank() == 1) {
+    log<LogEvent::message>("Integrating penrose trajectory");
 
-  integrate(int_conf, writer, metric, traj_2_conf);
+    writer->open_file(traj_2_file, traj_2_metadata_file);
 
-  const auto mass2 = compute_mass(metric, 0, V_traj2, breakup_point, traj_2_conf.initial_EN);
-  writer->push_metadata("   mass", mass2);
+    integrate(int_conf, writer, metric, traj_2_conf);
 
-  writer->close_file();
+    const auto mass2 = compute_mass(metric, 0, V_traj2, breakup_point, traj_2_conf.initial_EN);
+    writer->push_metadata("   mass", mass2);
 
-  // Integrate trajectory 3
-  writer->open_file(traj_3_file, traj_3_metadata_file);
+    writer->close_file();
 
-  integrate(int_conf, writer, metric, traj_3_conf);
+  } else if (MPI::COMM_WORLD.Get_rank() == 2) {
+    log<LogEvent::message>("Integrating exit trajectory");
 
-  const auto mass3 = compute_mass(metric, 0, V_traj3, breakup_point, traj_3_conf.initial_EN);
-  writer->push_metadata("   mass", mass3);
+    writer->open_file(traj_3_file, traj_3_metadata_file);
 
-  writer->close_file();
+    integrate(int_conf, writer, metric, traj_3_conf);
+
+    const auto mass3 = compute_mass(metric, 0, V_traj3, breakup_point, traj_3_conf.initial_EN);
+    writer->push_metadata("   mass", mass3);
+
+    writer->close_file();
+  }
 }
