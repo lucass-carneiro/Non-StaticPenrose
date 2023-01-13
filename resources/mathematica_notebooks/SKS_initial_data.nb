@@ -1,0 +1,2370 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    117527,       2362]
+NotebookOptionsPosition[    116084,       2327]
+NotebookOutlinePosition[    116641,       2346]
+CellTagsIndexPosition[    116598,       2343]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SKS Initial conditions", "Title",
+ CellChangeTimes->{{3.848533656444454*^9, 3.848533695426114*^9}, 
+   3.8485885303369293`*^9, {3.854721455664015*^9, 3.854721456231922*^9}, {
+   3.882280274027439*^9, 3.882280276787326*^9}, {3.882280388675803*^9, 
+   3.882280390354349*^9}},ExpressionUUID->"33410a6b-c4db-4eca-a797-\
+fb0baf59a63a"],
+
+Cell[CellGroupData[{
+
+Cell["Import metric", "Section",
+ CellChangeTimes->{{3.8824832545690603`*^9, 
+  3.8824832574088173`*^9}},ExpressionUUID->"b1cd2e9f-203e-46de-96ff-\
+998bc1017319"],
+
+Cell[BoxData[
+ RowBox[{"Import", "[", "\"\<~/llgsks.mx\>\"", "]"}]], "Input",
+ CellLabel->"In[1]:=",ExpressionUUID->"348be769-9426-49f0-ae2e-6e4904e76e6e"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Initial data elipse", "Section",
+ CellChangeTimes->{{3.8824832610788593`*^9, 3.8824832645586977`*^9}, {
+  3.8824850830420113`*^9, 
+  3.882485085521864*^9}},ExpressionUUID->"6ad77521-4021-44a5-a714-\
+ce669fe16b43"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "elipseID", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"elipseID", "[", 
+   RowBox[{
+   "BHParams_", ",", "InitPos_", ",", "LocalEnergy_", ",", "ParticleMass_", 
+    ",", "param_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "llg", ",", "En", ",", "m", ",", "LEPUM", ",", "velNorm", ",", "AA", ",",
+       "BB", ",", "CC", ",", "DD", ",", "FF", ",", "GG", ",", 
+      "\[CapitalDelta]", ",", "J", ",", "II", ",", "\[Alpha]", ",", "\[Beta]",
+       ",", "X0", ",", "Y0", ",", "\[Theta]"}], "}"}], ",", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"llg", "=", 
+      RowBox[{"llgSKS", "//.", 
+       RowBox[{"\[CapitalOmega]", "\[Rule]", 
+        SqrtBox[
+         FractionBox[
+          RowBox[{"M1", "+", "M2"}], 
+          SuperscriptBox["b", "3"]]]}]}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"llg", "=", 
+      RowBox[{"llg", "//.", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"M1", "\[Rule]", 
+          RowBox[{
+          "BHParams", "\[LeftDoubleBracket]", "1", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"M2", "\[Rule]", 
+          RowBox[{
+          "BHParams", "\[LeftDoubleBracket]", "2", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"a1", "\[Rule]", 
+          RowBox[{
+          "BHParams", "\[LeftDoubleBracket]", "3", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"a2", "\[Rule]", 
+          RowBox[{
+          "BHParams", "\[LeftDoubleBracket]", "4", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"b", "\[Rule]", 
+          RowBox[{
+          "BHParams", "\[LeftDoubleBracket]", "5", 
+           "\[RightDoubleBracket]"}]}], ",", "\[IndentingNewLine]", 
+         "\[IndentingNewLine]", 
+         RowBox[{"t", "\[Rule]", "0"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"x", "\[Rule]", 
+          RowBox[{
+          "InitPos", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}],
+          ",", "\[IndentingNewLine]", 
+         RowBox[{"y", "\[Rule]", 
+          RowBox[{
+          "InitPos", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}],
+          ",", "\[IndentingNewLine]", 
+         RowBox[{"z", "\[Rule]", "0"}]}], "\[IndentingNewLine]", "}"}]}]}], 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"En", "=", "LocalEnergy"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"m", "=", "ParticleMass"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"LEPUM", "=", 
+      RowBox[{"En", "/", "m"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"velNorm", "=", 
+      RowBox[{"1", "-", 
+       SuperscriptBox[
+        RowBox[{"(", 
+         FractionBox["1", "LEPUM"], ")"}], "2"]}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"AA", "=", 
+      RowBox[{"llg", "\[LeftDoubleBracket]", 
+       RowBox[{"2", ",", "2"}], "\[RightDoubleBracket]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"BB", "=", 
+      RowBox[{"llg", "\[LeftDoubleBracket]", 
+       RowBox[{"2", ",", "3"}], "\[RightDoubleBracket]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"CC", "=", 
+      RowBox[{"llg", "\[LeftDoubleBracket]", 
+       RowBox[{"3", ",", "3"}], "\[RightDoubleBracket]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"DD", "=", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"FF", "=", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"GG", "=", 
+      RowBox[{"-", "velNorm"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[CapitalDelta]", "=", 
+      RowBox[{"Det", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"AA", ",", "BB", ",", "DD"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"BB", ",", "CC", ",", "FF"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"DD", ",", "FF", ",", "GG"}], "}"}]}], "}"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"J", "=", 
+      RowBox[{"Det", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"AA", ",", "BB"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"BB", ",", "CC"}], "}"}]}], "}"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"II", "=", 
+      RowBox[{"AA", "+", "CC"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"If", "[", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"\[CapitalDelta]", "\[NotEqual]", "0"}], "&&", 
+          RowBox[{"J", ">", "0"}], "&&", 
+          RowBox[{
+           RowBox[{"\[CapitalDelta]", "/", "II"}], "<", "0"}]}], ")"}]}], ",",
+        "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Print", "[", "\"\<Unphysical configuration\>\"", "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Abort", "[", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"X0", "=", 
+      FractionBox[
+       RowBox[{
+        RowBox[{"CC", "*", "DD"}], "-", 
+        RowBox[{"BB", "*", "FF"}]}], 
+       RowBox[{
+        SuperscriptBox["BB", "2"], "-", 
+        RowBox[{"AA", "*", "CC"}]}]]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Y0", "=", 
+      FractionBox[
+       RowBox[{
+        RowBox[{"AA", "*", "FF"}], "-", 
+        RowBox[{"BB", "*", "DD"}]}], 
+       RowBox[{
+        SuperscriptBox["BB", "2"], "-", 
+        RowBox[{"AA", "*", "CC"}]}]]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Alpha]", "=", 
+      SqrtBox[
+       FractionBox[
+        RowBox[{"2", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"AA", "*", 
+            SuperscriptBox["FF", "2"]}], "+", 
+           RowBox[{"CC", "*", 
+            SuperscriptBox["DD", "2"]}], "+", 
+           RowBox[{"GG", "*", 
+            SuperscriptBox["BB", "2"]}], "-", 
+           RowBox[{"2", "*", "BB", "*", "DD", "*", "FF"}], "-", 
+           RowBox[{"AA", "*", "CC", "*", "GG"}]}], ")"}]}], 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox["BB", "2"], "-", 
+           RowBox[{"AA", "*", "CC"}]}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{
+           SqrtBox[
+            RowBox[{
+             SuperscriptBox[
+              RowBox[{"(", 
+               RowBox[{"AA", "-", "CC"}], ")"}], "2"], "+", 
+             RowBox[{"4", "*", 
+              SuperscriptBox["BB", "2"]}]}]], "-", 
+           RowBox[{"(", 
+            RowBox[{"AA", "+", "CC"}], ")"}]}], ")"}]}]]]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\[Beta]", "=", 
+      SqrtBox[
+       FractionBox[
+        RowBox[{"2", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"AA", "*", 
+            SuperscriptBox["FF", "2"]}], "+", 
+           RowBox[{"CC", "*", 
+            SuperscriptBox["DD", "2"]}], "+", 
+           RowBox[{"GG", "*", 
+            SuperscriptBox["BB", "2"]}], "-", 
+           RowBox[{"2", "*", "BB", "*", "DD", "*", "FF"}], "-", 
+           RowBox[{"AA", "*", "CC", "*", "GG"}]}], ")"}]}], 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox["BB", "2"], "-", 
+           RowBox[{"AA", "*", "CC"}]}], ")"}], 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"-", 
+            SqrtBox[
+             RowBox[{
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{"AA", "-", "CC"}], ")"}], "2"], "+", 
+              RowBox[{"4", "*", 
+               SuperscriptBox["BB", "2"]}]}]]}], "-", 
+           RowBox[{"(", 
+            RowBox[{"AA", "+", "CC"}], ")"}]}], ")"}]}]]]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"\[Theta]", "=", 
+      RowBox[{"Piecewise", "[", "\[IndentingNewLine]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"0", ",", 
+           RowBox[{
+            RowBox[{"BB", "\[Equal]", "0"}], "&&", 
+            RowBox[{"AA", "<", "CC"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"\[Pi]", "/", "2"}], ",", 
+           RowBox[{
+            RowBox[{"BB", "\[Equal]", "0"}], "&&", 
+            RowBox[{"AA", ">", "CC"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"ArcCot", "[", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"AA", "-", "CC"}], ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"2", "BB"}], ")"}]}], "]"}], "/", "2"}], ",", 
+           RowBox[{
+            RowBox[{"BB", "\[NotEqual]", "0"}], "&&", 
+            RowBox[{"AA", "<", "CC"}]}]}], "}"}], ",", "\[IndentingNewLine]", 
+         
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"\[Pi]", "/", "2"}], "+", 
+            RowBox[{
+             RowBox[{"ArcCot", "[", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"AA", "-", "CC"}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{"2", "BB"}], ")"}]}], "]"}], "/", "2"}]}], ",", 
+           RowBox[{
+            RowBox[{"BB", "\[NotEqual]", "0"}], "&&", 
+            RowBox[{"AA", ">", "CC"}]}]}], "}"}]}], "\[IndentingNewLine]", 
+        "}"}], "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Return", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"X0", "+", 
+         RowBox[{"\[Alpha]", " ", 
+          RowBox[{"Cos", "[", "param", "]"}], " ", 
+          RowBox[{"Cos", "[", "\[Theta]", "]"}]}], "-", 
+         RowBox[{"\[Beta]", " ", 
+          RowBox[{"Sin", "[", "param", "]"}], " ", 
+          RowBox[{"Sin", "[", "\[Theta]", "]"}]}]}], ",", 
+        RowBox[{"Y0", "+", 
+         RowBox[{"\[Beta]", " ", 
+          RowBox[{"Cos", "[", "\[Theta]", "]"}], " ", 
+          RowBox[{"Sin", "[", "param", "]"}]}], "+", 
+         RowBox[{"\[Alpha]", " ", 
+          RowBox[{"Cos", "[", "param", "]"}], " ", 
+          RowBox[{"Sin", "[", "\[Theta]", "]"}]}]}]}], "}"}], "]"}], ";"}]}], 
+   "\[IndentingNewLine]", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.882482860887295*^9, 3.88248307934501*^9}, {
+  3.8824831252253733`*^9, 3.882483201142496*^9}, {3.882483273812285*^9, 
+  3.882483283511506*^9}, {3.8824839042308292`*^9, 3.882483905080402*^9}, {
+  3.8824841694355087`*^9, 3.8824842572019453`*^9}, {3.882484297321651*^9, 
+  3.882484307040923*^9}, {3.882485013188404*^9, 3.882485092885841*^9}, {
+  3.882486407705894*^9, 3.882486418319759*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"127218b7-4b9a-4256-8b74-9d896b7ed037"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Test", "Section",
+ CellChangeTimes->{{3.882483247588999*^9, 
+  3.882483248088831*^9}},ExpressionUUID->"520687f4-a258-4f59-998d-\
+791844280640"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Block", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+    "M1", ",", "M2", ",", "a1", ",", "a2", ",", "b", ",", "x0", ",", "y0", 
+     ",", "z0", ",", "En", ",", "m", ",", "X0", ",", "Y0", ",", "\[Alpha]", 
+     ",", "\[Beta]", ",", "\[Theta]", ",", "curve", ",", "pt"}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"M1", "=", 
+     RowBox[{"1", "/", "2"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"M2", "=", 
+     RowBox[{"1", "/", "2"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"a1", "=", 
+     RowBox[{
+      RowBox[{"98", "/", "100"}], "M1"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"a2", "=", 
+     RowBox[{
+      RowBox[{"98", "/", "100"}], "M2"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"b", "=", "10"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"x0", "=", 
+     RowBox[{"63", "/", "10"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"y0", "=", "0"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"En", "=", "1"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"m", "=", 
+     RowBox[{"1", "/", "100"}]}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"curve", "=", 
+     RowBox[{"elipseID", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"M1", ",", "M2", ",", "a1", ",", "a2", ",", "b"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x0", ",", "y0"}], "}"}], ",", "En", ",", "m", ",", "param"}],
+       "]"}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"pt", "=", 
+     RowBox[{"curve", "//.", 
+      RowBox[{"param", "\[Rule]", 
+       RowBox[{
+        RowBox[{"-", 
+         FractionBox["25", "200"]}], "*", "\[Pi]"}]}]}]}], ";", 
+    "\[IndentingNewLine]", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Vx = \>\"", ",", 
+      RowBox[{"N", "[", 
+       RowBox[{
+        RowBox[{"pt", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], 
+        ",", "16"}], "]"}], ",", "\"\<\\nVy = \>\"", ",", 
+      RowBox[{"N", "[", 
+       RowBox[{
+        RowBox[{"pt", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}], 
+        ",", "16"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+    "\[IndentingNewLine]", 
+    RowBox[{"ParametricPlot", "[", "\[IndentingNewLine]", 
+     RowBox[{"curve", ",", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"param", ",", "0", ",", 
+        RowBox[{"2", "\[Pi]"}]}], "}"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"PlotRange", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "}"}]}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"PlotStyle", "\[Rule]", 
+       RowBox[{"Directive", "[", 
+        RowBox[{"Black", ",", "Thick"}], "]"}]}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Axes", "\[Rule]", "False"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Frame", "\[Rule]", "True"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"FrameLabel", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"\"\<Vx\>\"", ",", "\"\<Vy\>\""}], "}"}]}], ",", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Epilog", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"PointSize", "[", "Large", "]"}], ",", "\[IndentingNewLine]",
+          "Red", ",", "\[IndentingNewLine]", 
+         RowBox[{"Point", "[", 
+          RowBox[{"curve", "//.", 
+           RowBox[{"param", "\[Rule]", "0"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Point", "[", 
+          RowBox[{"curve", "//.", 
+           RowBox[{"param", "\[Rule]", "\[Pi]"}]}], "]"}], ",", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", "Blue", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Point", "[", 
+          RowBox[{"curve", "//.", 
+           RowBox[{"param", "\[Rule]", 
+            RowBox[{"\[Pi]", "/", "2"}]}]}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Point", "[", 
+          RowBox[{"curve", "//.", 
+           RowBox[{"param", "\[Rule]", 
+            RowBox[{"3", 
+             RowBox[{"\[Pi]", "/", "2"}]}]}]}], "]"}], ",", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", "Black", ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Arrow", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"0", ",", "0"}], "}"}], ",", "pt"}], "}"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Point", "[", "pt", "]"}]}], "\[IndentingNewLine]", 
+        "}"}]}]}], "\[IndentingNewLine]", "]"}]}]}], "\[IndentingNewLine]", 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8822861981736937`*^9, 3.882286198492804*^9}, {
+   3.8822865538543587`*^9, 3.882286611562376*^9}, {3.882294129825076*^9, 
+   3.882294251649776*^9}, {3.882294599745129*^9, 3.882294606182884*^9}, {
+   3.8822947931217623`*^9, 3.882294794060018*^9}, {3.882305031849979*^9, 
+   3.882305036767823*^9}, 3.8823051122971363`*^9, 3.882305845673551*^9, {
+   3.8823059387027683`*^9, 3.8823059441697197`*^9}, {3.8823060832411633`*^9, 
+   3.882306083328122*^9}, {3.882306376896296*^9, 3.882306377042647*^9}, {
+   3.882306523992413*^9, 3.882306524229443*^9}, 3.882307332914392*^9, {
+   3.882307479753488*^9, 3.882307479819593*^9}, 3.8823076472476797`*^9, {
+   3.882310590910548*^9, 3.882310593389022*^9}, {3.8823107746682158`*^9, 
+   3.882310835735463*^9}, {3.8823108985851316`*^9, 3.882310940783889*^9}, {
+   3.882311015643023*^9, 3.882311082941915*^9}, {3.882311141561639*^9, 
+   3.882311221468479*^9}, {3.882311416236422*^9, 3.8823114513546333`*^9}, {
+   3.882311901088976*^9, 3.882311912527699*^9}, {3.8823119819670877`*^9, 
+   3.88231205942343*^9}, {3.882312131812598*^9, 3.882312146531514*^9}, {
+   3.882312407389676*^9, 3.882312506234891*^9}, {3.882316859782679*^9, 
+   3.882316898520521*^9}, {3.882359564994195*^9, 3.882359621385305*^9}, {
+   3.8823596581499443`*^9, 3.882359658405229*^9}, {3.8823597149371433`*^9, 
+   3.882359780938767*^9}, {3.882360629473473*^9, 3.8823606299817867`*^9}, {
+   3.882361012196966*^9, 3.882361031105074*^9}, {3.88236116013687*^9, 
+   3.882361227436558*^9}, {3.882361393480447*^9, 3.882361440572583*^9}, {
+   3.88236169446954*^9, 3.882361697976713*^9}, {3.882361789003076*^9, 
+   3.882361800259741*^9}, {3.8823619247344503`*^9, 3.882361925271709*^9}, {
+   3.882362054989708*^9, 3.882362067105887*^9}, {3.8823622080564747`*^9, 
+   3.88236220813209*^9}, {3.882363082562598*^9, 3.8823631286871357`*^9}, {
+   3.882363193370078*^9, 3.8823632418882*^9}, {3.8823632908879013`*^9, 
+   3.8823633918634043`*^9}, {3.882364251622911*^9, 3.882364258349402*^9}, {
+   3.8823644803289948`*^9, 3.8823645074451637`*^9}, {3.8823648211786833`*^9, 
+   3.882364824325219*^9}, {3.882368005607229*^9, 3.882368018955241*^9}, {
+   3.882368550033615*^9, 3.882368561233808*^9}, 3.882392805516244*^9, {
+   3.882392928686412*^9, 3.882393122519301*^9}, {3.882393174998164*^9, 
+   3.882393286849942*^9}, {3.882393317218356*^9, 3.882393425215554*^9}, {
+   3.882393496124917*^9, 3.882393748670309*^9}, {3.88239377954113*^9, 
+   3.882393791809104*^9}, {3.882393893507759*^9, 3.882394011685302*^9}, {
+   3.882394129663341*^9, 3.882394186232448*^9}, {3.882394252992085*^9, 
+   3.8823942570199537`*^9}, {3.882394309951211*^9, 3.8823943168697853`*^9}, {
+   3.882394649668117*^9, 3.882394695581925*^9}, {3.882394755393999*^9, 
+   3.882394778633315*^9}, 3.882395104236726*^9, {3.8823951377936287`*^9, 
+   3.8823952338111486`*^9}, {3.8823953064735394`*^9, 
+   3.8823955038058233`*^9}, {3.882395552656097*^9, 3.882395680733551*^9}, {
+   3.8823957429445753`*^9, 3.882395743102235*^9}, {3.882395951274262*^9, 
+   3.882396016271644*^9}, {3.882396094446321*^9, 3.882396175776227*^9}, {
+   3.8823962185466213`*^9, 3.8823962216424723`*^9}, {3.882396335897143*^9, 
+   3.88239635175103*^9}, {3.882396503347128*^9, 3.882396583034898*^9}, {
+   3.88239662690587*^9, 3.8823966751973763`*^9}, {3.882480343226932*^9, 
+   3.882480385735211*^9}, {3.882480425655171*^9, 3.88248056166996*^9}, {
+   3.8824806089918833`*^9, 3.882480699337284*^9}, {3.882480770450499*^9, 
+   3.882480774387475*^9}, 3.882480805208981*^9, {3.882480904767799*^9, 
+   3.88248097064751*^9}, {3.882481008505827*^9, 3.882481040844009*^9}, {
+   3.882481529948485*^9, 3.8824815313461313`*^9}, {3.882481564207597*^9, 
+   3.882481592803844*^9}, {3.882481706015079*^9, 3.88248170709161*^9}, {
+   3.882481805141725*^9, 3.8824818342294407`*^9}, {3.882482219626857*^9, 
+   3.882482297580393*^9}, {3.882482361612131*^9, 3.882482417248169*^9}, {
+   3.88248246223866*^9, 3.882482470688324*^9}, {3.882482744824079*^9, 
+   3.882482765482091*^9}, {3.882482800804594*^9, 3.882482840070449*^9}, {
+   3.8824832300929823`*^9, 3.882483239481072*^9}, {3.8824838810889606`*^9, 
+   3.8824840311645613`*^9}, {3.882484074375868*^9, 3.882484104323023*^9}, {
+   3.8824842726308947`*^9, 3.882484276089904*^9}, {3.88248431916009*^9, 
+   3.882484363897863*^9}, {3.882484398897584*^9, 3.8824844404962673`*^9}, {
+   3.882484471048182*^9, 3.882484522575791*^9}, {3.882485062183674*^9, 
+   3.882485062457673*^9}, {3.8824851137943697`*^9, 3.882485223546256*^9}, {
+   3.88248526754994*^9, 3.8824853232889147`*^9}, {3.8824854188371773`*^9, 
+   3.8824854612776213`*^9}, {3.882485505627357*^9, 3.882485590125497*^9}, {
+   3.882485739614547*^9, 3.8824857449818373`*^9}, {3.882486282634089*^9, 
+   3.882486367059647*^9}, {3.8824864246312103`*^9, 3.882486620624168*^9}, {
+   3.882486745023625*^9, 3.882486806141136*^9}, {3.8824868365808*^9, 
+   3.882486865709399*^9}, {3.8824869213082247`*^9, 3.882486965527034*^9}, {
+   3.882487024386592*^9, 3.8824870308263483`*^9}, {3.882487156045249*^9, 
+   3.8824872023431177`*^9}, 3.8824872903230953`*^9, {3.882487353722653*^9, 
+   3.882487355760333*^9}, {3.882487502750126*^9, 3.882487504727145*^9}, 
+   3.882487550207571*^9, {3.8824876226983232`*^9, 3.882487662224307*^9}, {
+   3.882487703226466*^9, 3.8824877072462893`*^9}, 3.882487908362995*^9, {
+   3.8824879423317842`*^9, 3.882487950419029*^9}, 3.882488023890843*^9, {
+   3.882488414922329*^9, 3.882488415530939*^9}, {3.882488482662849*^9, 
+   3.882488482729425*^9}, {3.882488711637533*^9, 3.8824887149646797`*^9}, {
+   3.882489069120329*^9, 3.882489072607936*^9}, {3.882489143718993*^9, 
+   3.8824891711593037`*^9}, 3.882489259628083*^9, {3.8824893559265337`*^9, 
+   3.88248939529206*^9}, {3.882489464123061*^9, 3.88248946423118*^9}, {
+   3.882489697448423*^9, 3.882489707156208*^9}, {3.882489791977448*^9, 
+   3.882489792054523*^9}, {3.882489955393561*^9, 3.882490012130669*^9}, {
+   3.882490143000475*^9, 3.882490144387575*^9}, 3.882490178360449*^9, {
+   3.882490424144082*^9, 3.8824904262723007`*^9}, {3.8824908109959717`*^9, 
+   3.8824908169340143`*^9}, {3.882491128030621*^9, 3.882491128558263*^9}, {
+   3.882493143933267*^9, 3.8824931500814734`*^9}, {3.8824933157403793`*^9, 
+   3.882493315797552*^9}, {3.882533152158762*^9, 3.882533152363027*^9}, {
+   3.882533262392993*^9, 3.882533262429223*^9}, {3.882533347327025*^9, 
+   3.882533347784284*^9}, {3.882533692755909*^9, 3.88253369606369*^9}, {
+   3.8825337488945837`*^9, 3.882533749832739*^9}, {3.88253383813284*^9, 
+   3.8825338389300003`*^9}, {3.8825339471698437`*^9, 
+   3.8825339479277267`*^9}, {3.882534102926146*^9, 3.882534110854309*^9}, {
+   3.882534299291522*^9, 3.8825342998396187`*^9}, {3.882534445967959*^9, 
+   3.8825344464659567`*^9}, {3.882534578085423*^9, 3.882534578592862*^9}, {
+   3.8825347095522757`*^9, 3.882534710130591*^9}, {3.882534815891464*^9, 
+   3.882534816699666*^9}, {3.882534930300638*^9, 3.882534936068907*^9}, {
+   3.88253503961049*^9, 3.882535040098472*^9}, 3.882535147760483*^9, {
+   3.882535286358124*^9, 3.8825352906760283`*^9}, {3.8825354347861958`*^9, 
+   3.8825354353840637`*^9}, {3.882535580633691*^9, 3.8825355811417847`*^9}, {
+   3.882536540727004*^9, 3.8825365408447657`*^9}, {3.882536664464736*^9, 
+   3.882536664952931*^9}, {3.882536904450678*^9, 3.882536904988531*^9}, {
+   3.882537047169232*^9, 3.882537049266183*^9}, {3.882537259614552*^9, 
+   3.882537259832767*^9}, {3.882537411752437*^9, 3.882537411860124*^9}, {
+   3.8825375800498857`*^9, 3.8825375822974777`*^9}, {3.882537727146422*^9, 
+   3.882537727204383*^9}, {3.8825379123936167`*^9, 3.882537912541842*^9}, {
+   3.8825382765259027`*^9, 3.882538276664042*^9}, {3.882544239509726*^9, 
+   3.8825443958745403`*^9}, {3.882544542691914*^9, 3.882544546740896*^9}, {
+   3.8825446422915783`*^9, 3.882544652989789*^9}, 3.882544858426346*^9, 
+   3.882544889255375*^9, {3.882544920504712*^9, 3.8825449292028303`*^9}, {
+   3.8825449963732033`*^9, 3.882544998771659*^9}, {3.882545074763195*^9, 
+   3.8825450748499823`*^9}, {3.882545111132852*^9, 3.882545126651816*^9}, {
+   3.8825454597886047`*^9, 3.882545480163645*^9}, {3.88254567415269*^9, 
+   3.882545674210108*^9}, {3.882545724942171*^9, 3.8825457250102673`*^9}, {
+   3.882545806101111*^9, 3.8825458062186127`*^9}, {3.8825460731071672`*^9, 
+   3.882546073184026*^9}, {3.882546363032246*^9, 3.882546366799184*^9}, {
+   3.882546425830737*^9, 3.8825464263181953`*^9}, {3.882546550256569*^9, 
+   3.882546550605446*^9}, {3.882546723115675*^9, 3.8825467233925877`*^9}, {
+   3.882546830182616*^9, 3.882546830380494*^9}, {3.88254691511024*^9, 
+   3.882546916268758*^9}, {3.882547405361741*^9, 3.8825474071702013`*^9}, {
+   3.8825474991004763`*^9, 3.882547499218442*^9}, {3.882547673067614*^9, 
+   3.882547673145727*^9}, {3.8825477962552013`*^9, 3.882547796362908*^9}, {
+   3.882548065899273*^9, 3.882548066038219*^9}, {3.8825484974224567`*^9, 
+   3.88254849775063*^9}, {3.882548678509693*^9, 3.8825486789465303`*^9}, {
+   3.882548776026762*^9, 3.8825487774449863`*^9}, {3.882549005602769*^9, 
+   3.882549005680475*^9}, {3.882549085700862*^9, 3.8825490857989883`*^9}, {
+   3.882549179130512*^9, 3.8825491799383097`*^9}, {3.882549318927548*^9, 
+   3.882549319415936*^9}, {3.882549718771387*^9, 3.882549718999104*^9}, {
+   3.8825504322796707`*^9, 3.882550432456615*^9}, {3.8825506168355503`*^9, 
+   3.8825506174438562`*^9}, {3.882550983419149*^9, 3.882550983957098*^9}, {
+   3.882551376692421*^9, 3.8825513767591867`*^9}, {3.882551536368734*^9, 
+   3.882551536466402*^9}, {3.882551633187399*^9, 3.882551633244446*^9}, {
+   3.882551681676025*^9, 3.882551681853766*^9}, {3.8825517706251383`*^9, 
+   3.8825517889614563`*^9}, {3.88255184766369*^9, 3.882551847870551*^9}, {
+   3.882551956201703*^9, 3.882551956398975*^9}, {3.882552027940629*^9, 
+   3.882552027987525*^9}, {3.882552142797833*^9, 3.882552143044845*^9}, {
+   3.882552200686026*^9, 3.8825522007938337`*^9}, {3.8825523548130493`*^9, 
+   3.8825523549216127`*^9}, {3.8825524346019382`*^9, 3.882552434770938*^9}, {
+   3.882552552539207*^9, 3.882552554258379*^9}, {3.882561433734796*^9, 
+   3.882561433802288*^9}, {3.8825617041625*^9, 3.8825617041991158`*^9}, {
+   3.8825617975005836`*^9, 3.882561797578033*^9}, {3.882563508004902*^9, 
+   3.8825635094602222`*^9}, 3.882563882196245*^9, {3.882563976244275*^9, 
+   3.88256397756126*^9}, {3.882564053103416*^9, 3.88256406116031*^9}, {
+   3.88256411608013*^9, 3.882564116249151*^9}, {3.882564193779561*^9, 
+   3.882564194327468*^9}, {3.882564245139475*^9, 3.882564247396649*^9}, {
+   3.8825643497862673`*^9, 3.882564349874234*^9}, {3.882564440874507*^9, 
+   3.882564441022338*^9}, {3.8825645808023443`*^9, 3.882564582300395*^9}, {
+   3.8825647179195967`*^9, 3.882564718037369*^9}, {3.882564852947836*^9, 
+   3.882564855075396*^9}, {3.882564956945695*^9, 3.8825649584736023`*^9}, 
+   3.8825650591123667`*^9, {3.882565565344082*^9, 3.882565565512051*^9}, {
+   3.88256569570152*^9, 3.882565698729281*^9}, 3.882565772909197*^9, {
+   3.882565914936965*^9, 3.882565935833563*^9}, 3.882565983176166*^9, {
+   3.8825660737341223`*^9, 3.882566073921405*^9}, 3.8825661141633053`*^9, {
+   3.882566192372448*^9, 3.882566195099455*^9}, {3.882566478096531*^9, 
+   3.882566478173525*^9}, {3.882566531945822*^9, 3.882566532033627*^9}, {
+   3.882566858771182*^9, 3.882566905487212*^9}, 3.8825669937669067`*^9, {
+   3.8825670480977287`*^9, 3.882567049174451*^9}, {3.8825671481456823`*^9, 
+   3.882567165591174*^9}, {3.882567251053236*^9, 3.882567267779807*^9}, {
+   3.882567635736273*^9, 3.882567635771494*^9}, {3.882567706653916*^9, 
+   3.882567706861117*^9}, {3.8825677851019773`*^9, 3.882567785178935*^9}, {
+   3.882567926749661*^9, 3.882567926936676*^9}},
+ CellLabel->"In[22]:=",ExpressionUUID->"54039a8e-6f39-4d4d-9006-84ae53de88b4"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Vx = \"\>", "\[InvisibleSpace]", 
+   "0.66310906919149313357216731832217591218`16.", 
+   "\[InvisibleSpace]", "\<\"\\nVy = \"\>", "\[InvisibleSpace]", 
+   "0.67907243258453518100260573715478463374`16."}],
+  SequenceForm[
+  "Vx = ", 0.66310906919149313357216731832217591218`16., "\nVy = ", 
+   0.67907243258453518100260573715478463374`16.],
+  Editable->False]], "Print",
+ CellChangeTimes->{{3.8824869493539133`*^9, 3.8824869665261602`*^9}, 
+   3.88248703131735*^9, {3.882487156744878*^9, 3.882487202673129*^9}, 
+   3.882487291475996*^9, 3.882487356099818*^9, 3.882487505039838*^9, 
+   3.882487550636367*^9, {3.882487627096245*^9, 3.882487664948316*^9}, {
+   3.88248770353376*^9, 3.8824877076185493`*^9}, 3.882487909024786*^9, {
+   3.8824879427378607`*^9, 3.882487950974765*^9}, 3.882488024267858*^9, 
+   3.882488415907892*^9, 3.882488483047831*^9, {3.882488715925852*^9, 
+   3.882488721448498*^9}, 3.882489073053131*^9, {3.882489146652676*^9, 
+   3.882489171533358*^9}, 3.882489259955205*^9, {3.882489356229651*^9, 
+   3.8824893956756353`*^9}, 3.882489464606954*^9, {3.8824896980337477`*^9, 
+   3.882489707526456*^9}, 3.88248979239781*^9, {3.882489955989937*^9, 
+   3.882490012592269*^9}, 3.8824901450903263`*^9, 3.882490178691471*^9, 
+   3.8824904265427103`*^9, {3.882490812155772*^9, 3.882490817285972*^9}, 
+   3.882491128876814*^9, 3.882493150584593*^9, 3.882493316222159*^9, 
+   3.882533155619801*^9, 3.8825332627762127`*^9, 3.8825333485796623`*^9, 
+   3.882533696458976*^9, 3.882533750695011*^9, 3.882533840072068*^9, 
+   3.882533948549651*^9, 3.8825341118747597`*^9, 3.882534300733994*^9, 
+   3.882534446859414*^9, 3.88253457918786*^9, 3.8825347114332333`*^9, 
+   3.882534817073304*^9, {3.882534931209836*^9, 3.882534936561411*^9}, 
+   3.882535040466075*^9, 3.882535148114367*^9, 3.8825352920051928`*^9, 
+   3.882535436008402*^9, 3.882535581483569*^9, 3.8825365412092648`*^9, 
+   3.8825366653991413`*^9, 3.882536905396338*^9, 3.882537049829026*^9, 
+   3.882537260857664*^9, 3.882537412202923*^9, 3.88253758301164*^9, 
+   3.88253772812711*^9, 3.882537912914585*^9, 3.8825382776273127`*^9, {
+   3.8825442630953083`*^9, 3.882544338607216*^9}, {3.882544370613192*^9, 
+   3.882544396356395*^9}, 3.882544547895055*^9, {3.8825446494552393`*^9, 
+   3.8825446534618673`*^9}, 3.8825448588684893`*^9, 3.882544889754731*^9, 
+   3.8825449295796947`*^9, 3.882544999257361*^9, 3.88254507570358*^9, 
+   3.882545127175366*^9, 3.882545239252717*^9, 3.88254548114933*^9, 
+   3.882545674537383*^9, 3.882545725856381*^9, 3.8825458069771023`*^9, 
+   3.882546073747957*^9, 3.882546367413312*^9, 3.882546426769258*^9, 
+   3.8825465510118837`*^9, {3.8825467252955236`*^9, 3.882546754591614*^9}, {
+   3.882546831038625*^9, 3.882546852497591*^9}, 3.882546916655827*^9, 
+   3.88254740847456*^9, 3.882547500139106*^9, 3.88254767363457*^9, 
+   3.882547797043528*^9, 3.882547981676412*^9, 3.882548066459071*^9, 
+   3.882548498146278*^9, 3.882548679713229*^9, 3.882548777847225*^9, 
+   3.882549006065694*^9, 3.882549088045652*^9, 3.882549180407106*^9, 
+   3.882549320454288*^9, 3.882549492641618*^9, {3.882549719705312*^9, 
+   3.882549737498527*^9}, 3.882550432955246*^9, 3.88255061780481*^9, 
+   3.8825509843662*^9, 3.8825513771223783`*^9, 3.882551536943795*^9, 
+   3.882551633592752*^9, 3.882551682176375*^9, {3.882551772664638*^9, 
+   3.882551798404697*^9}, 3.882551848675562*^9, 3.882551956831533*^9, 
+   3.882552028424906*^9, {3.882552143505632*^9, 3.88255214891576*^9}, 
+   3.882552201414247*^9, 3.882552355548012*^9, 3.882552437762978*^9, 
+   3.882552554837488*^9, 3.882561434342132*^9, 3.882561704620267*^9, 
+   3.882561798070747*^9, {3.882563509740073*^9, 3.8825635220767403`*^9}, 
+   3.882563882615953*^9, 3.8825639780085*^9, 3.882564061995585*^9, 
+   3.88256411658364*^9, 3.882564194947393*^9, 3.8825642487189913`*^9, 
+   3.8825643509304047`*^9, 3.882564441453882*^9, 3.88256458351476*^9, 
+   3.8825647187181664`*^9, 3.882564855811327*^9, {3.882565045474724*^9, 
+   3.882565059827259*^9}, 3.882565566300877*^9, 3.882565699301682*^9, 
+   3.8825657736451883`*^9, {3.8825659153517857`*^9, 3.882565936322098*^9}, 
+   3.88256598364001*^9, 3.882566074230917*^9, 3.88256611458453*^9, 
+   3.8825661954411793`*^9, 3.882566478612442*^9, 3.8825665323825083`*^9, {
+   3.8825668656606417`*^9, 3.882566906689024*^9}, 3.882566994359744*^9, 
+   3.8825670498210373`*^9, {3.8825671487280197`*^9, 3.882567165940177*^9}, {
+   3.882567254842622*^9, 3.88256726816988*^9}, {3.8825676371717987`*^9, 
+   3.882567639067297*^9}, 3.882567707410695*^9, {3.882567785713915*^9, 
+   3.882567800789727*^9}, 3.8825679272641373`*^9, 3.8825682103089037`*^9},
+ CellLabel->
+  "During evaluation of \
+In[22]:=",ExpressionUUID->"4147d0ee-4d69-488e-adcd-9c64b223f473"],
+
+Cell[BoxData[
+ GraphicsBox[{{{}, {}, 
+    TagBox[
+     {GrayLevel[0], Thickness[Large], Opacity[1.], FaceForm[Opacity[0.3]], 
+      LineBox[CompressedData["
+1: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
+YP2NeI18Nh5Q+k9QLa0VJXblZhsXsFGl8r8bG0hfOug3YGZYyEalg7XM336t
+OGt64oVmERubeQtjMo1akXs6zWNtCRsb3sQwg5Vbsb7mG+MrcRVv9H6zja0Y
+d6KAvwHJ/vFdMa0eakGRLOrWyTI2PktJ8j70tgWfVk53bi9n4wa3B32NwS04
+aZ/UOU5sZBAV/H5rCzYmnPuiU8nGKYGgJuUvzailKxD1nfjNjULFjJJmPCQX
+mPC0io1yNl2FIuHNyOV0SUi7mo0POm39g23IuHPbvz5iq7qhgCHJZpyUcz58
+poaN7DtfmxVnm/COAqfAV2L6gZ0ppeS7495C2xCzlqyvdfj+P0eb0HXZR/qR
+OjY+t6Ofk5NuQjXcbFtIPL94QNnqRyP+mqHU19Wz8aPt6hTfikZsHf4VdpZY
+c0ymITqqEYX2q2vnEx+92J6ffLwRbczuufwh3mz2LuC1TCO6vpv9ubuBxNvy
+i+IZPxvQ6tbB76eIne/WFaZUNuA1rzC7aOK/G05Y3o9uwITQp7uyiRnqsxxB
+dg34WO/WxXriNlSqt9tBvsuKNbb0E0NFd6nqXD1OuebvGSPWT4z/xl1Vj+N7
+fxaPEFsx1C+0R9fjypTfmV3Ei057G9yzq0exsCqeCuJ321feNNlRjxv3H29L
+Jfb4r0pz0VwdOryp47xGnGLgGJBRWYdxwoIpVsTdt9ONzaLrsELP+K04sVPp
+qTLW8Trc6RskSf/ferw5RV2VqUN3l2Kep8Tlu3xaV/2sRSutjTZmxGb6Ljcf
+VNTiQuZ7gV9kfdexuTYLRdViVkvCvkfEI/vknkceq0WGxpdWBeLX/73dyiFd
+izo8rW1I9uuGxcm3Z77XYFiBDegTy56QPtJcVoO3Dr9bX0n2d/hpz9YdkTUo
+d/Cvwx7iprmzPq2SNdgbu1J1OYmPPRuFRNZ/q0bfnXLVJ0k8+fvIbTmK1WQ9
+2eX5JN6OTEJcg1U1Sp3dxKVXwcYz2rySv7dWo+y9X8ZBJF7zD0z+Jz5Thf0l
+xovfkvgukQ9vsL9ZhRxmxh9/kPjvnFfcdcmiCuf9fQr5iP3/S/O+JlaFCYrr
+5ERJvsT87muMyq9E1+l2+80kv25f8rdxoiqwfr/zCiT5KipWpmPwvgKz1R2j
+o0k+M2peX5EKrkCJ7Xq3juayMfC6t0KvcAWecpFu7cpmo8Gdy/w/9MvRZ0V5
+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
+/f//d9r5///v9H8BucfY
+       "]]},
+     Annotation[#, "Charting`Private`Tag$4791#1"]& ]}, {}},
+  Axes->{False, False},
+  AxesLabel->{None, None},
+  AxesOrigin->{0, 0},
+  DisplayFunction->Identity,
+  Epilog->{
+    PointSize[Large], 
+    RGBColor[1, 0, 0], 
+    PointBox[
+     NCache[{-(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 + (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Sin[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]], (
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 + (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Cos[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]]}, {0.4597099262558919, 
+      0.8711833266827167}]], 
+    PointBox[
+     NCache[{(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 + (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Sin[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]], -(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 + (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Cos[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 
+                  2])^2)]]}, {-0.4597099262558919, -0.8711833266827167}]], 
+    RGBColor[0, 0, 1], 
+    PointBox[
+     NCache[{-(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 - (
+          4 (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Cos[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]], -(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 - (
+          4 (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Sin[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]]}, {-0.6229495642339938, 
+      0.3287208208237976}]], 
+    PointBox[
+     NCache[{(
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 - (
+          4 (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Cos[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]], (
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 - (
+          4 (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Sin[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]]}, {
+      0.6229495642339938, -0.3287208208237976}]], 
+    GrayLevel[0], 
+    ArrowBox[
+     NCache[{{0, 
+       0}, {(2 ((
+               Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 - (1 + 
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))^(-1) (
+            Rational[-9999, 10000] (
+               Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + 
+            Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))/(-2 + 
+           Rational[-9, 169] 179^Rational[1, 2] + 
+           Rational[-3, 12769] 141611^Rational[1, 2] + 
+           Rational[-100, 9] 
+            179^Rational[-1, 2] (
+              Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+              Rational[-1, 2])^2 + 
+           Rational[-100, 3] 
+            141611^Rational[-1, 2] (
+              Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+              39^Rational[-1, 2])^2 - (
+            4 (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+         Cos[Rational[1, 2] 
+           ArcCot[Rational[
+              1, 2] (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^(-1) (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)]] 
+         Sin[Rational[1, 8] Pi] - (
+          2 ((Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 - (1 + 
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))^(-1) (
+           Rational[-9999, 10000] (
+              Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + 
+           Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))/(-2 + 
+          Rational[-9, 169] 179^Rational[1, 2] + 
+          Rational[-3, 12769] 141611^Rational[1, 2] + 
+          Rational[-100, 9] 
+           179^Rational[-1, 2] (
+             Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+             Rational[-1, 2])^2 + 
+          Rational[-100, 3] 
+           141611^Rational[-1, 2] (
+             Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+             39^Rational[-1, 2])^2 + (
+            4 (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+        Cos[Rational[1, 8] Pi] 
+        Sin[Rational[1, 2] 
+          ArcCot[Rational[
+             1, 2] (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^(-1) (
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)]], (
+          
+         2 ((Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 - (1 + 
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))^(-1) (
+            Rational[-9999, 10000] (
+               Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + 
+            Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))/(-2 + 
+           Rational[-9, 169] 179^Rational[1, 2] + 
+           Rational[-3, 12769] 141611^Rational[1, 2] + 
+           Rational[-100, 9] 
+            179^Rational[-1, 2] (
+              Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+              Rational[-1, 2])^2 + 
+           Rational[-100, 3] 
+            141611^Rational[-1, 2] (
+              Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+              39^Rational[-1, 2])^2 + (
+             4 (Rational[10, 13] (
+                  Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                  Rational[-1, 2]) + 
+                Rational[10, 113] (
+                  Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                  39^Rational[-1, 2]))^2 + (
+               Rational[9, 169] 179^Rational[1, 2] + 
+               Rational[3, 12769] 141611^Rational[1, 2] + 
+               Rational[-100, 9] 
+                179^Rational[-1, 2] (
+                  Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                  Rational[-1, 2])^2 + 
+               Rational[-100, 3] 
+                141611^Rational[-1, 2] (
+                  Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                  39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+         Cos[Rational[1, 8] Pi] 
+         Cos[Rational[1, 2] 
+           ArcCot[Rational[
+              1, 2] (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^(-1) (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)]] + (
+           2 ((Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 - (1 + 
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))^(-1) (
+            Rational[-9999, 10000] (
+               Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + 
+            Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+              Rational[100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2))/(-2 + 
+           Rational[-9, 169] 179^Rational[1, 2] + 
+           Rational[-3, 12769] 141611^Rational[1, 2] + 
+           Rational[-100, 9] 
+            179^Rational[-1, 2] (
+              Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+              Rational[-1, 2])^2 + 
+           Rational[-100, 3] 
+            141611^Rational[-1, 2] (
+              Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+              39^Rational[-1, 2])^2 - (
+            4 (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+         Sin[Rational[1, 8] Pi] 
+         Sin[Rational[1, 2] 
+           ArcCot[Rational[
+              1, 2] (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^(-1) (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)]]}}, {{0, 0}, {0.6631090691914932, 
+       0.6790724325845352}}]], 
+    PointBox[
+     NCache[{(
+          2 ((Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 - (1 + 
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))^(-1) (
+           Rational[-9999, 10000] (
+              Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + 
+           Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))/(-2 + 
+          Rational[-9, 169] 179^Rational[1, 2] + 
+          Rational[-3, 12769] 141611^Rational[1, 2] + 
+          Rational[-100, 9] 
+           179^Rational[-1, 2] (
+             Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+             Rational[-1, 2])^2 + 
+          Rational[-100, 3] 
+           141611^Rational[-1, 2] (
+             Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+             39^Rational[-1, 2])^2 - (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+        Cos[Rational[1, 2] 
+          ArcCot[Rational[
+             1, 2] (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^(-1) (
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)]] 
+        Sin[Rational[1, 8] Pi] - (
+         2 ((Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 - (1 + 
+            Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))^(-1) (
+          Rational[-9999, 10000] (
+             Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^2 + 
+          Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+            Rational[100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2))/(-2 + 
+         Rational[-9, 169] 179^Rational[1, 2] + 
+         Rational[-3, 12769] 141611^Rational[1, 2] + 
+         Rational[-100, 9] 
+          179^Rational[-1, 2] (
+            Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+            Rational[-1, 2])^2 + 
+         Rational[-100, 3] 
+          141611^Rational[-1, 2] (
+            Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+            39^Rational[-1, 2])^2 + (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+       Cos[Rational[1, 8] Pi] 
+       Sin[Rational[1, 2] 
+         ArcCot[Rational[
+            1, 2] (Rational[10, 13] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2]) + 
+             Rational[10, 113] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2]))^(-1) (Rational[9, 169] 179^Rational[1, 2] + 
+            Rational[3, 12769] 141611^Rational[1, 2] + 
+            Rational[-100, 9] 
+             179^Rational[-1, 2] (
+               Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+               Rational[-1, 2])^2 + 
+            Rational[-100, 3] 
+             141611^Rational[-1, 2] (
+               Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+               39^Rational[-1, 2])^2)]], (
+          2 ((Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 - (1 + 
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))^(-1) (
+           Rational[-9999, 10000] (
+              Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + 
+           Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))/(-2 + 
+          Rational[-9, 169] 179^Rational[1, 2] + 
+          Rational[-3, 12769] 141611^Rational[1, 2] + 
+          Rational[-100, 9] 
+           179^Rational[-1, 2] (
+             Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+             Rational[-1, 2])^2 + 
+          Rational[-100, 3] 
+           141611^Rational[-1, 2] (
+             Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+             39^Rational[-1, 2])^2 + (
+            4 (Rational[10, 13] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2]) + 
+               Rational[10, 113] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2]))^2 + (
+              Rational[9, 169] 179^Rational[1, 2] + 
+              Rational[3, 12769] 141611^Rational[1, 2] + 
+              Rational[-100, 9] 
+               179^Rational[-1, 2] (
+                 Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                 Rational[-1, 2])^2 + 
+              Rational[-100, 3] 
+               141611^Rational[-1, 2] (
+                 Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                 39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+        Cos[Rational[1, 8] Pi] 
+        Cos[Rational[1, 2] 
+          ArcCot[Rational[
+             1, 2] (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^(-1) (
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)]] + (
+          2 ((Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 - (1 + 
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))^(-1) (
+           Rational[-9999, 10000] (
+              Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + 
+           Rational[9999, 10000] (1 + Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2]) (1 + 
+             Rational[100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2))/(-2 + 
+          Rational[-9, 169] 179^Rational[1, 2] + 
+          Rational[-3, 12769] 141611^Rational[1, 2] + 
+          Rational[-100, 9] 
+           179^Rational[-1, 2] (
+             Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+             Rational[-1, 2])^2 + 
+          Rational[-100, 3] 
+           141611^Rational[-1, 2] (
+             Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+             39^Rational[-1, 2])^2 - (
+           4 (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^2 + (Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)^2)^Rational[1, 2]))^Rational[1, 2] 
+        Sin[Rational[1, 8] Pi] 
+        Sin[Rational[1, 2] 
+          ArcCot[Rational[
+             1, 2] (Rational[10, 13] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2]) + 
+              Rational[10, 113] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2]))^(-1) (
+             Rational[9, 169] 179^Rational[1, 2] + 
+             Rational[3, 12769] 141611^Rational[1, 2] + 
+             Rational[-100, 9] 
+              179^Rational[-1, 2] (
+                Rational[-49, 13] Rational[2, 195]^Rational[1, 2] - 39^
+                Rational[-1, 2])^2 + 
+             Rational[-100, 3] 
+              141611^Rational[-1, 2] (
+                Rational[-49, 113] Rational[2, 195]^Rational[1, 2] + 
+                39^Rational[-1, 2])^2)]]}, {0.6631090691914932, 
+      0.6790724325845352}]]},
+  Frame->{{True, True}, {True, True}},
+  FrameLabel->{{
+     FormBox["\"Vy\"", TraditionalForm], None}, {
+     FormBox["\"Vx\"", TraditionalForm], None}},
+  FrameTicks->{{Automatic, Automatic}, {Automatic, Automatic}},
+  GridLinesStyle->Directive[
+    GrayLevel[0.5, 0.4]],
+  ImagePadding->All,
+  Method->{
+   "DefaultGraphicsInteraction" -> {
+     "Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
+      "Effects" -> {
+       "Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, 
+        "Droplines" -> {
+         "freeformCursorMode" -> True, 
+          "placement" -> {"x" -> "All", "y" -> "None"}}}}, "ScalingFunctions" -> 
+    None},
+  PlotRange->{{-1, 1}, {-1, 1}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{{0, 0}, {0, 0}},
+  Ticks->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{{3.882484442609879*^9, 3.882484522974346*^9}, {
+   3.882485211697033*^9, 3.8824852243157587`*^9}, {3.882485276159912*^9, 
+   3.882485292055999*^9}, 3.882485323875736*^9, 3.8824854618296757`*^9, {
+   3.882485515498521*^9, 3.882485590644381*^9}, 3.882485745565818*^9, {
+   3.88248629155229*^9, 3.882486330629465*^9}, 3.8824863674920607`*^9, 
+   3.8824864320921926`*^9, {3.882486506986148*^9, 3.8824865151446466`*^9}, {
+   3.882486546125577*^9, 3.8824865700425177`*^9}, {3.8824866048042*^9, 
+   3.882486623378817*^9}, 3.8824868668942823`*^9, {3.882486949465487*^9, 
+   3.882486966592754*^9}, 3.882487031378252*^9, {3.88248715683918*^9, 
+   3.882487202744886*^9}, 3.882487291589417*^9, 3.882487356169915*^9, 
+   3.882487505129311*^9, 3.882487550689069*^9, {3.8824876271629047`*^9, 
+   3.882487665043374*^9}, {3.882487703618218*^9, 3.882487707700444*^9}, 
+   3.882487909116487*^9, {3.882487942817212*^9, 3.8824879510340157`*^9}, 
+   3.882488024327055*^9, 3.882488415980255*^9, 3.8824884831162033`*^9, {
+   3.882488715984167*^9, 3.882488721521133*^9}, 3.8824890731183147`*^9, {
+   3.882489146710582*^9, 3.8824891715998087`*^9}, 3.8824892600239573`*^9, {
+   3.8824893563013163`*^9, 3.882489395724173*^9}, 3.8824894646812077`*^9, {
+   3.882489698117367*^9, 3.882489707591977*^9}, 3.882489792487154*^9, {
+   3.8824899560680847`*^9, 3.882490012660124*^9}, 3.88249014515854*^9, 
+   3.882490178752286*^9, 3.882490426625003*^9, {3.8824908122458897`*^9, 
+   3.8824908173574743`*^9}, 3.882491128966712*^9, 3.882493150687723*^9, 
+   3.8824933162964573`*^9, 3.88253315576157*^9, 3.882533262854825*^9, 
+   3.8825333486498947`*^9, 3.882533696532544*^9, 3.882533750765695*^9, 
+   3.8825338401406384`*^9, 3.882533948641444*^9, 3.8825341119690123`*^9, 
+   3.8825343008084583`*^9, 3.882534446930777*^9, 3.882534579273211*^9, 
+   3.882534711502245*^9, 3.8825348171436777`*^9, {3.882534931291896*^9, 
+   3.88253493663894*^9}, 3.882535040532774*^9, 3.882535148177787*^9, 
+   3.8825352921041193`*^9, 3.882535436091282*^9, 3.882535581565823*^9, 
+   3.8825365412918043`*^9, 3.8825366654681787`*^9, 3.8825369054648848`*^9, 
+   3.882537049900784*^9, 3.8825372609278927`*^9, 3.882537412293325*^9, 
+   3.882537583104527*^9, 3.882537728200718*^9, 3.88253791299363*^9, 
+   3.88253827770443*^9, {3.882544263201762*^9, 3.88254433868239*^9}, {
+   3.882544370704076*^9, 3.882544396418964*^9}, 3.8825445479863443`*^9, {
+   3.8825446495090513`*^9, 3.882544653536046*^9}, 3.882544858949408*^9, 
+   3.882544889817734*^9, 3.8825449296609497`*^9, 3.882544999324736*^9, 
+   3.88254507577339*^9, 3.882545127235148*^9, 3.882545239322592*^9, 
+   3.882545481241274*^9, 3.882545674614541*^9, 3.882545725961063*^9, 
+   3.8825458070322*^9, 3.8825460738238297`*^9, 3.882546367489051*^9, 
+   3.8825464268570337`*^9, 3.8825465510825872`*^9, {3.882546725362294*^9, 
+   3.8825467546579237`*^9}, {3.8825468311154537`*^9, 3.8825468525633783`*^9}, 
+   3.8825469167216454`*^9, 3.8825474085654593`*^9, 3.882547500211417*^9, 
+   3.882547673708844*^9, 3.8825477971144533`*^9, 3.882547981744878*^9, 
+   3.882548066530377*^9, 3.882548498212034*^9, 3.882548679804068*^9, 
+   3.882548777921052*^9, 3.882549006145131*^9, 3.882549088121995*^9, 
+   3.882549180475802*^9, 3.8825493205144978`*^9, 3.882549492721513*^9, {
+   3.882549719879174*^9, 3.882549737563019*^9}, 3.882550433046833*^9, 
+   3.88255061786989*^9, 3.882550984434095*^9, 3.8825513771777973`*^9, 
+   3.8825515370319977`*^9, 3.88255163365145*^9, 3.882551682257263*^9, {
+   3.882551772729175*^9, 3.8825517984850082`*^9}, 3.8825518487320137`*^9, 
+   3.882551956894731*^9, 3.882552028501973*^9, {3.882552143583355*^9, 
+   3.8825521489762907`*^9}, 3.882552201482871*^9, 3.882552355636643*^9, 
+   3.88255243783549*^9, 3.882552554898189*^9, 3.8825614344125147`*^9, 
+   3.882561704687523*^9, 3.882561798139124*^9, {3.882563509882454*^9, 
+   3.882563522207609*^9}, 3.882563882694648*^9, 3.8825639780896273`*^9, 
+   3.882564062067494*^9, 3.8825641166498327`*^9, 3.882564195003746*^9, 
+   3.882564248769271*^9, 3.882564350999716*^9, 3.8825644415235233`*^9, 
+   3.882564583600917*^9, 3.882564718783695*^9, 3.882564855879854*^9, {
+   3.882565045554977*^9, 3.882565059893248*^9}, 3.882565566370327*^9, 
+   3.882565699401369*^9, 3.882565773704146*^9, {3.8825659154213877`*^9, 
+   3.882565936383325*^9}, 3.8825659837206078`*^9, 3.882566074299801*^9, 
+   3.8825661146484118`*^9, 3.882566195511655*^9, 3.882566478719678*^9, 
+   3.882566532452518*^9, {3.882566865726597*^9, 3.8825669067503977`*^9}, 
+   3.8825669944276123`*^9, 3.88256704988028*^9, {3.8825671488220453`*^9, 
+   3.882567166031314*^9}, {3.882567254931431*^9, 3.882567268227804*^9}, {
+   3.8825676372337217`*^9, 3.8825676391315613`*^9}, 3.8825677074953537`*^9, {
+   3.882567785776677*^9, 3.882567800844057*^9}, 3.8825679273529882`*^9, 
+   3.882568210381583*^9},
+ CellLabel->"Out[22]=",ExpressionUUID->"f21f8b07-286e-4d50-85ff-6b705b2fa2db"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1502.608695652174, 788.0869565217392},
+WindowMargins->{{0, Automatic}, {Automatic, 22.945054945054945`}},
+TaggingRules->{
+ "WelcomeScreenSettings" -> {"FEStarting" -> False}, "TryRealOnly" -> False},
+Magnification:>1. Inherited,
+FrontEndVersion->"12.1 for Linux x86 (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"01202388-6083-4676-9c8b-b6037aa03db1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 336, 5, 105, "Title",ExpressionUUID->"33410a6b-c4db-4eca-a797-fb0baf59a63a"],
+Cell[CellGroupData[{
+Cell[941, 31, 162, 3, 71, "Section",ExpressionUUID->"b1cd2e9f-203e-46de-96ff-998bc1017319"],
+Cell[1106, 36, 155, 2, 29, "Input",ExpressionUUID->"348be769-9426-49f0-ae2e-6e4904e76e6e"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1298, 43, 219, 4, 71, "Section",ExpressionUUID->"6ad77521-4021-44a5-a714-ce669fe16b43"],
+Cell[1520, 49, 10871, 279, 1414, "Input",ExpressionUUID->"127218b7-4b9a-4256-8b74-9d896b7ed037"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[12428, 333, 149, 3, 57, "Section",ExpressionUUID->"520687f4-a258-4f59-998d-791844280640"],
+Cell[CellGroupData[{
+Cell[12602, 340, 16609, 278, 1043, "Input",ExpressionUUID->"54039a8e-6f39-4d4d-9006-84ae53de88b4"],
+Cell[29214, 620, 4760, 71, 44, "Print",ExpressionUUID->"4147d0ee-4d69-488e-adcd-9c64b223f473"],
+Cell[33977, 693, 82067, 1629, 366, "Output",ExpressionUUID->"f21f8b07-286e-4d50-85ff-6b705b2fa2db"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

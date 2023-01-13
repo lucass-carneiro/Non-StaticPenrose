@@ -256,20 +256,17 @@ void grlensing::normalize(trajectory_config &traj_conf, const metric_server::met
   const auto gamma
       = metric->ll_smetric(0.0, traj_conf.initial_X1, traj_conf.initial_X2, traj_conf.initial_X3);
 
-  const auto norm_V = gamma[0][0] * V[0] * V[0] + 2.0 * gamma[0][1] * V[0] * V[1]
-                      + 2.0 * gamma[0][2] * V[0] * V[2] + gamma[1][1] * V[1] * V[1]
-                      + 2.0 * gamma[1][2] * V[1] * V[2] + gamma[2][2] * V[2] * V[2];
+  auto norm_V = gamma[0][0] * V[0] * V[0] + 2.0 * gamma[0][1] * V[0] * V[1]
+                + 2.0 * gamma[0][2] * V[0] * V[2] + gamma[1][1] * V[1] * V[1]
+                + 2.0 * gamma[1][2] * V[1] * V[2] + gamma[2][2] * V[2] * V[2];
 
-  // For photons, $p_\mu p^\mu = 0$ which implies $V_i V^i = 1$
   if (traj_conf.particle_type == 0) {
     traj_conf.initial_V1 /= norm_V;
     traj_conf.initial_V2 /= norm_V;
     traj_conf.initial_V3 /= norm_V;
-  } else if (!(norm_V < 1.0)) {
-    log<LogEvent::error>(
-        "The velocity values used represent a massive particle that move with superluminal speeds. "
-        "Ensure that $gamma_{{ij}} V^i V^j < 1$. The current value is {0:.16e}",
-        norm_V);
-    throw std::runtime_error("Unphysical particle error");
+  } else if (!(norm_V < 1)) {
+    log<LogEvent::error>("Unphysical particle velocity error: ({}, {}, {}), norm: {}", V[0], V[1],
+                         V[2], norm_V);
+    throw std::runtime_error("unphysical particle");
   }
 }

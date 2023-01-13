@@ -238,8 +238,15 @@ def compute_penrose_energy_diff(arguments):
 
   print("Local energy difference (3 - 1): ", local_energy_3 - local_energy_1)
   print("Global energy difference (3 - 1): ", global_energy_3 - global_energy_1)
+  
   print("Global/localenergy absolute difference (1): ", np.abs(global_energy_1 - local_energy_1))
   print("Global/localenergy absolute difference (3): ", np.abs(global_energy_3 - local_energy_3))
+  
+  print("Local energy relative increase (3-1)/1: ", (local_energy_3 - local_energy_1)/local_energy_1)
+  print("Global energy difference (3 - 1)/1: ", (global_energy_3 - global_energy_1)/local_energy_1)
+
+  print("Local energy relative increase (3-1)/3: ", (local_energy_3 - local_energy_1)/local_energy_3)
+  print("Global energy difference (3 - 1)/3: ", (global_energy_3 - global_energy_1)/local_energy_3)
 
 def plot_penrose_energy(arguments):
   trajectory_1 = arguments["<trajectory_1>"]

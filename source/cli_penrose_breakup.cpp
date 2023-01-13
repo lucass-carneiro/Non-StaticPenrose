@@ -3,6 +3,8 @@
 #include "metric_server.hpp"
 #include "time_integration.hpp"
 
+#include <stdexcept>
+
 void grlensing::penrose_breakup(grlensing::kernel &kernel,
                                 const grlensing::integrator_config &int_conf,
                                 const std::string &break_file) {
@@ -58,6 +60,14 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
       = {breakup_file["breakup_point"]["X1"].as<realtype>(),
          breakup_file["breakup_point"]["X2"].as<realtype>(),
          breakup_file["breakup_point"]["X3"].as<realtype>()};
+
+  // Compute the sign of gtt at the breakup point.
+  const auto gtt = ll_g_00(metric, 0, breakup_point[0], breakup_point[1], breakup_point[2]);
+  if (gtt < 0) {
+    log<LogEvent::error>("The breakup point ({}, {}, {}) is outside of the ergosphere",
+                         breakup_point[0], breakup_point[1], breakup_point[2]);
+    throw std::runtime_error("Out of ergosphere error");
+  }
 
   // First trajectory configuration
   metric_server::spatial_vector V_traj1
@@ -125,24 +135,43 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
   traj_3_conf.output_times = breakup_file["trajectory_3"]["output_times"].as<int>();
   traj_3_conf.particle_type = breakup_file["particle_type"].as<int>();
 
-  metric_server::spatial_vector V_traj3
-      = {traj_3_conf.initial_V1, traj_3_conf.initial_V2, traj_3_conf.initial_V3};
-
   // Normalize velocities
   normalize(traj_1_conf, metric);
   normalize(traj_2_conf, metric);
   normalize(traj_3_conf, metric);
 
+  const metric_server::spatial_vector norm_V_traj1{traj_1_conf.initial_V1, traj_1_conf.initial_V2,
+                                                   traj_1_conf.initial_V3};
+  const metric_server::spatial_vector norm_V_traj2{traj_2_conf.initial_V1, traj_2_conf.initial_V2,
+                                                   traj_2_conf.initial_V3};
+  const metric_server::spatial_vector norm_V_traj3{traj_3_conf.initial_V1, traj_3_conf.initial_V2,
+                                                   traj_3_conf.initial_V3};
+
+  // Mass rule
+  const auto mass1 = compute_mass(metric, 0, norm_V_traj1, breakup_point, traj_1_conf.initial_EN);
+  const auto mass2 = compute_mass(metric, 0, norm_V_traj2, breakup_point, traj_2_conf.initial_EN);
+  const auto mass3 = compute_mass(metric, 0, norm_V_traj3, breakup_point, traj_3_conf.initial_EN);
+
+  if (!((mass2 * mass2 + mass3 * mass3) < (mass1 * mass1))) {
+    log<LogEvent::error>("Mass rule violation detected:\n"
+                         "mass_2^2 = {}\n"
+                         "mass_3^2 = {}\n"
+                         "mass_2^2 + mass_3^2 = {}\n"
+                         "mass_1^2 = {}\n",
+                         mass2 * mass2, mass3 * mass3, mass2 * mass2 + mass3 * mass3,
+                         mass1 * mass1);
+    throw std::runtime_error("Mass rule violation");
+  }
+
   // This effectivelly forces one to use 3 MPI ranks for penrose process integration, but at this
   // point I just don't care anymore
   if (MPI::COMM_WORLD.Get_rank() == 0) {
     log<LogEvent::message>("Integrating entry trajectory");
-    
+
     writer->open_file(traj_1_file, traj_1_metadata_file);
 
     integrate(int_conf, writer, metric, traj_1_conf);
 
-    const auto mass1 = compute_mass(metric, 0, V_traj1, breakup_point, traj_1_conf.initial_EN);
     writer->push_metadata("   mass", mass1);
 
     writer->close_file();
@@ -154,7 +183,6 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
 
     integrate(int_conf, writer, metric, traj_2_conf);
 
-    const auto mass2 = compute_mass(metric, 0, V_traj2, breakup_point, traj_2_conf.initial_EN);
     writer->push_metadata("   mass", mass2);
 
     writer->close_file();
@@ -166,7 +194,6 @@ void grlensing::penrose_breakup(grlensing::kernel &kernel,
 
     integrate(int_conf, writer, metric, traj_3_conf);
 
-    const auto mass3 = compute_mass(metric, 0, V_traj3, breakup_point, traj_3_conf.initial_EN);
     writer->push_metadata("   mass", mass3);
 
     writer->close_file();

@@ -7,15 +7,15 @@ initial_time: 0.0
 final_time: 100.0
 
 # How many times to output between initial and final time
-output_times: 100
+output_times: 1000
 
-initial_V1: 0.0
-initial_V2: 0.8
-initial_V3: 0.0
+initial_V1: 0.7789735389507061
+initial_V2: 0.4677816544420012
+initial_V3: 0
 
-initial_X1: 5.0
-initial_X2: 0.0
-initial_X3: 0.0
+initial_X1: 1.590000000000000
+initial_X2: 0
+initial_X3: 0
 
 initial_EN: 1.0
 
@@ -24,12 +24,12 @@ metadata_file: "kerr_schild_kerr_trajectory_metadata.ascii"
 
 background_metric: "Kerr-Schild Kerr"
 
-background_radius: 20.0
-energy_threshold: 1.0
+background_radius: 10.0
+energy_threshold: 2.7
 
 # Zero for photons, anything else for massive.
 particle_type: 1
 
 KerrSchild_Kerr_Settings:
   M: 1.0
-  a: 0.5
+  a: 0.99

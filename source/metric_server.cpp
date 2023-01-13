@@ -122,5 +122,10 @@ auto grlensing::compute_mass(const metric_server::metric_ptr &metric, double ti,
     }
   }
 
-  return (m2 < 0.0 ? std::sqrt(-m2) : 0.0);
+  if(m2 < 0.0) {
+    return std::sqrt(-m2);
+  } else {
+    log<LogEvent::error>("Unphysical mass detected with particle of energy {}. m^2 value: {}", En, m2);
+    throw std::runtime_error("Unphysical mass");
+  }
 }
