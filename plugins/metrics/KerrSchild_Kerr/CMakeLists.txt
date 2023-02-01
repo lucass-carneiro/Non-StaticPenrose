@@ -12,15 +12,7 @@ project(
 )
 
 # -----------------------------------------
-# 2) Dependencies
-# -----------------------------------------
-
-# YAML parser
-find_package(yaml-cpp REQUIRED)
-find_package(fmt REQUIRED)
-
-# -----------------------------------------
-# 3) Sources
+# 2) Sources
 # -----------------------------------------
 
 # Option file
@@ -108,4 +100,7 @@ target_include_directories(
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE yaml-cpp fmt)
+target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE
+  CONAN_PKG::fmt
+  CONAN_PKG::yaml-cpp
+)
