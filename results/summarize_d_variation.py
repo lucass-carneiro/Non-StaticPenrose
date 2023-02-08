@@ -51,9 +51,9 @@ def compute_extracted_energy(data_dir, energy_gains):
     energy_gains[data_dir] = {
         "b": b,
         "El": data_3["El"].iloc[-1] - data_1["El"].iloc[-1],
-        "Eg": data_3["Eg"].iloc[-1] - data_1["El"].iloc[-1],
-        "Eff_l": data_1["El"].iloc[-1] / data_3["El"].iloc[-1],
-        "Eff_g": data_1["Eg"].iloc[-1] / data_3["Eg"].iloc[-1]
+        "Eg": data_3["Eg"].iloc[-1] - data_1["Eg"].iloc[-1],
+        "Eff_l": (data_3["El"].iloc[-1] - data_1["El"].iloc[-1])/data_1["El"].iloc[-1],
+        "Eff_g": (data_3["Eg"].iloc[-1] - data_1["Eg"].iloc[-1])/data_1["Eg"].iloc[-1]
     }
 
     os.chdir("../")

@@ -51,9 +51,9 @@ def compute_extracted_energy(data_dir, energy_gains):
     energy_gains[data_dir] = {
         "M2": M2,
         "El": data_3["El"].iloc[-1] - data_1["El"].iloc[-1],
-        "Eg": data_3["Eg"].iloc[-1] - data_1["El"].iloc[-1],
-        "Eff_l": data_1["El"].iloc[-1] / data_3["El"].iloc[-1],
-        "Eff_g": data_1["Eg"].iloc[-1] / data_3["Eg"].iloc[-1]
+        "Eg": data_3["Eg"].iloc[-1] - data_1["Eg"].iloc[-1],
+        "Eff_l": (data_3["El"].iloc[-1] - data_1["El"].iloc[-1])/data_1["El"].iloc[-1],
+        "Eff_g": (data_3["Eg"].iloc[-1] - data_1["Eg"].iloc[-1])/data_1["Eg"].iloc[-1]
     }
 
     os.chdir("../")
@@ -61,7 +61,7 @@ def compute_extracted_energy(data_dir, energy_gains):
 def save_results(energy_gains):
     output_file = open("M2_variation_sumary.txt", "w")
 
-    output_file.write("# 1:BH separation 2:Local energy gain 3:Global energy gain 4:Eff. with global energy, Eff. with local energy\n")
+    output_file.write("# 1:M2 2:Local energy gain 3:Global energy gain 4:Eff. with global energy, Eff. with local energy\n")
     
     for run in sorted(energy_gains.keys()):
         output_file.write("%.16f" % energy_gains[run]["M2"])

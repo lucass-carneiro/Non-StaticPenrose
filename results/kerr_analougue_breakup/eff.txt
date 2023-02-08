@@ -1,0 +1,8 @@
+Local energy difference (3 - 1):  0.0008036655116026026
+Global energy difference (3 - 1):  0.0008029089504247855
+Global/localenergy absolute difference (1):  1.7894123710560095e-07
+Global/localenergy absolute difference (3):  5.776199407114824e-07
+Local energy relative increase (3-1)/1:  0.0020909406786700896
+Global energy difference (3 - 1)/1:  0.0020889722919224165
+Local energy relative increase (3-1)/3:  0.0020865777683350692
+Global energy difference (3 - 1)/3:  0.0020846134887794235 
