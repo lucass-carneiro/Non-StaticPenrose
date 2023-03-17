@@ -17,18 +17,7 @@ vars = [
 ]
 
 def main():
-    data_dirs = [
-        "sks_breakup_M2_0",
-        "sks_breakup_M2_1",
-        "sks_breakup_M2_2",
-        "sks_breakup_M2_3",
-        "sks_breakup_M2_4",
-        "sks_breakup_M2_5",
-        "sks_breakup_M2_6",
-        "sks_breakup_M2_7",
-        "sks_breakup_M2_8",
-        "sks_breakup_M2_9"
-    ]
+    data_dirs = make_file_list(0, 59)
 
     energy_gains = {}
 
@@ -37,10 +26,16 @@ def main():
 
     save_results(energy_gains)
 
+def make_file_list(start, end):
+    list = []
+    for i in range(start, end + 1):
+        list.append("sks_breakup_M2_" +  str(i).zfill(3))
+    return list
+
 def compute_extracted_energy(data_dir, energy_gains):
     os.chdir(data_dir)
 
-    with open(data_dir + ".yaml", "r") as file:
+    with open("../../configs/sks/" + data_dir + ".yaml", "r") as file:
         config_file = yaml.safe_load(file)
     
     M2 = float(config_file["SKS_Settings"]["M2"])

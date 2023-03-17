@@ -1,0 +1,55 @@
+
+---
+#############################################################
+# Particle breakup process settings                         #
+#############################################################
+
+background_metric: "Superimposed Kerr binary in Kerr-Schild coordinates"
+background_radius: 1000000.0
+
+SKS_Settings:
+  M1: 0.5
+  M2: 0.4020000000000000
+  a1: 0.49
+  a2: 0.3939600000000000
+  b: 20.0
+
+energy_threshold: 1.0
+
+output_format: ".ascii"
+
+# Zero for photons, anything else for massive.
+particle_type: 1
+
+breakup_point:
+  X1: 11.0
+  X2: 0.0
+  X3: 0.0
+
+# Elipse param = -25/200 * pi
+# Particle mass 1.0e-1
+trajectory_1:
+  final_time: -10000000.0
+  output_times: 10000
+  
+  initial_V1: 0.7145003335426491
+  initial_V2: 0.6201287837389996
+  initial_V3: 0.0
+  
+  initial_EN: 1.0
+
+# Elipse param: -100/200 * pi
+# Particle mass: 1.0e-4
+trajectory_2:
+  final_time: 10000000.0
+  output_times: 10000
+
+  initial_V1: 0.5477854839618832
+  initial_V2: -0.3650554022697327
+  initial_V3: 0.0
+  
+  initial_EN: 8.0e-3
+
+trajectory_3:
+  final_time: 10000000.0
+  output_times: 10000

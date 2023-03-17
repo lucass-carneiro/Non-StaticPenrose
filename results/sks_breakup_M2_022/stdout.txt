@@ -1,0 +1,21 @@
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_isotropic_Schwarzschild_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_isotropic_Schwarzschild_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_KerrSchild_Kerr_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_isotropic_Schwarzschild_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_KerrSchild_Kerr_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_SKS_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_KerrSchild_Kerr_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_SKS_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_zip_archive.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_SKS_metric.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_ascii_writer.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_zip_archive.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mPenrose particle breakup mode started. Breakup  file: sks_breakup_M2_022.yaml
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_zip_archive.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_ascii_writer.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mTrying to load the library file lib/libgrlensing_ascii_writer.so
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mPenrose particle breakup mode started. Breakup  file: sks_breakup_M2_022.yaml
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mPenrose particle breakup mode started. Breakup  file: sks_breakup_M2_022.yaml
+[38;2;070;130;180m2023-03-16 23:01:18 (process 2) - GRLensing message: [0mIntegrating exit trajectory
+[38;2;070;130;180m2023-03-16 23:01:18 (process 0) - GRLensing message: [0mIntegrating entry trajectory
+[38;2;070;130;180m2023-03-16 23:01:18 (process 1) - GRLensing message: [0mIntegrating penrose trajectory
