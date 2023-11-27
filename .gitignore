@@ -1,7 +1,7 @@
 .cache/**
-.vscode/**
 Debug/**
 Release/**
 Profile/**
 build/**
 compile_commands.json
+venv/*
