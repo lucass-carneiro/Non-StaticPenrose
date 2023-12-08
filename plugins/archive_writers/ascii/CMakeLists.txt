@@ -92,3 +92,14 @@ target_include_directories(
   grlensing_std_ascii_writer_plugin PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
+
+target_link_libraries(grlensing_std_ascii_writer_plugin PRIVATE 
+  MPI::MPI_CXX
+  OpenMP::OpenMP_CXX
+  CONAN_PKG::range-v3
+  CONAN_PKG::fmt
+  CONAN_PKG::docopt.cpp
+  CONAN_PKG::yaml-cpp
+  CONAN_PKG::sundials
+  ${GRLENSING_DLL_LIBRARY}
+)

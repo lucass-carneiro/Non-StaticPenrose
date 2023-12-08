@@ -100,7 +100,13 @@ target_include_directories(
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
 
-target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE
+target_link_libraries(grlensing_KerrSchild_Kerr_metric PRIVATE 
+  MPI::MPI_CXX
+  OpenMP::OpenMP_CXX
+  CONAN_PKG::range-v3
   CONAN_PKG::fmt
+  CONAN_PKG::docopt.cpp
   CONAN_PKG::yaml-cpp
+  CONAN_PKG::sundials
+  ${GRLENSING_DLL_LIBRARY}
 )
